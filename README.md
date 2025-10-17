@@ -8,12 +8,12 @@ This repository tracks all coursework, code, assignments, and supporting materia
 
 | Semester | Course Code & Name | Status | Key Focus Areas |
 | :--- | :--- | :--- | :--- |
-| **Fall 2025** | [CSxxxx: Natural Language Processing (NLP)](#cs6765-natural-language-processing-nlp) | In Progress | Ngram Model, Naive Bayes, Logistic Regression, Deep Learning, LLMs, Text Generation, Attention Mechanisms |
-| **Winter 2026** | CSyyyy: Advanced Machine Learning and Data Mining| Planned | TBA |
+| **Fall 2025** | [CS6765: Natural Language Processing (NLP)](#cs6765-natural-language-processing-nlp) | In Progress | Ngram Model, Naive Bayes, Logistic Regression, Deep Learning, LLMs, Text Generation, Attention Mechanisms |
+| **Winter 2026** | CS: Advanced Machine Learning and Data Mining| Planned | TBA |
 
-### CSxxxx: Natural Language Processing (NLP)
+### CS6765: Natural Language Processing (NLP)
 
-[Link to the dedicated course folder](./Fall25/NLP_CS6765)
+[Link to the dedicated course folder](Fall25/NLP_CS6765)
 
 ### 🛠️ Core Technologies
 
