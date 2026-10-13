@@ -1,0 +1,71 @@
+# ==============================================================================
+# Git Ignore Configuration
+# Personal Identifiable Information (PII), Tax, Banking, and Credentials
+# (Coursework, assignments, notebooks, and research papers from #7 remain tracked)
+# ==============================================================================
+
+# --- System & Environment Files ---
+.DS_Store
+*/.DS_Store
+**/.DS_Store
+venv/
+.venv/
+__pycache__/
+
+# --- 1. Tax & Government Identification Forms (TD1, SIN, CRA) ---
+Hemel_Refat_Ishrak_TD1.pdf
+Hemel_Refat_Ishrak_TD1NB.pdf
+Winter26/td1-fill-26e.pdf
+*TD1*.pdf
+*td1*.pdf
+*TD1NB*.pdf
+*td1nb*.pdf
+*T4*.pdf
+*t4*.pdf
+
+# --- 2. Banking, Direct Deposit & Payroll Records ---
+Hemel_Refat_Ishrak_VoidCheque.pdf
+Fall2026/1829151.pdf
+Fall2026/TA-DataMining/PaymentOct9.html
+*VoidCheque*.pdf
+*voidcheque*.pdf
+*Void_Cheque*.pdf
+*Earnings*.pdf
+*Payment*.html
+*Paystub*.pdf
+
+# --- 3. Employment Contracts & Remuneration (Appendix B1) ---
+Fall2026/TA-DataMining/Signed_Hemel, Refat Ishrak  -  3810002 - Appendix B1.pdf
+Fall2026/TA-DataMining/Signed_Hemel, Refat Ishrak  -  3810002 - Appendix B1 (1).pdf
+Fall2026/TA-DataMining/Hemel, Refat Ishrak  -  3810002 - Appendix B1.pdf
+Fall2026/TA-DataMining/Hemel, Refat Ishrak  -  3810002 - Appendix B1 (1).pdf
+Winter26/TA-Parallel Proc/Signed_Appendix B1 Refat Ishrak Hemel.pdf
+Winter26/TA-Parallel Proc/Appendix B1 Refat Ishrak Hemel.pdf
+*Appendix B1*.pdf
+*Appendix_B1*.pdf
+*AppendixB1*.pdf
+
+# --- 4. Official Academic, Enrollment & Immigration Records ---
+Refat IshrakHemel2025-11-25.pdf
+Hemel, Refat Ishrak 3810002 - MCS Funding Letter, Fall 2025.pdf
+Student Annual Progress Report 2025-2026.pdf
+Hemel, Refat Ishak 3810002 - Student Annual Progress Report 2025-2026.pdf
+Hemel, Refat Ishak 3810002 - Student Annual Progress Report 2025-2026f.pdf
+Student Supervisor Checklist 2025 -2026.pdf
+Summer26/Hemel, Refat 3810002 - Graduate Independent Directed Study Form.pdf
+Summer26/Signed_Hemel, Refat 3810002 - Graduate Independent Directed Study Form.pdf
+*Funding Letter*.pdf
+*Annual Progress Report*.pdf
+*Directed Study Form*.pdf
+*Supervisor Checklist*.pdf
+
+# --- 5. Personal Resume & CV ---
+Hemel_CV_C.pdf
+*CV*.pdf
+*Resume*.pdf
+
+# --- 6. Security Credentials & Private Keys ---
+Winter26/CloudInfoMS/labsuser.pem
+*.pem
+*.key
+*.env
