@@ -1,0 +1,999 @@
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+A2.c: In function ‘mode0’:
+A2.c:38:84: error: expected ‘;’ before ‘}’ token
+   38 |             return leftSimpson+rightSimpson+((leftSimpson+rightSimpson)-simpson)/15
+      |                                                                                    ^
+      |                                                                                    ;
+   39 |         }
+      |         ~                                                                           
+A2.c: In function ‘main’:
+A2.c:52:14: error: passing argument 1 of ‘MPI_Init’ makes pointer from integer without a cast [-Wint-conversion]
+   52 |     MPI_Init(argc, argv);
+      |              ^~~~
+      |              |
+      |              int
+A2.c:52:14: note: possible fix: take the address with ‘&’
+   52 |     MPI_Init(argc, argv);
+      |              ^~~~
+      |              &
+In file included from A2.c:4:
+/usr/lib/x86_64-linux-gnu/openmpi/include/mpi.h:1757:34: note: expected ‘int *’ but argument is of type ‘int’
+ 1757 | OMPI_DECLSPEC  int MPI_Init(int *argc, char ***argv);
+      |                             ~~~~~^~~~
+A2.c:52:20: error: passing argument 2 of ‘MPI_Init’ from incompatible pointer type [-Wincompatible-pointer-types]
+   52 |     MPI_Init(argc, argv);
+      |                    ^~~~
+      |                    |
+      |                    char **
+/usr/lib/x86_64-linux-gnu/openmpi/include/mpi.h:1757:48: note: expected ‘char ***’ but argument is of type ‘char **’
+ 1757 | OMPI_DECLSPEC  int MPI_Init(int *argc, char ***argv);
+      |                                        ~~~~~~~~^~~~
+A2.c:65:19: error: initialization of ‘int’ from ‘char *’ makes integer from pointer without a cast [-Wint-conversion]
+   65 |     int func_id = argv[1];
+      |                   ^~~~
+A2.c:66:16: error: initialization of ‘int’ from ‘char *’ makes integer from pointer without a cast [-Wint-conversion]
+   66 |     int mode = argv[2];
+      |                ^~~~
+A2.c:67:15: error: initialization of ‘int’ from ‘char *’ makes integer from pointer without a cast [-Wint-conversion]
+   67 |     int tol = argv[3];
+      |               ^~~~
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+A2.c: In function ‘main’:
+A2.c:52:14: error: passing argument 1 of ‘MPI_Init’ makes pointer from integer without a cast [-Wint-conversion]
+   52 |     MPI_Init(argc, argv);
+      |              ^~~~
+      |              |
+      |              int
+A2.c:52:14: note: possible fix: take the address with ‘&’
+   52 |     MPI_Init(argc, argv);
+      |              ^~~~
+      |              &
+In file included from A2.c:4:
+/usr/lib/x86_64-linux-gnu/openmpi/include/mpi.h:1757:34: note: expected ‘int *’ but argument is of type ‘int’
+ 1757 | OMPI_DECLSPEC  int MPI_Init(int *argc, char ***argv);
+      |                             ~~~~~^~~~
+A2.c:52:20: error: passing argument 2 of ‘MPI_Init’ from incompatible pointer type [-Wincompatible-pointer-types]
+   52 |     MPI_Init(argc, argv);
+      |                    ^~~~
+      |                    |
+      |                    char **
+/usr/lib/x86_64-linux-gnu/openmpi/include/mpi.h:1757:48: note: expected ‘char ***’ but argument is of type ‘char **’
+ 1757 | OMPI_DECLSPEC  int MPI_Init(int *argc, char ***argv);
+      |                                        ~~~~~~~~^~~~
+A2.c:65:19: error: initialization of ‘int’ from ‘char *’ makes integer from pointer without a cast [-Wint-conversion]
+   65 |     int func_id = argv[1];
+      |                   ^~~~
+A2.c:66:16: error: initialization of ‘int’ from ‘char *’ makes integer from pointer without a cast [-Wint-conversion]
+   66 |     int mode = argv[2];
+      |                ^~~~
+A2.c:67:15: error: initialization of ‘int’ from ‘char *’ makes integer from pointer without a cast [-Wint-conversion]
+   67 |     int tol = argv[3];
+      |               ^~~~
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+A2.c: In function ‘main’:
+A2.c:52:14: error: passing argument 1 of ‘MPI_Init’ makes pointer from integer without a cast [-Wint-conversion]
+   52 |     MPI_Init(argc, argv);
+      |              ^~~~
+      |              |
+      |              int
+A2.c:52:14: note: possible fix: take the address with ‘&’
+   52 |     MPI_Init(argc, argv);
+      |              ^~~~
+      |              &
+In file included from A2.c:4:
+/usr/lib/x86_64-linux-gnu/openmpi/include/mpi.h:1757:34: note: expected ‘int *’ but argument is of type ‘int’
+ 1757 | OMPI_DECLSPEC  int MPI_Init(int *argc, char ***argv);
+      |                             ~~~~~^~~~
+A2.c:52:20: error: passing argument 2 of ‘MPI_Init’ from incompatible pointer type [-Wincompatible-pointer-types]
+   52 |     MPI_Init(argc, argv);
+      |                    ^~~~
+      |                    |
+      |                    char **
+/usr/lib/x86_64-linux-gnu/openmpi/include/mpi.h:1757:48: note: expected ‘char ***’ but argument is of type ‘char **’
+ 1757 | OMPI_DECLSPEC  int MPI_Init(int *argc, char ***argv);
+      |                                        ~~~~~~~~^~~~
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 1 0 1e-8
+[Ubuntu25][[24932,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[24932,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[24932,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[24932,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[24932,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[24932,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[24932,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[24932,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[24932,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[24932,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[24932,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[24932,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25:6278 :0:6278] Caught signal 11 (Segmentation fault: address not mapped to object at address 0x7ffe9b39fff8)
+==== backtrace (tid:   6278) ====
+ 0  /lib/x86_64-linux-gnu/libucs.so.0(ucs_handle_error+0x2e4) [0x71f7d543c6f4]
+ 1  /lib/x86_64-linux-gnu/libucs.so.0(+0x3209c) [0x71f7d543e09c]
+ 2  /lib/x86_64-linux-gnu/libucs.so.0(+0x3226d) [0x71f7d543e26d]
+ 3  /lib/x86_64-linux-gnu/libc.so.6(+0x45f60) [0x71f7d5645f60]
+ 4  /lib/x86_64-linux-gnu/libm.so.6(pow+0x12) [0x71f7d5f16bc2]
+ 5  A2(+0x137a) [0x58cb8e69837a]
+ 6  A2(+0x14a3) [0x58cb8e6984a3]
+ 7  A2(+0x16f1) [0x58cb8e6986f1]
+ 8  A2(+0x16f1) [0x58cb8e6986f1]
+ 9  A2(+0x16f1) [0x58cb8e6986f1]
+10  A2(+0x16f1) [0x58cb8e6986f1]
+11  A2(+0x16f1) [0x58cb8e6986f1]
+12  A2(+0x16f1) [0x58cb8e6986f1]
+13  A2(+0x16f1) [0x58cb8e6986f1]
+14  A2(+0x16f1) [0x58cb8e6986f1]
+15  A2(+0x16f1) [0x58cb8e6986f1]
+16  A2(+0x16f1) [0x58cb8e6986f1]
+17  A2(+0x16f1) [0x58cb8e6986f1]
+18  A2(+0x16f1) [0x58cb8e6986f1]
+19  A2(+0x16f1) [0x58cb8e6986f1]
+20  A2(+0x16f1) [0x58cb8e6986f1]
+21  A2(+0x16f1) [0x58cb8e6986f1]
+22  A2(+0x16f1) [0x58cb8e6986f1]
+23  A2(+0x16f1) [0x58cb8e6986f1]
+24  A2(+0x16f1) [0x58cb8e6986f1]
+25  A2(+0x16f1) [0x58cb8e6986f1]
+26  A2(+0x16f1) [0x58cb8e6986f1]
+27  A2(+0x16f1) [0x58cb8e6986f1]
+28  A2(+0x16f1) [0x58cb8e6986f1]
+29  A2(+0x16f1) [0x58cb8e6986f1]
+30  A2(+0x16f1) [0x58cb8e6986f1]
+31  A2(+0x16f1) [0x58cb8e6986f1]
+32  A2(+0x16f1) [0x58cb8e6986f1]
+33  A2(+0x16f1) [0x58cb8e6986f1]
+34  A2(+0x16f1) [0x58cb8e6986f1]
+35  A2(+0x16f1) [0x58cb8e6986f1]
+36  A2(+0x16f1) [0x58cb8e6986f1]
+37  A2(+0x16f1) [0x58cb8e6986f1]
+38  A2(+0x16f1) [0x58cb8e6986f1]
+39  A2(+0x16f1) [0x58cb8e6986f1]
+40  A2(+0x16f1) [0x58cb8e6986f1]
+41  A2(+0x16f1) [0x58cb8e6986f1]
+42  A2(+0x16f1) [0x58cb8e6986f1]
+43  A2(+0x16f1) [0x58cb8e6986f1]
+44  A2(+0x16f1) [0x58cb8e6986f1]
+45  A2(+0x16f1) [0x58cb8e6986f1]
+46  A2(+0x16f1) [0x58cb8e6986f1]
+47  A2(+0x16f1) [0x58cb8e6986f1]
+48  A2(+0x16f1) [0x58cb8e6986f1]
+49  A2(+0x16f1) [0x58cb8e6986f1]
+50  A2(+0x16f1) [0x58cb8e6986f1]
+51  A2(+0x16f1) [0x58cb8e6986f1]
+52  A2(+0x16f1) [0x58cb8e6986f1]
+53  A2(+0x16f1) [0x58cb8e6986f1]
+54  A2(+0x16f1) [0x58cb8e6986f1]
+55  A2(+0x16f1) [0x58cb8e6986f1]
+56  A2(+0x16f1) [0x58cb8e6986f1]
+57  A2(+0x16f1) [0x58cb8e6986f1]
+58  A2(+0x16f1) [0x58cb8e6986f1]
+59  A2(+0x16f1) [0x58cb8e6986f1]
+60  A2(+0x16f1) [0x58cb8e6986f1]
+61  A2(+0x16f1) [0x58cb8e6986f1]
+=================================
+--------------------------------------------------------------------------
+prterun noticed that process rank 0 with PID 6278 on node Ubuntu25 exited on
+signal 11 (Segmentation fault).
+--------------------------------------------------------------------------
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 1 0 1e-8
+[Ubuntu25][[53642,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[53642,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[53642,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[53642,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[53642,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[53642,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[53642,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[53642,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[53642,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[53642,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[53642,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[53642,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+Function 1 outputted: 0.267795florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 1 0 1e-8
+[Ubuntu25][[53009,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[53009,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[53009,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[53009,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[53009,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[53009,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[53009,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[53009,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[53009,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[53009,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[53009,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[53009,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+Function 1 outputted: 0.267795
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 0 1e-8
+[Ubuntu25][[23786,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[23786,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[23786,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[23786,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[23786,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[23786,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[23786,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[23786,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[23786,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[23786,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[23786,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[23786,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+Function 0 outputted: 0.483218
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 0 1e-8
+[Ubuntu25][[31520,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[31520,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[31520,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[31520,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[31520,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[31520,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[31520,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[31520,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[31520,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[31520,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[31520,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[31520,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+Function 0 outputted: 0.483218
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 1 1e-8
+[Ubuntu25][[42186,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[42186,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[42186,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[42186,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[42186,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[42186,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[42186,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[42186,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[42186,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[42186,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[42186,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[42186,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+^Cflorafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 1 1e-8
+[Ubuntu25][[61942,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[61942,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[61942,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[61942,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[61942,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[61942,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[61942,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[61942,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[61942,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[61942,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[61942,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[61942,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+^Cflorafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 1 1e-8
+[Ubuntu25][[54634,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[54634,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[54634,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[54634,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[54634,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[54634,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[54634,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[54634,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[54634,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[54634,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[54634,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[54634,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+^Cflorafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 1 1e-8
+[Ubuntu25][[55964,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces[Ubuntu25][[55964,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[55964,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[55964,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+
+[Ubuntu25][[55964,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[55964,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[55964,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[55964,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[55964,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[55964,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[55964,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[55964,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+^Cflorafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 1 1e-8
+[Ubuntu25][[48883,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[48883,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[48883,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[48883,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[48883,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[48883,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[48883,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[48883,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[48883,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[48883,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[48883,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[48883,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+^Cflorafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 1 1e-8
+[Ubuntu25][[21910,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[21910,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[21910,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[21910,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[21910,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[21910,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[21910,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[21910,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[21910,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[21910,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[21910,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[21910,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+^Cflorafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 1 1e-8
+[Ubuntu25][[11580,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[11580,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[11580,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[11580,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[11580,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[11580,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[11580,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[11580,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[11580,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[11580,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[11580,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[11580,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+^[[B^[[A^[[B^Cflorafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 1 1e-8
+[Ubuntu25][[28531,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[28531,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[28531,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[28531,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[28531,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[28531,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[28531,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[28531,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[28531,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[28531,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[28531,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[28531,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+^[[B^[[A^[[A^Cflorafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 1 1e-8
+[Ubuntu25][[31108,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[31108,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[31108,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[31108,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[31108,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[31108,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[31108,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[31108,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[31108,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[31108,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[31108,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[31108,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+Rank 4: About to recv count
+Rank 4: About to recv count
+Rank 4: About to recv count
+Rank 4: About to recv count
+^Cflorafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 1 1e-8
+[Ubuntu25][[59878,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[59878,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[59878,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[59878,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[59878,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[59878,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[59878,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[59878,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[59878,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[59878,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[59878,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[59878,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+Rank 4: About to recv count
+Rank 4: About to recv count
+Rank 4: About to recv count
+Rank 4: About to recv count
+^Cflorafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ ^C
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 1 1e-8
+[Ubuntu25][[51708,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[51708,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[51708,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[51708,1],1][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[51708,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[51708,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[51708,1],0][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[51708,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[51708,1],2][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[51708,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[51708,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+[Ubuntu25][[51708,1],3][../../../../../../opal/mca/btl/tcp/btl_tcp_proc.c:266:mca_btl_tcp_proc_create_interface_graph] Unable to find reachable pairing between local and remote interfaces
+Rank 4: About to recv count
+Rank 4: About to recv count
+Rank 4: About to recv count
+Rank 4: About to recv count
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 1 1e-8
+Rank 4: About to recv count
+Rank 4: About to recv count
+Rank 4: About to recv count
+Rank 4: About to recv count
+^Cflorafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 1 1e-8
+Rank 0: About to start mode1
+Rank 4: About to recv count
+Rank 2: About to start mode1
+Rank 4: About to recv count
+Rank 1: About to start mode1
+Rank 4: About to recv count
+Rank 3: About to start mode1
+Rank 4: About to recv count
+^[[A^Cflorafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 1 1e-8
+Rank 1: About to start mode1
+Rank 1: About to recv count
+Rank 1: About to recv indicies
+Rank 1: About to start mode1
+Rank 1: About to recv count
+Rank 1: About to recv indicies
+Rank 1: About to start mode1
+Rank 1: About to recv count
+Rank 1: About to recv indicies
+Rank 1: About to start mode1
+Rank 1: About to recv count
+Rank 1: About to recv indicies
+Rank 1: About to start mode1
+Rank 1: About to recv count
+Rank 1: About to recv indicies
+Rank 1: About to start mode1
+Rank 1: About to recv count
+Rank 3: About to start mode1
+Rank 2: About to start mode1
+Rank 2: About to recv count
+Rank 2: About to recv indicies
+Rank 2: About to start mode1
+Rank 2: About to recv count
+Rank 2: About to recv indicies
+Rank 2: About to start mode1
+Rank 2: About to recv count
+Rank 2: About to recv indicies
+Rank 2: About to start mode1
+Rank 2: About to recv count
+Rank 2: About to recv indicies
+Rank 2: About to start mode1
+Rank 2: About to recv count
+Rank 2: About to recv indicies
+Rank 2: About to start mode1
+Rank 2: About to recv count
+Rank 2: About to recv indicies
+Rank 2: About to start mode1
+Rank 2: About to recv count
+Rank 2: About to recv indicies
+Rank 2: About to start mode1
+Rank 2: About to recv count
+Rank 2: About to recv indicies
+Rank 2: About to start mode1
+Rank 2: About to recv count
+Rank 2: About to recv indicies
+Rank 2: About to start mode1
+Rank 2: About to recv count
+Rank 2: About to recv indicies
+Rank 1: About to recv indicies
+Rank 1: About to start mode1
+Rank 1: About to recv count
+Rank 1: About to recv indicies
+Rank 1: About to start mode1
+Rank 1: About to recv count
+Rank 1: About to recv indicies
+Rank 1: About to start mode1
+Rank 1: About to recv count
+Rank 1: About to recv indicies
+Rank 1: About to start mode1
+Rank 1: About to recv count
+Rank 1: About to recv indicies
+Rank 3: About to recv count
+Rank 3: About to recv indicies
+Rank 3: About to start mode1
+Rank 3: About to recv count
+Rank 3: About to recv indicies
+Rank 3: About to start mode1
+Rank 3: About to recv count
+Rank 3: About to recv indicies
+Rank 3: About to start mode1
+Rank 3: About to recv count
+Rank 3: About to recv indicies
+Rank 3: About to start mode1
+Rank 3: About to recv count
+Rank 3: About to recv indicies
+Rank 3: About to start mode1
+Rank 3: About to recv count
+Rank 3: About to recv indicies
+Rank 3: About to start mode1
+Rank 3: About to recv count
+Rank 3: About to recv indicies
+Rank 3: About to start mode1
+Rank 3: About to recv count
+Rank 3: About to recv indicies
+Rank 3: About to start mode1
+Rank 3: About to recv count
+Rank 3: About to recv indicies
+Rank 3: About to start mode1
+Rank 3: About to recv count
+Rank 3: About to recv indicies
+Rank 0: About to start mode1
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to start mode1
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to start mode1
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to start mode1
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to start mode1
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to start mode1
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to start mode1
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to start mode1
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to start mode1
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to start mode1
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to send count
+Rank 0: About to send indicies
+Rank 0: About to send count
+Rank 0: About to send indicies
+Function 0 outputted: 0.483218 and took an average of 0.000012s
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 0 1e-8
+Function 0 outputted: 0.483218 and took an average of 0.000066s
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 1 1e-8
+Function 0 outputted: 0.483218 and took an average of 0.000005s
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 2 1e-8
+[Ubuntu25:00000] *** An error occurred in MPI_Recv
+[Ubuntu25:00000] *** reported by process [203161601,0]
+[Ubuntu25:00000] *** on communicator MPI_COMM_WORLD
+[Ubuntu25:00000] *** MPI_ERR_BUFFER: invalid buffer pointer
+[Ubuntu25:00000] *** MPI_ERRORS_ARE_FATAL (processes in this communicator will now abort,
+[Ubuntu25:00000] ***    and MPI will try to terminate your MPI job as well)
+--------------------------------------------------------------------------
+prterun has exited due to process rank 0 with PID 0 on node Ubuntu25 calling
+"abort". This may have caused other processes in the application to be
+terminated by signals sent by prterun (as reported here).
+--------------------------------------------------------------------------
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 2 1e-8
+[Ubuntu25:00000] *** An error occurred in MPI_Recv
+[Ubuntu25:00000] *** reported by process [2287599617,0]
+[Ubuntu25:00000] *** on communicator MPI_COMM_WORLD
+[Ubuntu25:00000] *** MPI_ERR_BUFFER: invalid buffer pointer
+[Ubuntu25:00000] *** MPI_ERRORS_ARE_FATAL (processes in this communicator will now abort,
+[Ubuntu25:00000] ***    and MPI will try to terminate your MPI job as well)
+--------------------------------------------------------------------------
+prterun has exited due to process rank 0 with PID 0 on node Ubuntu25 calling
+"abort". This may have caused other processes in the application to be
+terminated by signals sent by prterun (as reported here).
+--------------------------------------------------------------------------
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 2 2 1e-8
+[Ubuntu25:00000] *** An error occurred in MPI_Recv
+[Ubuntu25:00000] *** reported by process [1299316737,0]
+[Ubuntu25:00000] *** on communicator MPI_COMM_WORLD
+[Ubuntu25:00000] *** MPI_ERR_BUFFER: invalid buffer pointer
+[Ubuntu25:00000] *** MPI_ERRORS_ARE_FATAL (processes in this communicator will now abort,
+[Ubuntu25:00000] ***    and MPI will try to terminate your MPI job as well)
+--------------------------------------------------------------------------
+prterun has exited due to process rank 0 with PID 0 on node Ubuntu25 calling
+"abort". This may have caused other processes in the application to be
+terminated by signals sent by prterun (as reported here).
+--------------------------------------------------------------------------
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 2 1e-8
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 2 1e-8
+^Cflorafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 2 1e-8
+^Cflorafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+A2.c: In function ‘mode2’:
+A2.c:194:21: error: implicit declaration of function ‘MPI_SEND’; did you mean ‘MPI_Send’? [-Wimplicit-function-declaration]
+  194 |                     MPI_SEND(&waitTask, 1, MPI_TASK, workerRank, taskTag, MPI_COMM_WORLD);
+      |                     ^~~~~~~~
+      |                     MPI_Send
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 2 1e-8
+^Cflorafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 2 1e-8
+
+^Cflorafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 2 1e-8
+Function 0 outputted: 0.483218 and took an average of 0.000055s
+K is: 16
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 2 1e-8
+Total number of accepted intervals: 23Total number of accepted intervals: 23Total number of accepted intervals: 23Total number of accepted intervals: 23Total number of accepted intervals: 23Total number of accepted intervals: 23Total number of accepted intervals: 23Total number of accepted intervals: 23Total number of accepted intervals: 23Total number of accepted intervals: 23Function 0 outputted: 0.483218 and took an average of 0.000028s
+K is: 16
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ 
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 2 1e-8
+Total number of accepted intervals: 23Total number of accepted intervals: 23Total number of accepted intervals: 23Total number of accepted intervals: 23Total number of accepted intervals: 23Total number of accepted intervals: 23Total number of accepted intervals: 23Total number of accepted intervals: 23Total number of accepted intervals: 23Total number of accepted intervals: 23Function 0 outputted: 0.483218 and took an average of 0.000018s
+K is: 16
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+A2.c: In function ‘mode2’:
+A2.c:212:27: error: assignment to ‘int *’ from ‘int’ makes pointer from integer without a cast [-Wint-conversion]
+  212 |         acceptedIntervals = totalTasks;
+      |                           ^
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 2 1e-8
+Function 0 outputted: 0.483218 and took an average of 0.000492s
+K is: 50
+The total number of accepted intervals is: 50
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 1 2 1e-8
+Function 1 outputted: 0.267795 and took an average of 0.000139s
+K is: 50
+The total number of accepted intervals is: 82
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 1 2 1e-8
+Function 1 outputted: 0.267795 and took an average of 0.000231s
+K is: 500
+The total number of accepted intervals is: 500
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 2 1e-8
+Function 0 outputted: 0.483218 and took an average of 0.000232s
+K is: 500
+The total number of accepted intervals is: 500
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 1 2 1e-6
+Function 1 outputted: 0.267795 and took an average of 0.000260s
+K is: 500
+The total number of accepted intervals is: 500
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 1 2 1e-8
+Function 1 outputted: 0.267795 and took an average of 0.000375s
+K is: 500
+The total number of accepted intervals is: 500
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 1 2 1e-6
+Function 1 outputted: 0.267795 and took an average of 0.000246s
+K is: 500
+The total number of accepted intervals is: 500
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 1 2 1e-6
+Function 1 outputted: 0.267795 and took an average of 0.000024s
+K is: 50
+The total number of accepted intervals is: 50
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 1 2 1e-8
+Function 1 outputted: 0.267795 and took an average of 0.000083s
+K is: 50
+The total number of accepted intervals is: 82
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ 
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 1 2 1e-8
+Function 1 outputted: 0.267795 and took an average of 0.000434s
+Parallel output is within tolerance
+Speedup is: 0.152842
+Efficiency is: 0.038211
+K is: 50
+The total number of accepted intervals is: 82
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 2 0 1e-8
+Function 2 outputted: -0.258654 and took an average of 0.000004s
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 2 1 1e-8
+Function 2 outputted: 0.004112 and took an average of 0.000000s
+Parallel output is not within tolerance
+Speedup is: inf
+Efficiency is: inf
+K is: 50
+The total number of accepted intervals is: 50
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 0 1e-8
+Function 0 outputted: 0.483218 and took an average of 0.000007s
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 1 0 1e-8
+Function 1 outputted: 0.267795 and took an average of 0.000092s
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 2 0 1e-8
+Function 2 outputted: -0.258654 and took an average of 0.000002s
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 1 1e-8
+Function 0 outputted: 0.483218 and took an average of 0.000000s
+Parallel output is within tolerance
+Speedup is: inf
+Efficiency is: inf
+K is: 50
+The total number of accepted intervals is: 50
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 1 1 1e-8
+Function 1 outputted: 0.267795 and took an average of 0.000000s
+Parallel output is within tolerance
+Speedup is: inf
+Efficiency is: inf
+K is: 50
+The total number of accepted intervals is: 50
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 1 1e-8
+Function 0 outputted: 0.483218 and took an average of 0.000000s
+Parallel output is within tolerance
+Speedup is: inf
+Efficiency is: inf
+K is: 50
+The total number of accepted intervals is: 50
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 1 1e-8
+Function 0 outputted: 0.483218 and took an average of 0.000000s
+Parallel output is within tolerance
+Speedup is: inf
+Efficiency is: inf
+K is: 50
+The total number of accepted intervals is: 50
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 1 1e-8
+Function 0 outputted: 0.483218 and took an average of 0.000000s
+Parallel output is within tolerance
+Speedup is: inf
+Efficiency is: inf
+K is: 50
+The total number of accepted intervals is: 50
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 0 1e-8
+Function 0 outputted: 0.483218 and took an average of 0.000007s
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 1 1e-8
+Function 0 outputted: 0.483218 and took an average of 0.000000s
+Parallel output is within tolerance
+Speedup is: inf
+Efficiency is: inf
+K is: 50
+The total number of accepted intervals is: 50
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 1 1e-8
+Function 0 outputted: 0.483218 and took an average of 0.000000s
+Parallel output is within tolerance
+Speedup is: inf
+Efficiency is: inf
+K is: 50
+The total number of accepted intervals is: 50
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 1 1e-8
+Function 0 outputted: 0.483218 and took an average of 0.000000s
+Parallel output is within tolerance
+Speedup is: inf
+Efficiency is: inf
+K is: 50
+The total number of accepted intervals is: 50
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 0 1e-8
+Function 0 outputted: 0.483218 and took an average of 0.000007s
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 1 1 1e-8
+Function 1 outputted: 0.267795 and took an average of 0.000000s
+Parallel output is within tolerance
+Speedup is: inf
+Efficiency is: inf
+K is: 50
+The total number of accepted intervals is: 50
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 1 1 1e-8
+Function 1 outputted: 0.267794504420407 and took an average of 0.000000000000000s
+Parallel output is within tolerance
+Serial time: 0.000586154000000s
+Speedup is: inf
+Efficiency is: inf
+K is: 50
+The total number of accepted intervals is: 50
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 1 1 1e-8
+Function 1 outputted: 0.267794504458899 and took an average of 0.000000000000000s
+Parallel output is within tolerance
+Serial time: 0.000755043000000s
+Speedup is: inf
+Efficiency is: inf
+K is: 200
+The total number of accepted intervals is: 200
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 2 1 1e-8
+Function 2 outputted: 0.004111797259814 and took an average of 0.000000000000000s
+Parallel output is not within tolerance
+Serial time: 0.002350338000000s
+Speedup is: inf
+Efficiency is: inf
+K is: 200
+The total number of accepted intervals is: 200
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 1 1 1e-8
+Function 1 outputted: 0.267794504458899 and took an average of 0.000040084000000s
+Parallel output is within tolerance
+Serial time: 0.000244182000000s
+Speedup is: 0.676861923294422
+Efficiency is: 0.169215480823605
+K is: 200
+The total number of accepted intervals is: 200
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 2 0 1e-8
+Function 2 outputted: -0.258653581664379 and took an average of 0.000002330888889s
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 2 0 1e-8
+Function 2 outputted: -0.258653581664379 and took an average of 0.000002357333333s
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 2 1 1e-8
+
+Function 2 outputted: 0.004111797259814 and took an average of 0.000204669000000s
+Parallel output is not within tolerance
+Serial time: 0.000023197000000s
+Speedup is: 0.012593233193318
+Efficiency is: 0.003148308298330
+K is: 200
+The total number of accepted intervals is: 200
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 2 2 1e-8
+Function 2 outputted: 0.004111797259814 and took an average of 0.003000997777778s
+Parallel output is not within tolerance
+Serial time: 0.000053395000000s
+Speedup is: 0.001976935078629
+Efficiency is: 0.000494233769657
+K is: 200
+The total number of accepted intervals is: 1492
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 1 2 1e-8
+Function 1 outputted: 0.267794504458898 and took an average of 0.000086215222222s
+Parallel output is within tolerance
+Serial time: 0.000399046000000s
+Speedup is: 0.514276287894164
+Efficiency is: 0.128569071973541
+K is: 200
+The total number of accepted intervals is: 200
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 0 2 1e-8
+Function 0 outputted: 0.483217695475171 and took an average of 0.000093763555556s
+Parallel output is within tolerance
+Serial time: 0.000087942000000s
+Speedup is: 0.104212487201858
+Efficiency is: 0.026053121800465
+K is: 200
+The total number of accepted intervals is: 200
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 2 0 1e-8
+Function 2 outputted: -0.258653581664379 and took an average of 0.000002390000000s
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ 
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 2 0 1e-8
+Function 2 outputted: -0.258653581664379 and took an average of 0.000001486555556s
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 2 0 1e-8
+Function 2 outputted: -0.258653581664379 and took an average of 0.000001019666667s
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 2 0 1e-8
+Function 2 outputted: -0.258653581664379 and took an average of 0.000000772444444s
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 2 0 1e-6
+Function 2 outputted: -0.258653611801624 and took an average of 0.000000874222222s
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 6 A2 2 0 1e-6
+Function 2 outputted: -0.258653611801624 and took an average of 0.000000891555556s
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 6 A2 2 1 1e-6
+Function 2 outputted: 0.004111797174640 and took an average of 0.000000000000000s
+Parallel output is not within tolerance
+Serial time: 0.000318952000000s
+Speedup is: inf
+Efficiency is: inf
+K is: 200
+The total number of accepted intervals is: 200
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 4 A2 2 1 1e-6
+Function 2 outputted: 0.004111797174640 and took an average of 0.000000000000000s
+Parallel output is not within tolerance
+Serial time: 0.000493456000000s
+Speedup is: inf
+Efficiency is: inf
+K is: 200
+The total number of accepted intervals is: 200
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 2 A2 2 1 1e-6
+Function 2 outputted: 0.004111797174640 and took an average of 0.000000000000000s
+Parallel output is not within tolerance
+Serial time: 0.000692910000000s
+Speedup is: inf
+Efficiency is: inf
+K is: 200
+The total number of accepted intervals is: 200
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 2 A2 2 2 1e-6
+Function 2 outputted: 0.004111797174640 and took an average of 0.000388198111111s
+Parallel output is not within tolerance
+Serial time: 0.000017744000000s
+Speedup is: 0.005078735571152
+Efficiency is: 0.002539367785576
+K is: 200
+The total number of accepted intervals is: 427
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ 
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpicc A2.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 1 A2 0 1 le-8
+[Ubuntu25:4388 :0:4388] Caught signal 11 (Segmentation fault: address not mapped to object at address 0x7fff7909cff8)
+==== backtrace (tid:   4388) ====
+ 0  /lib/x86_64-linux-gnu/libucs.so.0(ucs_handle_error+0x2e4) [0x77b3202796f4]
+ 1  /lib/x86_64-linux-gnu/libucs.so.0(+0x3209c) [0x77b32027b09c]
+ 2  /lib/x86_64-linux-gnu/libucs.so.0(+0x3226d) [0x77b32027b26d]
+ 3  /lib/x86_64-linux-gnu/libc.so.6(+0x45f60) [0x77b31fa45f60]
+ 4  /lib/x86_64-linux-gnu/libm.so.6(+0x8f115) [0x77b3203b6115]
+ 5  A2(+0x1450) [0x5c972ed64450]
+ 6  A2(+0x18a8) [0x5c972ed648a8]
+ 7  A2(+0x1ac8) [0x5c972ed64ac8]
+ 8  A2(+0x1ac8) [0x5c972ed64ac8]
+ 9  A2(+0x1ac8) [0x5c972ed64ac8]
+10  A2(+0x1ac8) [0x5c972ed64ac8]
+11  A2(+0x1ac8) [0x5c972ed64ac8]
+12  A2(+0x1ac8) [0x5c972ed64ac8]
+13  A2(+0x1ac8) [0x5c972ed64ac8]
+14  A2(+0x1ac8) [0x5c972ed64ac8]
+15  A2(+0x1ac8) [0x5c972ed64ac8]
+16  A2(+0x1ac8) [0x5c972ed64ac8]
+17  A2(+0x1ac8) [0x5c972ed64ac8]
+18  A2(+0x1ac8) [0x5c972ed64ac8]
+19  A2(+0x1ac8) [0x5c972ed64ac8]
+20  A2(+0x1ac8) [0x5c972ed64ac8]
+21  A2(+0x1ac8) [0x5c972ed64ac8]
+22  A2(+0x1ac8) [0x5c972ed64ac8]
+23  A2(+0x1ac8) [0x5c972ed64ac8]
+24  A2(+0x1ac8) [0x5c972ed64ac8]
+25  A2(+0x1ac8) [0x5c972ed64ac8]
+26  A2(+0x1ac8) [0x5c972ed64ac8]
+27  A2(+0x1ac8) [0x5c972ed64ac8]
+28  A2(+0x1ac8) [0x5c972ed64ac8]
+29  A2(+0x1ac8) [0x5c972ed64ac8]
+30  A2(+0x1ac8) [0x5c972ed64ac8]
+31  A2(+0x1ac8) [0x5c972ed64ac8]
+32  A2(+0x1ac8) [0x5c972ed64ac8]
+33  A2(+0x1ac8) [0x5c972ed64ac8]
+34  A2(+0x1ac8) [0x5c972ed64ac8]
+35  A2(+0x1ac8) [0x5c972ed64ac8]
+36  A2(+0x1ac8) [0x5c972ed64ac8]
+37  A2(+0x1ac8) [0x5c972ed64ac8]
+38  A2(+0x1ac8) [0x5c972ed64ac8]
+39  A2(+0x1ac8) [0x5c972ed64ac8]
+40  A2(+0x1ac8) [0x5c972ed64ac8]
+41  A2(+0x1ac8) [0x5c972ed64ac8]
+42  A2(+0x1ac8) [0x5c972ed64ac8]
+43  A2(+0x1ac8) [0x5c972ed64ac8]
+44  A2(+0x1ac8) [0x5c972ed64ac8]
+45  A2(+0x1ac8) [0x5c972ed64ac8]
+46  A2(+0x1ac8) [0x5c972ed64ac8]
+47  A2(+0x1ac8) [0x5c972ed64ac8]
+48  A2(+0x1ac8) [0x5c972ed64ac8]
+49  A2(+0x1ac8) [0x5c972ed64ac8]
+50  A2(+0x1ac8) [0x5c972ed64ac8]
+51  A2(+0x1ac8) [0x5c972ed64ac8]
+52  A2(+0x1ac8) [0x5c972ed64ac8]
+53  A2(+0x1ac8) [0x5c972ed64ac8]
+54  A2(+0x1ac8) [0x5c972ed64ac8]
+55  A2(+0x1ac8) [0x5c972ed64ac8]
+56  A2(+0x1ac8) [0x5c972ed64ac8]
+57  A2(+0x1ac8) [0x5c972ed64ac8]
+58  A2(+0x1ac8) [0x5c972ed64ac8]
+59  A2(+0x1ac8) [0x5c972ed64ac8]
+60  A2(+0x1ac8) [0x5c972ed64ac8]
+61  A2(+0x1ac8) [0x5c972ed64ac8]
+=================================
+^[[A--------------------------------------------------------------------------
+prterun noticed that process rank 0 with PID 4388 on node Ubuntu25 exited on
+signal 11 (Segmentation fault).
+--------------------------------------------------------------------------
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ mpirun -np 1 A2 0 1 1e-8
+Function 0 outputted: 0.483217695475171 and took an average of 0.000039578777778s
+Parallel output is within tolerance
+Serial time: 0.000110078000000s
+Speedup is: 0.309026442341405
+Efficiency is: 0.309026442341405
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ ^C
+florafluff@Ubuntu25:~/Documents/CS4745_Assignment2$ 

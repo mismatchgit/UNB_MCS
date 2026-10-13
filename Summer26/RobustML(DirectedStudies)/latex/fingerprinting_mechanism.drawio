@@ -1,0 +1,87 @@
+<mxfile host="Electron" modified="2026-08-06T20:34:00.000Z" version="21.6.8" type="device">
+  <diagram id="fingerprinting_mechanism" name="Fingerprinting Verification">
+    <mxGraphModel dx="1000" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Container box -->
+        <mxCell id="group_fingerprint" value="Model Fingerprinting Verification Mechanism" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;dashed=1;dashPattern=1 4;startSize=30;verticalAlign=top;align=left;spacingLeft=10;" parent="1" vertex="1">
+          <mxGeometry x="30" y="30" width="760" height="390" as="geometry" />
+        </mxCell>
+
+        <!-- Node 1: Victim Model -->
+        <mxCell id="node_victim" value="&lt;b&gt;Victim Model&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Trained standardly&lt;br&gt;Forms unique decision&lt;br&gt;boundaries naturally&lt;/font&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d5e8d4;strokeColor=#82b366;" parent="group_fingerprint" vertex="1">
+          <mxGeometry x="30" y="50" width="120" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Node 2: Boundary Probing -->
+        <mxCell id="node_probe" value="&lt;b&gt;Boundary Probing&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Generates adversarial&lt;br&gt;perturbations (e.g. FGSM)&lt;br&gt;near decision boundary&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="group_fingerprint" vertex="1">
+          <mxGeometry x="190" y="60" width="160" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Node 3: Fingerprint Set -->
+        <mxCell id="node_finger_set" value="&lt;b&gt;Fingerprint Dataset&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;• Query Set: S&lt;br&gt;• Expected predictions: Y&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="group_fingerprint" vertex="1">
+          <mxGeometry x="390" y="60" width="160" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Node 4a: Suspect Model -->
+        <mxCell id="node_suspect" value="&lt;b&gt;Suspect Model&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Extracted clone&lt;/font&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#f8cecc;strokeColor=#b85450;" parent="group_fingerprint" vertex="1">
+          <mxGeometry x="190" y="170" width="110" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Node 4b: Independent Model -->
+        <mxCell id="node_independent" value="&lt;b&gt;Independent Model&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Different training origin&lt;/font&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" parent="group_fingerprint" vertex="1">
+          <mxGeometry x="190" y="280" width="110" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Node 5: Agreement Evaluator -->
+        <mxCell id="node_evaluator" value="&lt;b&gt;Agreement&lt;br&gt;Evaluator&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Computes Jaccard&lt;br&gt;similarity&lt;/font&gt;" style="shape=rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=center;" parent="group_fingerprint" vertex="1">
+          <mxGeometry x="380" y="215" width="100" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Node 6: Verdict Box -->
+        <mxCell id="node_verdict" value="&lt;b&gt;Verdict Output&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;• If Agreement &amp;ge; &amp;#952; &amp;rarr; &lt;font color=&quot;#b85450;&quot;&gt;&lt;b&gt;Stolen Clone&lt;/b&gt;&lt;/font&gt;&lt;br&gt;• If Agreement &amp;lt; &amp;#952; &amp;rarr; &lt;font color=&quot;#82b366;&quot;&gt;&lt;b&gt;Independent&lt;/b&gt;&lt;/font&gt;&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="group_fingerprint" vertex="1">
+          <mxGeometry x="540" y="235" width="190" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Connections -->
+        <!-- Model to Probe -->
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitPerimeter=1;entryX=0;entryY=0.5;" parent="group_fingerprint" source="node_victim" target="node_probe" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Probe to Fingerprint Set -->
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="group_fingerprint" source="node_probe" target="node_finger_set" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Fingerprint queries to Suspect -->
+        <mxCell id="e_queries_suspect" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;entryPerimeter=1;dashed=1;" parent="group_fingerprint" source="node_finger_set" target="node_suspect" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Fingerprint queries to Independent -->
+        <mxCell id="e_queries_independent" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;entryPerimeter=1;dashed=1;" parent="group_fingerprint" source="node_finger_set" target="node_independent" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Suspect output to Evaluator -->
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitPerimeter=1;entryX=0.5;entryY=0;" parent="group_fingerprint" source="node_suspect" target="node_evaluator" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Independent output to Evaluator -->
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitPerimeter=1;entryX=0.5;entryY=1;" parent="group_fingerprint" source="node_independent" target="node_evaluator" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Evaluator to Verdict -->
+        <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="group_fingerprint" source="node_evaluator" target="node_verdict" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,103 @@
+<mxfile host="Electron" modified="2026-08-06T20:09:00.000Z" version="21.6.8" type="device">
+  <diagram id="monitoring_defense" name="Monitoring Defense System">
+    <mxGraphModel dx="1000" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Background container for Monitoring System -->
+        <mxCell id="group_monitoring" value="Query Monitoring &amp; Anomaly Detection System" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;dashed=1;dashPattern=1 4;startSize=30;verticalAlign=top;align=left;spacingLeft=10;" parent="1" vertex="1">
+          <mxGeometry x="30" y="30" width="750" height="310" as="geometry" />
+        </mxCell>
+
+        <!-- Node 1: Input Query -->
+        <mxCell id="node_query" value="Incoming Query&lt;br&gt;&lt;b&gt;Vector: x&lt;/b&gt;" style="whiteSpace=wrap;html=1;shape=document;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" parent="group_monitoring" vertex="1">
+          <mxGeometry x="20" y="125" width="80" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Node 2: Split Router -->
+        <mxCell id="node_router" value="Query&lt;br&gt;Router" style="whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" parent="group_monitoring" vertex="1">
+          <mxGeometry x="140" y="125" width="50" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Parallel Monitoring Engines -->
+        <!-- Node 3a: PRADA -->
+        <mxCell id="node_prada" value="&lt;b&gt;PRADA Engine&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Calculates nearest-neighbor&lt;br&gt;distance distribution d_i&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="group_monitoring" vertex="1">
+          <mxGeometry x="230" y="40" width="160" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Node 3b: Cosine Similarity -->
+        <mxCell id="node_similarity" value="&lt;b&gt;Cosine Similarity&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Tracks stateful pairwise&lt;br&gt;embedding correlation S_avg&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="group_monitoring" vertex="1">
+          <mxGeometry x="230" y="125" width="160" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Node 3c: Entropy Detection -->
+        <mxCell id="node_entropy" value="&lt;b&gt;Entropy Detection&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Monitors prediction Shannon&lt;br&gt;uncertainty rolling average H(p)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="group_monitoring" vertex="1">
+          <mxGeometry x="230" y="210" width="160" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Anomaly Evaluator/Decision Gate -->
+        <mxCell id="node_evaluator" value="&lt;b&gt;Anomaly&lt;br&gt;Evaluator&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Aggregated&lt;br&gt;Risk Score&lt;/font&gt;" style="shape=rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=center;" parent="group_monitoring" vertex="1">
+          <mxGeometry x="430" y="110" width="90" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- Decision output: Block -->
+        <mxCell id="node_block" value="&lt;b&gt;Flag / Block Query&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Reject request with&lt;br&gt;HTTP 403 / 429&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="group_monitoring" vertex="1">
+          <mxGeometry x="580" y="65" width="140" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Decision output: Allow -->
+        <mxCell id="node_allow" value="&lt;b&gt;Allow Query&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Forward query to the&lt;br&gt;target model pipeline&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="group_monitoring" vertex="1">
+          <mxGeometry x="580" y="185" width="140" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Connections inside Monitoring Container -->
+        <mxCell id="edge1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="group_monitoring" source="node_query" target="node_router" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Router to Parallel Checks -->
+        <mxCell id="edge_split1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="group_monitoring" source="node_router" target="node_prada" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_split2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="group_monitoring" source="node_router" target="node_similarity" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_split3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="group_monitoring" source="node_router" target="node_entropy" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Parallel Checks to Evaluator -->
+        <mxCell id="edge_merge1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0.5;entryY=0;" parent="group_monitoring" source="node_prada" target="node_evaluator" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_merge2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="group_monitoring" source="node_similarity" target="node_evaluator" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge_merge3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0.5;entryY=1;" parent="group_monitoring" source="node_entropy" target="node_evaluator" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Evaluator decisions -->
+        <mxCell id="edge_dec_block" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;entryX=0;entryY=0.5;strokeColor=#b85450;strokeWidth=1.5;" parent="group_monitoring" source="node_evaluator" target="node_block" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="label_block" value="Anomaly &gt; Threshold" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontColor=#b85450;" parent="edge_dec_block" vertex="1" connectable="0">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="10" y="-12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="edge_dec_allow" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;entryX=0;entryY=0.5;strokeColor=#82b366;strokeWidth=1.5;" parent="group_monitoring" source="node_evaluator" target="node_allow" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="label_allow" value="Benign Traffic" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontColor=#82b366;" parent="edge_dec_allow" edge="1" connectable="0">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="10" y="12" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

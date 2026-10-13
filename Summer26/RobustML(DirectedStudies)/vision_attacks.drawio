@@ -1,0 +1,117 @@
+<mxfile host="Electron" modified="2026-07-15T16:35:00.000Z" agent="Antigravity AI Agent" version="20.0.0" type="device">
+  <diagram id="vision_attacks_diagram" name="Vision Model Attacks: Student Learning">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- ==================== INPUT IMAGE ==================== -->
+        <mxCell id="input_image_box" value="&lt;b&gt;Query Image&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;A clean picture of a Dog&lt;br/&gt;with floppy ears" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3F4F6;strokeColor=#D1D5DB;fontColor=#1F2937;strokeWidth=1;align=center;verticalAlign=top;spacingTop=10;fontFamily=Helvetica;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="320" y="30" width="160" height="150" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="dog_input_icon" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=none;verticalAlign=top;aspect=fixed;image=https://img.icons8.com/ios/100/dog.png;" vertex="1" parent="1">
+          <mxGeometry x="370" y="70" width="60" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- ==================== TEACHER PATH (VICTIM) ==================== -->
+        <!-- Teacher Model -->
+        <mxCell id="victim_node" value="&lt;b&gt;Victim Model (Teacher)&lt;/b&gt;&lt;br/&gt;Proprietary Vision Classifier" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#111827;strokeColor=#000000;fontColor=#FFFFFF;strokeWidth=2;fontSize=13;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="40" y="230" width="220" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- Teacher Soft Output -->
+        <mxCell id="teacher_soft" value="&lt;b&gt;Teacher's Detailed Reasoning&lt;/b&gt;&lt;br/&gt;(Soft Probabilities)&lt;br/&gt;&lt;br/&gt;&#x2022; Dog: 70%&lt;br/&gt;&#x2022; Cat: 28% (due to floppy ears)&lt;br/&gt;&#x2022; Car: 2%" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3F4F6;strokeColor=#D1D5DB;fontColor=#1F2937;strokeWidth=1;fontSize=12;fontFamily=Helvetica;align=left;spacingLeft=15;verticalAlign=top;spacingTop=10;" vertex="1" parent="1">
+          <mxGeometry x="40" y="350" width="220" height="110" as="geometry" />
+        </mxCell>
+        
+        <!-- ==================== STUDENT PATH (SURROGATE) ==================== -->
+        <!-- Student Model -->
+        <mxCell id="surrogate_node" value="&lt;b&gt;Surrogate Model (Student)&lt;/b&gt;&lt;br/&gt;Local Attack Clone" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CDCDE6;strokeColor=#7B7B9E;fontColor=#111827;strokeWidth=2;fontSize=13;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="540" y="230" width="220" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- Student Soft Output -->
+        <mxCell id="student_soft" value="&lt;b&gt;Student's Current Guess&lt;/b&gt;&lt;br/&gt;(Initial Predictions)&lt;br/&gt;&lt;br/&gt;&#x2022; Dog: 50%&lt;br/&gt;&#x2022; Cat: 45%&lt;br/&gt;&#x2022; Car: 5%" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3F4F6;strokeColor=#D1D5DB;fontColor=#1F2937;strokeWidth=1;fontSize=12;fontFamily=Helvetica;align=left;spacingLeft=15;verticalAlign=top;spacingTop=10;" vertex="1" parent="1">
+          <mxGeometry x="540" y="350" width="220" height="110" as="geometry" />
+        </mxCell>
+        
+        <!-- ==================== LOSS & UPDATE ==================== -->
+        <!-- Distillation Loss (KL) -->
+        <mxCell id="distill_loss" value="&lt;b&gt;Distillation Learning Step&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Compares the reasoning profiles. Forces the Student to adjust its neural parameters so it also views this Dog as 28% Cat." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CDCDE6;strokeColor=#7B7B9E;fontColor=#111827;strokeWidth=2;fontSize=12;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="250" y="500" width="300" height="90" as="geometry" />
+        </mxCell>
+        
+        <!-- ==================== CONNECTORS ==================== -->
+        <!-- Image to Victim -->
+        <mxCell id="arrow_img_vic" value="" style="curved=1;endArrow=classic;html=1;rounded=0;strokeColor=#111827;strokeWidth=2;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="input_image_box" target="victim_node">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="300" y="105" as="sourcePoint" />
+            <mxPoint x="150" y="210" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="150" y="105" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Image to Surrogate -->
+        <mxCell id="arrow_img_sur" value="" style="curved=1;endArrow=classic;html=1;rounded=0;strokeColor=#111827;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="input_image_box" target="surrogate_node">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="500" y="105" as="sourcePoint" />
+            <mxPoint x="650" y="210" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="650" y="105" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Victim to Soft Output -->
+        <mxCell id="arrow_vic_soft" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#111827;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="victim_node" target="teacher_soft">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="150" y="320" as="sourcePoint" />
+            <mxPoint x="150" y="340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Surrogate to Soft Output -->
+        <mxCell id="arrow_sur_soft" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#111827;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="surrogate_node" target="student_soft">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="650" y="320" as="sourcePoint" />
+            <mxPoint x="650" y="340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Teacher Soft to Loss -->
+        <mxCell id="arrow_q_loss" value="" style="curved=1;endArrow=classic;html=1;rounded=0;strokeColor=#111827;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="teacher_soft" target="distill_loss">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="150" y="470" as="sourcePoint" />
+            <mxPoint x="240" y="550" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="150" y="545" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Student Soft to Loss -->
+        <mxCell id="arrow_p_loss" value="" style="curved=1;endArrow=classic;html=1;rounded=0;strokeColor=#111827;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="student_soft" target="distill_loss">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="650" y="470" as="sourcePoint" />
+            <mxPoint x="560" y="550" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="650" y="545" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Loss Feedback update to Student model -->
+        <mxCell id="arrow_feedback" value="Weight Optimization (Backprop)" style="endArrow=block;dashed=1;html=1;rounded=0;strokeColor=#7B7B9E;strokeWidth=2;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=11;fontColor=#7B7B9E;" edge="1" parent="1" source="distill_loss" target="surrogate_node">
+          <mxGeometry x="-0.25" y="-10" relative="1" as="geometry">
+            <mxPoint x="400" y="490" as="sourcePoint" />
+            <mxPoint x="400" y="380" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

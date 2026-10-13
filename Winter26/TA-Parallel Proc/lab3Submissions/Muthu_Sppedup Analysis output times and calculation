@@ -1,0 +1,11 @@
+Serial Baseline - 0.271859 seconds
+
+Parallel Baseline with 2 threads - 0.226245 seconds
+Parallel Baseline with 4 threads - 0.227485 seconds
+Parallel Baseline with 8 threads - 0.229026 seconds
+
+
+Speedup = time(serial)/time(paralel)
+speedup(2 threads) => 0.271859/0.226245  => 1.201
+speedup(4 threads) => 0.271859/0.227485  => 1.195
+speedup(8 threads) => 0.271859/0.229026  => 1.187

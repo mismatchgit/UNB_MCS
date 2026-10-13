@@ -1,0 +1,45 @@
+<mxfile host="Electron" modified="2026-07-14T23:25:00.000Z" agent="Antigravity AI Agent" version="20.0.0" type="device">
+  <diagram id="query_based_attack_diagram" name="Query-Based Attacks">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Attacker Node -->
+        <mxCell id="attacker_node" value="&lt;b&gt;Attacker / Client&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Surrogate Model (f_S)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2563EB;strokeColor=#1D4ED8;fontColor=#FFFFFF;strokeWidth=2;fontSize=14;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="100" y="200" width="180" height="100" as="geometry" />
+        </mxCell>
+        
+        <!-- Victim Node -->
+        <mxCell id="victim_node" value="&lt;b&gt;Victim Model&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Black-Box API (f_T)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#111827;strokeColor=#000000;fontColor=#FFFFFF;strokeWidth=2;fontSize=14;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="520" y="200" width="180" height="100" as="geometry" />
+        </mxCell>
+        
+        <!-- Objective Status Box -->
+        <mxCell id="objective_node" value="&lt;b&gt;Objective:&lt;/b&gt; Clone Model Behavior (Minimize Disagreement)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3F4F6;strokeColor=#D1D5DB;fontColor=#1F2937;strokeWidth=1;fontSize=12;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="250" y="380" width="300" height="50" as="geometry" />
+        </mxCell>
+        
+        <!-- Curved Query Arrow -->
+        <mxCell id="query_edge" value="Sends Query Input (x)" style="curved=1;endArrow=classic;html=1;rounded=0;strokeColor=#2563EB;strokeWidth=2;fontColor=#1F2937;fontSize=13;fontFamily=Helvetica;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="attacker_node" target="victim_node">
+          <mxGeometry x="-0.04" y="-15" relative="1" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="400" y="120" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Curved Prediction Arrow -->
+        <mxCell id="prediction_edge" value="Receives Labels (y)" style="curved=1;endArrow=classic;html=1;rounded=0;strokeColor=#111827;strokeWidth=2;fontColor=#1F2937;fontSize=13;fontFamily=Helvetica;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="1" source="victim_node" target="attacker_node">
+          <mxGeometry x="-0.04" y="15" relative="1" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="400" y="320" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

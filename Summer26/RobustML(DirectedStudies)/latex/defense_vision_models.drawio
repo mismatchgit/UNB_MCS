@@ -1,0 +1,47 @@
+<mxfile host="Electron" modified="2026-08-06T20:46:00.000Z" version="21.6.8" type="device">
+  <diagram id="defense_vision_models" name="Top-k Shielding">
+    <mxGraphModel dx="1000" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Container box -->
+        <mxCell id="group_vision" value="Defense for Vision Models: Top-k Probability Shielding" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;dashed=1;dashPattern=1 4;startSize=30;verticalAlign=top;align=left;spacingLeft=10;" parent="1" vertex="1">
+          <mxGeometry x="30" y="30" width="760" height="230" as="geometry" />
+        </mxCell>
+
+        <!-- Node 1: Raw Probs -->
+        <mxCell id="node_raw" value="&lt;b&gt;Raw Probabilities&lt;/b&gt;&lt;br&gt;p = [p_1, ..., p_C]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="group_vision" vertex="1">
+          <mxGeometry x="20" y="85" width="130" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Node 2: Truncation -->
+        <mxCell id="node_trunc" value="&lt;b&gt;Top-k Selection&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Keeps only top-k largest&lt;br&gt;Sets other classes to 0&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="group_vision" vertex="1">
+          <mxGeometry x="190" y="75" width="150" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Node 3: Re-normalization -->
+        <mxCell id="node_norm" value="&lt;b&gt;Re-normalization&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Divides top-k probabilities&lt;br&gt;by their cumulative sum&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="group_vision" vertex="1">
+          <mxGeometry x="380" y="75" width="160" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Node 4: Output -->
+        <mxCell id="node_output" value="&lt;b&gt;Shielded Probabilities&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Boundary info masked&lt;br&gt;Utility preserved&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="group_vision" vertex="1">
+          <mxGeometry x="580" y="85" width="150" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Connections -->
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="group_vision" source="node_raw" target="node_trunc" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="group_vision" source="node_trunc" target="node_norm" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="group_vision" source="node_norm" target="node_output" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

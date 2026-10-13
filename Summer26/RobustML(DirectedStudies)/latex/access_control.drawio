@@ -1,0 +1,76 @@
+<mxfile host="Electron" modified="2026-08-06T20:42:00.000Z" version="21.6.8" type="device">
+  <diagram id="access_control" name="Access Control">
+    <mxGraphModel dx="1000" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Container box -->
+        <mxCell id="group_access" value="Access Control: Token Bucket Rate Limiting" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;dashed=1;dashPattern=1 4;startSize=30;verticalAlign=top;align=left;spacingLeft=10;" parent="1" vertex="1">
+          <mxGeometry x="30" y="30" width="760" height="280" as="geometry" />
+        </mxCell>
+
+        <!-- Node 1: Request -->
+        <mxCell id="node_req" value="User Query Request" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="group_access" vertex="1">
+          <mxGeometry x="20" y="110" width="130" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Node 2: Check Rhombus -->
+        <mxCell id="node_check" value="Tokens Available&lt;br&gt;&lt;b&gt;B(t) &amp;ge; 1 ?&lt;/b&gt;" style="shape=rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=center;" parent="group_access" vertex="1">
+          <mxGeometry x="210" y="85" width="110" height="110" as="geometry" />
+        </mxCell>
+
+        <!-- Node 3: Refill engine -->
+        <mxCell id="node_refill" value="&lt;b&gt;Refill Engine&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Adds r tokens/sec&lt;br&gt;Up to max B_max&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" parent="group_access" vertex="1">
+          <mxGeometry x="200" y="210" width="130" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Node 4a: Allow -->
+        <mxCell id="node_allow" value="&lt;b&gt;Allow Request&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;B(t) &amp;larr; B(t) - 1&lt;br&gt;Forward to Model&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="group_access" vertex="1">
+          <mxGeometry x="400" y="55" width="140" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Node 4b: Deny -->
+        <mxCell id="node_deny" value="&lt;b&gt;Deny Request&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;HTTP 429&lt;br&gt;Too Many Requests&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="group_access" vertex="1">
+          <mxGeometry x="400" y="165" width="140" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Node 5: Success Response -->
+        <mxCell id="node_success" value="Model Response" style="whiteSpace=wrap;html=1;shape=document;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" parent="group_access" vertex="1">
+          <mxGeometry x="610" y="55" width="110" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Connections -->
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="group_access" source="node_req" target="node_check" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;entryX=0;entryY=0.5;strokeColor=#82b366;strokeWidth=1.5;" parent="group_access" source="node_check" target="node_allow" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl_yes" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontColor=#82b366;fontStyle=1;" parent="e2" vertex="1" connectable="0">
+          <mxGeometry x="-0.1" relative="1" as="geometry">
+            <mxPoint y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;entryX=0;entryY=0.5;strokeColor=#b85450;strokeWidth=1.5;" parent="group_access" source="node_check" target="node_deny" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lbl_no" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontColor=#b85450;fontStyle=1;" parent="e3" vertex="1" connectable="0">
+          <mxGeometry x="-0.1" relative="1" as="geometry">
+            <mxPoint y="8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="group_access" source="node_allow" target="node_success" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e_refill" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;entryX=0.5;entryY=1;strokeWidth=1.5;strokeColor=#666666;" parent="group_access" source="node_refill" target="node_check" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

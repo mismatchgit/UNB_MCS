@@ -1,0 +1,41 @@
+<mxfile host="Electron" modified="2026-07-14T23:40:00.000Z" agent="Antigravity AI Agent" version="20.0.0" type="device">
+  <diagram id="jacobian_matrix_diagram" name="Jacobian Matrix">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Input Vector Box -->
+        <mxCell id="input_node" value="&lt;b&gt;Input Vector (x)&lt;/b&gt;&lt;br/&gt;Dimensions: D &#x00D7; 1&lt;br/&gt;&lt;br/&gt;[ x&lt;sub&gt;1&lt;/sub&gt; ]&lt;br/&gt;[ x&lt;sub&gt;2&lt;/sub&gt; ]&lt;br/&gt;[ ... ]&lt;br/&gt;[ x&lt;sub&gt;D&lt;/sub&gt; ]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3F4F6;strokeColor=#D1D5DB;fontColor=#1F2937;strokeWidth=1;fontSize=12;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="60" y="140" width="160" height="200" as="geometry" />
+        </mxCell>
+        
+        <!-- Jacobian Matrix Box -->
+        <mxCell id="jacobian_node" value="&lt;b&gt;Jacobian Matrix (J)&lt;/b&gt;&lt;br/&gt;Dimensions: C &#x00D7; D&lt;br/&gt;&lt;br/&gt;[ &amp;nbsp;&#x2202;f&lt;sub&gt;1&lt;/sub&gt;/&#x2202;x&lt;sub&gt;1&lt;/sub&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&#x2202;f&lt;sub&gt;1&lt;/sub&gt;/&#x2202;x&lt;sub&gt;2&lt;/sub&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;...&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&#x2202;f&lt;sub&gt;1&lt;/sub&gt;/&#x2202;x&lt;sub&gt;D&lt;/sub&gt;&amp;nbsp; ]&lt;br/&gt;[ &amp;nbsp;&#x2202;f&lt;sub&gt;2&lt;/sub&gt;/&#x2202;x&lt;sub&gt;1&lt;/sub&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&#x2202;f&lt;sub&gt;2&lt;/sub&gt;/&#x2202;x&lt;sub&gt;2&lt;/sub&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;...&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&#x2202;f&lt;sub&gt;2&lt;/sub&gt;/&#x2202;x&lt;sub&gt;D&lt;/sub&gt;&amp;nbsp; ]&lt;br/&gt;[ &amp;nbsp;&amp;nbsp;...&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;...&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;...&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;...&amp;nbsp;&amp;nbsp; ]&lt;br/&gt;[ &amp;nbsp;&#x2202;f&lt;sub&gt;C&lt;/sub&gt;/&#x2202;x&lt;sub&gt;1&lt;/sub&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&#x2202;f&lt;sub&gt;C&lt;/sub&gt;/&#x2202;x&lt;sub&gt;2&lt;/sub&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;...&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&#x2202;f&lt;sub&gt;C&lt;/sub&gt;/&#x2202;x&lt;sub&gt;D&lt;/sub&gt;&amp;nbsp; ]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#2563EB;strokeColor=#1D4ED8;fontColor=#FFFFFF;strokeWidth=2;fontSize=13;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="270" y="110" width="290" height="260" as="geometry" />
+        </mxCell>
+        
+        <!-- Output Vector Box -->
+        <mxCell id="output_node" value="&lt;b&gt;Outputs (y)&lt;/b&gt;&lt;br/&gt;Dimensions: C &#x00D7; 1&lt;br/&gt;&lt;br/&gt;[ f&lt;sub&gt;1&lt;/sub&gt;(x) ]&lt;br/&gt;[ f&lt;sub&gt;2&lt;/sub&gt;(x) ]&lt;br/&gt;[ ... ]&lt;br/&gt;[ f&lt;sub&gt;C&lt;/sub&gt;(x) ]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#111827;strokeColor=#000000;fontColor=#FFFFFF;strokeWidth=2;fontSize=12;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="610" y="140" width="160" height="200" as="geometry" />
+        </mxCell>
+        
+        <!-- Input to Jacobian Arrow -->
+        <mxCell id="arrow_input" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#2563EB;strokeWidth=2;fontFamily=Helvetica;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="input_node" target="jacobian_node">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="240" y="240" as="sourcePoint" />
+            <mxPoint x="290" y="190" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Jacobian to Output Arrow -->
+        <mxCell id="arrow_output" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#111827;strokeWidth=2;fontFamily=Helvetica;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="jacobian_node" target="output_node">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="570" y="240" as="sourcePoint" />
+            <mxPoint x="620" y="190" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

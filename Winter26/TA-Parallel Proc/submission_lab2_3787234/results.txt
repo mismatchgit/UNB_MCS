@@ -1,0 +1,102 @@
+
+Name: Ishimwe Pacis Hanyurwimfura
+Student Number: 3787234
+
+LAB2
+----------------
+
+Level 1 results 
+----------------------------------
+Level 1 Time : The serial took 0.062980 seconds
+
+The printed value of C[N-1][N-1] : 2
+
+Level 2 results
+-----------------------------------
+Level 2 elapsed time : The parallel took 0.010995 seconds
+The value for  C[N-1][N-1] in Level 2 is = 2.000000
+
+When reset C[N-1][N-1] =0.0 before the value is 0.0
+
+Task B
+-------
+Yeah the value we are seeing is 2.0 but reason being that it has been initialized by the serial part, 
+else if it gets re-initialized it doesn't have the right value.
+
+Task C
+------
+Level 2 time after fixing is 0.021485 seconds seconds
+The value for  C[N-1][N-1] in Level 2 is = 2.000000
+
+The bug was that the last 4 were not computed as end_row was 3996 and the fix done was 
+to change that the last thread to do the remaining chunks till N (meaning it will do the 4 remiander)
+
+Level 3: Cyclic Decomposition
+-----------
+1.Yes it handles the remainder since they are distributed like in deck of cards as 
+the increment is on number of threads
+
+2.Level 3 Time : 0.025136  seconds
+
+3.comparing the speed up of Level 3 and Level 1 we can see that Level 3 has the highest reason 
+being the threads are accessing memory that is spread out
+
+Level 4:
+---------------------------
+
+Task A:
+----------
+The checkpoint on Level 4A C[1000][0] is = 1001.00
+
+Task B:
+----------
+
+[3]    13503 segmentation fault  ./matrix_lab
+
+After solving the start point (checking when id ==0 and set starting to 1)
+
+Check Point on Level 4B C[1000][0] is = 2.000000
+
+Debugging Questions
+--------------------
+1. THe output is wrong cause the first value it's looking at an empty memory and
+if it could be set we would still face an issue where at the end of the start of each section it may 
+read wrong data or nothing due to the dependecy of C[i-1][j] and not sharing the memory
+
+2&3. At the boundary it will likely take the wrong value as it should normally have to wait for the first
+section to end and use that value the read after write theory where it would read it after the previous
+section have written but in this case there is no wait.
+
+4. There is a race condition cause at the boundary they would all meet one trying to read and another one
+trying to write or vice versa so this thing of the threads accessing and modifying the same memory without
+priority or it being managed causes race condition.
+
+Task 5:
+------------------------
+Task A: 
+------
+Thread 2 finished calculation
+Thread 1 finished calculation
+Thread 1 starting verification
+Thread 0 finished calculation
+Thread 0 starting verification
+Thread 2 starting verification
+Thread 3 finished calculation
+Thread 3 starting verification
+
+=>Yeah some thread print the starting verification before others end.
+
+Task B:
+
+Thread 1 finished calculation
+Thread 2 finished calculation
+Thread 0 finished calculation
+Thread 3 finished calculation
+Thread 1 starting verification
+Thread 0 starting verification
+Thread 2 starting verification
+Thread 3 starting verification
+
+observation:
+- Before the barrier each thread after finishing it continued but after the 
+barrier they all did one task and after ending it they went on verification

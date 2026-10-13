@@ -1,0 +1,49 @@
+         N          P         Time(s)
+      1000          1        0.002841
+      1000          2        0.002328
+      1000          4        0.003386
+      1000          8        0.001519
+      5000          1        0.038552
+      5000          2        0.033901
+      5000          4        0.033730
+      5000          8        0.037973
+     10000          1        0.147541
+     10000          2        0.136516
+     10000          4        0.128038
+     10000          8        0.140031
+     20000          1        1.192871
+     20000          2        0.940457
+     20000          4        0.938639
+     20000          8        1.088419
+
+N = 1000:
+P=2: 0.002841 / 0.002328 = 1.22
+P=4: 0.002841 / 0.003386 = 0.84
+P=8: 0.002841 / 0.001519 = 1.87
+
+N = 5000:
+P=2: 0.038552 / 0.033901 = 1.14
+P=4: 0.038552 / 0.033730 = 1.14
+P=8: 0.038552 / 0.037973 = 1.02
+
+N = 10000:
+P=2: 0.147541 / 0.136516 = 1.08
+P=4: 0.147541 / 0.128038 = 1.15
+P=8: 0.147541 / 0.140031 = 1.05
+
+N = 20000:
+P=2: 1.192871 / 0.940457 = 1.27
+P=4: 1.192871 / 0.938639 = 1.27
+P=8: 1.192871 / 1.088419 = 1.10
+
+- Analysis
+1. This program does not achieve a linear speedup as the speedup for P != P, such as for N=20000 and P = 8, if this was linear then the speedup should have been 8, which it wasnt, it was 1.1.
+2. Factors that limit scalability include the MPI communication overhead, the memory bandwidth, synchronization cots and load imbalance.
+MPI communication overhead:
+    This program relies on MPI_Scatter, MPI_Bcast and MPI_Gather to distribute the matrix and vector and gather results. For smaller matrices the time spent sending and receiving data can take longer than the time it takes to compute the matrix.
+Memory bandwidth limitation:
+    The matrix needs to read and write a lot of number in memory, this is therefore limited by the speed iin which this can be done.
+Synchronization:
+    Processes need to wait for each other at barriers or during collective operations, if some processes are slower or have more work, then other processes sit idle.
+3. When you increase N, the matrix and vector get bigger, therefore each process has more computation to do which makes parallelization more effective, since the communication roughly takes the same ammount of time no matter how big the matrix is, these two factors combined lead to higher speedup on higher N values.
+4. With a very large matrix you can exceed the ammount of memory that can be allocated for a process on your machine, such as where N = 100,000 where you store 8 * 100,000^2 = 80000000000 B = 80 GB. If the system can't provide that much memory, then it causes a segmentation fault.

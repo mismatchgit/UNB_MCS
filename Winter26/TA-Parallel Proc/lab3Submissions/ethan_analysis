@@ -1,0 +1,24 @@
+
+
+20 Threads:
+Invertion: time elapsed: 0.002334s
+Blur: time elapsed: 0.191038s
+----------Parallel----------
+Invertion: time elapsed: 0.000844s
+Blur: time elapsed: 0.021955s
+
+10 Threads:
+Invertion: time elapsed: 0.004097s
+Blur: time elapsed: 0.321324s
+----------Parallel----------
+Invertion: time elapsed: 0.000979s
+Blur: time elapsed: 0.076631s
+
+5 Threads:
+Invertion: time elapsed: 0.004220s
+Blur: time elapsed: 0.320643s
+----------Parallel----------
+Invertion: time elapsed: 0.001284s
+Blur: time elapsed: 0.081199s
+
+As we can see, there is a clear speedup when we use a threads (in the case of 20 threads; we can observe an increase of an order in magnitude; or a 10x speedup). This should be pretty obvious, since we have no dependencies between data points and the problem can be cleanly divided into an arbitrary amount of sub problems. This becomes trivial to parallelize.

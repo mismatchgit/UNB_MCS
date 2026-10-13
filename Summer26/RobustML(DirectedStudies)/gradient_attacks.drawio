@@ -1,0 +1,144 @@
+<mxfile host="Electron" modified="2026-07-16T15:35:00.000Z" agent="Antigravity AI Agent" version="20.0.0" type="device">
+  <diagram id="gradient_attacks" name="Gradient-Based Attacks in Federated Learning">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- ==================== CLIENTS COLUMN (LEFT) ==================== -->
+        
+        <!-- Client 1 -->
+        <mxCell id="client1_box" value="&lt;b&gt;Client 1&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;Private: Cat&lt;br/&gt;Computes: g&lt;sub&gt;1&lt;/sub&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3F4F6;strokeColor=#D1D5DB;fontColor=#1F2937;strokeWidth=1;fontSize=11;fontFamily=Helvetica;align=center;verticalAlign=top;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="30" y="50" width="140" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="cat_icon1" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=none;verticalAlign=top;aspect=fixed;image=https://img.icons8.com/ios/100/cat.png;" vertex="1" parent="1">
+          <mxGeometry x="85" y="80" width="30" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Client 2 -->
+        <mxCell id="client2_box" value="&lt;b&gt;Client 2&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;Private: Dog&lt;br/&gt;Computes: g&lt;sub&gt;2&lt;/sub&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3F4F6;strokeColor=#D1D5DB;fontColor=#1F2937;strokeWidth=1;fontSize=11;fontFamily=Helvetica;align=center;verticalAlign=top;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="30" y="180" width="140" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="dog_icon2" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=none;verticalAlign=top;aspect=fixed;image=https://img.icons8.com/ios/100/dog.png;" vertex="1" parent="1">
+          <mxGeometry x="85" y="210" width="30" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Client 3 -->
+        <mxCell id="client3_box" value="&lt;b&gt;Client 3&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;Private: Bird&lt;br/&gt;Computes: g&lt;sub&gt;3&lt;/sub&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3F4F6;strokeColor=#D1D5DB;fontColor=#1F2937;strokeWidth=1;fontSize=11;fontFamily=Helvetica;align=center;verticalAlign=top;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="30" y="310" width="140" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="bird_icon3" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=none;verticalAlign=top;aspect=fixed;image=https://img.icons8.com/ios/100/bird.png;" vertex="1" parent="1">
+          <mxGeometry x="85" y="340" width="30" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- ==================== CENTRAL SERVER (CENTER) ==================== -->
+        <mxCell id="server_box" value="&lt;b&gt;Central Aggregator&lt;/b&gt;&lt;br/&gt;(Federated Server)&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;Aggregates g&lt;sub&gt;1&lt;/sub&gt;, g&lt;sub&gt;2&lt;/sub&gt;, g&lt;sub&gt;3&lt;/sub&gt;&lt;br/&gt;to update Global Model" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#111827;strokeColor=#000000;fontColor=#FFFFFF;strokeWidth=2;fontSize=11;fontFamily=Helvetica;align=center;verticalAlign=top;spacingTop=10;" vertex="1" parent="1">
+          <mxGeometry x="300" y="180" width="160" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="server_icon" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=none;verticalAlign=top;aspect=fixed;image=https://img.icons8.com/ios/100/server.png;" vertex="1" parent="1">
+          <mxGeometry x="365" y="215" width="30" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- ==================== ADVERSARY RECONSTRUCTION (RIGHT, COLORED #CDCDE6) ==================== -->
+        
+        <!-- Intercepted Gradients -->
+        <mxCell id="intercepted_box" value="&lt;b&gt;Intercepted Gradients (g&lt;sub&gt;1&lt;/sub&gt;)&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Gradients leaked from Client 1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3F4F6;strokeColor=#D1D5DB;fontColor=#1F2937;strokeWidth=1;fontSize=11;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="570" y="50" width="200" height="70" as="geometry" />
+        </mxCell>
+        
+        <!-- Dummy Image (Noise) -->
+        <mxCell id="dummy_input" value="&lt;b&gt;Dummy Input (x*)&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;Starts as random pixel noise" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CDCDE6;strokeColor=#7B7B9E;fontColor=#111827;strokeWidth=2;fontSize=11;fontFamily=Helvetica;align=center;verticalAlign=top;spacingTop=10;" vertex="1" parent="1">
+          <mxGeometry x="570" y="160" width="200" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="noise_icon" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=none;verticalAlign=top;aspect=fixed;image=https://img.icons8.com/ios/100/fine-print.png;" vertex="1" parent="1">
+          <mxGeometry x="655" y="195" width="30" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Gradient Matching -->
+        <mxCell id="gradient_matching" value="&lt;b&gt;Gradient Matching Loop&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;Optimizes dummy pixels until dummy gradients match g&lt;sub&gt;1&lt;/sub&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CDCDE6;strokeColor=#7B7B9E;fontColor=#111827;strokeWidth=2;fontSize=11;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="570" y="310" width="200" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- Reconstructed Cat -->
+        <mxCell id="reconstructed_box" value="&lt;b&gt;Reconstructed Output&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;Attacker recovers Client 1's private Cat image!" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CDCDE6;strokeColor=#7B7B9E;fontColor=#111827;strokeWidth=2;fontSize=11;fontFamily=Helvetica;align=center;verticalAlign=top;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="570" y="420" width="200" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="cat_icon_attacker" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=none;verticalAlign=top;aspect=fixed;image=https://img.icons8.com/ios/100/cat.png;" vertex="1" parent="1">
+          <mxGeometry x="650" y="455" width="40" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- ==================== CONNECTORS ==================== -->
+        <!-- Client 1 upload to Server -->
+        <mxCell id="arr_c1" value="g&lt;sub&gt;1&lt;/sub&gt;" style="endArrow=classic;html=1;rounded=0;strokeColor=#7F8C8D;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="client1_box" target="server_box">
+          <mxGeometry x="-0.4" y="-10" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Client 2 upload to Server -->
+        <mxCell id="arr_c2" value="g&lt;sub&gt;2&lt;/sub&gt;" style="endArrow=classic;html=1;rounded=0;strokeColor=#7F8C8D;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="client2_box" target="server_box">
+          <mxGeometry x="-0.2" y="-10" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Client 3 upload to Server -->
+        <mxCell id="arr_c3" value="g&lt;sub&gt;3&lt;/sub&gt;" style="endArrow=classic;html=1;rounded=0;strokeColor=#7F8C8D;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="1" source="client3_box" target="server_box">
+          <mxGeometry x="-0.4" y="-10" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Interception Tap on Client 1's Line -->
+        <mxCell id="arr_intercept" value="Intercept g&lt;sub&gt;1&lt;/sub&gt;" style="curved=1;endArrow=block;html=1;rounded=0;strokeColor=#FF3B30;strokeWidth=2;exitX=0.45;exitY=0.45;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=11;fontColor=#FF3B30;fontStyle=1;" edge="1" parent="1" source="arr_c1" target="intercepted_box">
+          <mxGeometry x="-0.15" y="-12" relative="1" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="240" y="85" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Intercepted to Matching -->
+        <mxCell id="arr_int_match" value="" style="curved=1;endArrow=classic;html=1;rounded=0;strokeColor=#7B7B9E;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="intercepted_box" target="gradient_matching">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="400" y="210" as="sourcePoint" />
+            <mxPoint x="550" y="350" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="400" y="350" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Dummy to Matching -->
+        <mxCell id="arr_dummy_match" value="" style="endArrow=classic;html=1;rounded=0;strokeColor=#7B7B9E;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="dummy_input" target="gradient_matching">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="670" y="290" as="sourcePoint" />
+            <mxPoint x="670" y="300" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Feedback Arrow (Optimize Dummy) -->
+        <mxCell id="arr_feedback" value="Optimize Dummy Pixels" style="curved=1;endArrow=block;dashed=1;html=1;rounded=0;strokeColor=#7B7B9E;strokeWidth=2;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=10;fontColor=#7B7B9E;" edge="1" parent="1" source="gradient_matching" target="dummy_input">
+          <mxGeometry x="-0.03" y="25" relative="1" as="geometry">
+            <mxPoint x="770" y="333" as="sourcePoint" />
+            <mxPoint x="770" y="253" as="targetPoint" />
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="810" y="330" />
+              <mxPoint x="810" y="250" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Matching to Output -->
+        <mxCell id="arr_recon" value="Convergence" style="endArrow=classic;html=1;rounded=0;strokeColor=#7B7B9E;strokeWidth=2;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=11;fontColor=#7B7B9E;fontStyle=1;" edge="1" parent="1" source="gradient_matching" target="reconstructed_box">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="670" y="400" as="sourcePoint" />
+            <mxPoint x="670" y="410" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

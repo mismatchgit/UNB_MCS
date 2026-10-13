@@ -1,0 +1,96 @@
+Level 1:
+Elapsed time serial = 0.0207221154
+Last element = 2.00
+
+
+No the result C[N-1][N-1] is not correct in level 2 part B because it does not account for the leftover amounts if not divisible to make it equal for all. This is because there is no mechanism in place to make sure a thread takes over the remaining amount so some of the matrices indexes are not calculated. i.e. not 2.00, last thread gets the remaining indices
+
+Level 2 A:
+Elapsed time manual block scheduling bug error = 0.0011809207
+Last element = 0.00
+
+Level 2 C:
+Elapsed time manual block scheduling with bug fix = 0.0009883773
+Last element = 2.00
+
+Level 3:
+Last element = 2.00
+Elapsed time Cyclic = 0.0318757650
+
+Yes the remaining ones get handled by cyclic because we assign values
+
+Speedup:
+0.0207221154 - 0.0318757650 = -0.0111536496/0.0207221154 = -0.53824859985 * 100 = - 53.8248599851% 
+
+Level 4:
+Our ouput has an error because every chunk after the firs chunk computes their i before the other chunks i-1 so this creates errors for all of the chunks.
+
+At the barriers the chunks attempt to access memory that isnt in their chunk "locality" so it does not work.
+
+RAW means we try to read a value after a write but we run into the case where we read before the correct data dependency is written in so it causes issues. here the values of the old row would need to be fully updated for the next row before it can read.
+
+This is a race condition because one thread will start its row calcs before the thread before it has written ints new values therefore the current thread will read incorrect/old data.
+
+Level 5: 
+Before the barrier is set some of the threads write starting verification before the other threads can have the chance to finish their calculations
+
+AFTER we add the barrier all of the prints are in the correct order
+--------------------------------------------------------------------------------------
+SAMPLE FULL OUTPUT FROM CODE:
+
+Level 1:
+Elapsed time serial = 0.0207221154
+Last element = 2.00
+
+Level 2 A:
+Elapsed time manual block scheduling bug error = 0.0011809207
+Last element = 0.00
+
+Level 2 C:
+Elapsed time manual block scheduling with bug fix = 0.0009883773
+Last element = 2.00
+
+Level 3:
+Last element = 2.00
+Elapsed time Cyclic = 0.0318757650
+
+Level 4 A:
+Checkpoint element Serial dependency = 2.00
+
+Level 4 B:
+Checkpoint element for block scheduling = 1.00
+
+Synchronization Part A
+Thread 0 finished calculation
+Thread 0 starting verification
+Thread 3 finished calculation
+Thread 3 starting verification
+Thread 5 finished calculation
+Thread 5 starting verification
+Thread 4 finished calculation
+Thread 4 starting verification
+Thread 1 finished calculation
+Thread 1 starting verification
+Thread 2 finished calculation
+Thread 2 starting verification
+Elapsed time synchro part A = 0.1053230315
+
+Synchronization Part B
+Thread 0 finished calculation
+Thread 0 starting verification
+Thread 3 finished calculation
+Thread 3 starting verification
+Thread 4 finished calculation
+Thread 5 finished calculation
+Thread 5 starting verification
+Thread 4 starting verification
+Thread 2 finished calculation
+Thread 2 starting verification
+Thread 1 finished calculation
+Thread 1 starting verification
+Elapsed time synchro part B = 0.1449328549
+
+
+
+
+

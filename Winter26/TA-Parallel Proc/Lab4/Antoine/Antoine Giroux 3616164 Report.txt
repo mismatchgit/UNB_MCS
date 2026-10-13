@@ -1,0 +1,40 @@
+MSG_SIZE=1
+Avg RTT 0.0000029475 ms
+Estimated one-way latency: 0.0000014737 ms
+
+MSG_SIZE=8
+Avg RTT 0.0000029879 ms
+Estimated one-way latency: 0.0000014940 ms
+
+MSG_SIZE=64
+Avg RTT 0.0000030555 ms
+Estimated one-way latency: 0.0000015278 ms
+
+MSG_SIZE=512
+Avg RTT 0.0000032984 ms
+Estimated one-way latency: 0.0000016492 ms
+
+MSG_SIZE=4096
+Avg RTT 0.0000052864 ms
+Estimated one-way latency: 0.0000026432 ms
+
+* How message size is controlled?
+
+Message size is controlled by the MGS_SIZE constant in the program, it dynamically allocates a buffer of that size which is then passed into MPI_Send and MPI_Recv, where changing MSG_SIZE changes how many bits are sent for each pingpong transmission.
+
+* How correctness is verified?
+
+The received tag is compared against the expected tag for this ping pong iteration.
+
+The sender then writes the current iteration into the message buffer before sending the message. After receiving the message the value can be checked to make sure that it returned the correct data.
+
+* Why the implementation avoids Deadlock?
+
+** Ping pong
+
+This implementation avoids deadlock because the two processes take turns with their operations, where process 0 sends then receives, process 1 receives then sends.
+This makes it so that when one process is sending the other is receiving ensuring that no operations are blocking.
+
+** Ring
+
+MPI_Sendrecv sends and receives into a single atomic operations, because all processes has their receives and send operations at the same time, no circular waiting condition takes place.

@@ -1,0 +1,39 @@
+mpirun -np 2 ./main pingpong
+
+Message Size(bytes) | Iterations(k) | Avg RTT(µs) | Est.One - way(µs)
+ 1 	| 10000 	| 0.36823 	| 0.18411 
+ 8 	| 10000 	| 0.36671 	| 0.18335 
+ 64 	| 10000 	| 0.41016 	| 0.20508 
+ 512 	| 10000 	| 0.71699 	| 0.35849 
+ 4096 	| 10000 	| 6.22346 	| 3.11173 
+
+
+Part A: Ping-Pong Communication
+1. Why is timing performed on rank 0 only? 
+- rank 0 is quaranteed to exist and it ensures the entire round-trip is measured against a single clock source.
+
+2. Why is RTT/2 only an approximation of one-way latency?
+- It assumes that the path from Rank 0 to 1 is identical in speed to the path from Rank 1 to 0. 
+- In reality, factors like OS scheduling can make one direction slower than the other.
+
+Message Size Control: 
+Size is controlled by allocating a char buffer of N bytes and passing that size into the count parameter 
+of MPI_Send and MPI_Recv with the MPI_BYTE datatype. 
+
+Correctness Verification: 
+Correctness is verified using MPI message tags derived from the iteration number k 
+    tag = k mod TAG_RANGE 
+ensuring the receiver only accepts the specific message intended for that iteration.
+
+
+
+Part B: Ring Communication
+1. Why can the following code pattern deadlock if all processes execute it simultaneously?
+- MPI_Send() is designed to block execution until the message is sent to the destination, ensuring that the sender cannot modify the message buffer before the message is actually sent. 
+- Since every process in the ring is trying to MPI_Send at the same time, no one ever reaches the MPI_Recv line, creating a circular wait
+
+mpirun -np 4 ./main ring
+Rank 3: sent 3 to rank 0, received 2 from rank 2
+Rank 0: sent 0 to rank 1, received 3 from rank 3
+Rank 1: sent 1 to rank 2, received 0 from rank 0
+Rank 2: sent 2 to rank 3, received 1 from rank 1

@@ -1,0 +1,46 @@
+--- Performance Results ---
+    N  Processes      Time  Speedup
+ 1000          1  0.006752 1.000000
+ 1000          2  0.007057 0.956781
+ 1000          4  0.010872 0.621045
+ 1000          8  0.012270 0.550285
+ 5000          1  0.180897 1.000000
+ 5000          2  0.165988 1.089820
+ 5000          4  0.505496 0.357860
+ 5000          8  0.729720 0.247899
+10000          1  0.736966 1.000000
+10000          2  0.682329 1.080074
+10000          4  1.134720 0.649469
+10000          8  8.099610 0.090988
+20000          1  4.248627 1.000000
+20000          2  2.744884 1.547835
+20000          4  4.795871 0.885893
+20000          8 10.906335 0.389556
+
+--- Speedup (Rows: N, Cols: Processes) ---
+Processes    1         2         4         8
+N                                           
+1000       1.0  0.956781  0.621045  0.550285
+5000       1.0  1.089820  0.357860  0.247899
+10000      1.0  1.080074  0.649469  0.090988
+20000      1.0  1.547835  0.885893  0.389556
+
+
+Data Analysis Key Findings
+Q1:
+The  N=20000  configuration came closest to ideal scaling at 2 processes but failed to maintain it. 
+For all other configurations and higher process counts, the speedup remained significantly below the ideal linear line.
+
+Q2: 
+The divergence occurs sharply at 4 processes across all sizes, where efficiency drops
+- The use of --oversubscribe is a major factor: as processes exceed physical core counts 
+context switching and resource contention for CPU cache/memory bandwidth dominate.
+- For small N (1000), communication overhead is higher than the computation time, 
+leading to immediate efficiency loss even at 2 processes.
+
+Q3:
+Larger N improves efficiency because the computational workload becomes the dominant factor 
+over MPI overhead.
+
+Q4: 
+N is limited by the system's RAM. leading to MemoryError or Segmentation Faults during allocation.

@@ -1,0 +1,47 @@
+<mxfile host="Electron" modified="2026-08-06T20:44:00.000Z" version="21.6.8" type="device">
+  <diagram id="integrated_defense" name="Differentially Private FL">
+    <mxGraphModel dx="1000" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Container box -->
+        <mxCell id="group_fl" value="Integrated Defense: Differentially Private Federated Learning" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;dashed=1;dashPattern=1 4;startSize=30;verticalAlign=top;align=left;spacingLeft=10;" parent="1" vertex="1">
+          <mxGeometry x="30" y="30" width="760" height="230" as="geometry" />
+        </mxCell>
+
+        <!-- Node 1: Local Gradients -->
+        <mxCell id="node_grad" value="&lt;b&gt;Local Gradient&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Computed by Client i&lt;br&gt;Vector: g_i&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="group_fl" vertex="1">
+          <mxGeometry x="20" y="85" width="130" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Node 2: Clip -->
+        <mxCell id="node_clip" value="&lt;b&gt;Gradient Clipping&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Clip L2 norm to C&lt;br&gt;g_c = g_i / max(1, ||g_i||/C)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="group_fl" vertex="1">
+          <mxGeometry x="190" y="75" width="170" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Node 3: Add Noise -->
+        <mxCell id="node_noise" value="&lt;b&gt;Noise Injection&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Adds Gaussian Noise&lt;br&gt;&amp;#951; ~ N(0, &amp;#963;^2 I)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="group_fl" vertex="1">
+          <mxGeometry x="400" y="75" width="150" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Node 4: Aggregator -->
+        <mxCell id="node_server" value="&lt;b&gt;Aggregation Server&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Securely averages updates&lt;br&gt;without deep leakage risk&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="group_fl" vertex="1">
+          <mxGeometry x="590" y="75" width="150" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Connections -->
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="group_fl" source="node_grad" target="node_clip" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="group_fl" source="node_clip" target="node_noise" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="group_fl" source="node_noise" target="node_server" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

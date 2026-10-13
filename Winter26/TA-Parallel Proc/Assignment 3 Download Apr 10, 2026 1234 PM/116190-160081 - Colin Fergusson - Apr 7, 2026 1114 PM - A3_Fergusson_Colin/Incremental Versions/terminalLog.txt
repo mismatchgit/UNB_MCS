@@ -1,0 +1,3128 @@
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc A3.c -o A2 -lm
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc A3.c -o A3 -lm
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpirun -np 4 A3 2 0 1e-8
+Function 2 outputted: -0.258653581664379 and took an average of 0.000002347111111s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpirun -np 4 A3 1 0 1e-8
+Function 1 outputted: 0.267794504461961 and took an average of 0.000071697111111s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpirun -np 4 A3 2 0 1e-10
+Function 2 outputted: 0.004111797259975 and took an average of 0.002100064111111s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpirun -np 4 A3 2 0 1e-9
+Function 2 outputted: 0.004111797259987 and took an average of 0.001125417777778s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpirun -np 4 A3 2 0 1e-8
+Function 2 outputted: -0.258653581664379 and took an average of 0.000002309222222s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+A3.c:234:1: error: return type defaults to ‘int’ [-Wimplicit-int]
+  234 | mode2(int func_id, double tol, int K, int rank, int size){
+      | ^~~~~
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 1 0 1e-10
+Function 1 outputted: 0.267794504458881 and took an average of 0.000111093000000s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 1 2 1e-10
+[Ubuntu25:8823 :0:8823] Caught signal 11 (Segmentation fault: address not mapped to object at address (nil))
+==== backtrace (tid:   8823) ====
+ 0  /lib/x86_64-linux-gnu/libucs.so.0(ucs_handle_error+0x2e4) [0x7d3ebe63c6f4]
+ 1  /lib/x86_64-linux-gnu/libucs.so.0(+0x3209c) [0x7d3ebe63e09c]
+ 2  /lib/x86_64-linux-gnu/libucs.so.0(+0x3226d) [0x7d3ebe63e26d]
+ 3  /lib/x86_64-linux-gnu/libc.so.6(+0x45f60) [0x7d3ebe845f60]
+ 4  A3(+0x34e8) [0x58e414da94e8]
+ 5  /lib/x86_64-linux-gnu/libgomp.so.1(GOMP_parallel+0x49) [0x7d3ebf0c22a9]
+ 6  A3(+0x29a8) [0x58e414da89a8]
+ 7  A3(+0x30af) [0x58e414da90af]
+ 8  /lib/x86_64-linux-gnu/libc.so.6(+0x2a575) [0x7d3ebe82a575]
+ 9  /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x88) [0x7d3ebe82a628]
+10  A3(+0x1425) [0x58e414da7425]
+=================================
+--------------------------------------------------------------------------
+prterun noticed that process rank 0 with PID 8823 on node Ubuntu25 exited on
+signal 11 (Segmentation fault).
+--------------------------------------------------------------------------
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 1 1 1e-10
+Function 1 outputted: 0.000000000000000 and took an average of 0.000159172333333s
+Parallel output is not within tolerance
+Serial time: 0.000168617222222s
+Speedup is: 1.059337503516459
+Efficiency is: 1.059337503516459
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 1 2 1e-10
+[Ubuntu25:8931 :0:8931] Caught signal 11 (Segmentation fault: address not mapped to object at address (nil))
+==== backtrace (tid:   8931) ====
+ 0  /lib/x86_64-linux-gnu/libucs.so.0(ucs_handle_error+0x2e4) [0x7a15e704d6f4]
+ 1  /lib/x86_64-linux-gnu/libucs.so.0(+0x3209c) [0x7a15e704f09c]
+ 2  /lib/x86_64-linux-gnu/libucs.so.0(+0x3226d) [0x7a15e704f26d]
+ 3  /lib/x86_64-linux-gnu/libc.so.6(+0x45f60) [0x7a15e6845f60]
+ 4  A3(+0x34e8) [0x608eb9b724e8]
+ 5  /lib/x86_64-linux-gnu/libgomp.so.1(GOMP_parallel+0x49) [0x7a15e71142a9]
+ 6  A3(+0x29a8) [0x608eb9b719a8]
+ 7  A3(+0x30af) [0x608eb9b720af]
+ 8  /lib/x86_64-linux-gnu/libc.so.6(+0x2a575) [0x7a15e682a575]
+ 9  /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x88) [0x7a15e682a628]
+10  A3(+0x1425) [0x608eb9b70425]
+=================================
+^[[A--------------------------------------------------------------------------
+prterun noticed that process rank 0 with PID 8931 on node Ubuntu25 exited on
+signal 11 (Segmentation fault).
+--------------------------------------------------------------------------
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 1 2 1e-8
+[Ubuntu25:8959 :0:8959] Caught signal 11 (Segmentation fault: address not mapped to object at address (nil))
+==== backtrace (tid:   8959) ====
+ 0  /lib/x86_64-linux-gnu/libucs.so.0(ucs_handle_error+0x2e4) [0x70398dd526f4]
+ 1  /lib/x86_64-linux-gnu/libucs.so.0(+0x3209c) [0x70398dd5409c]
+ 2  /lib/x86_64-linux-gnu/libucs.so.0(+0x3226d) [0x70398dd5426d]
+ 3  /lib/x86_64-linux-gnu/libc.so.6(+0x45f60) [0x70398da45f60]
+ 4  A3(+0x34e8) [0x5e899e5424e8]
+ 5  /lib/x86_64-linux-gnu/libgomp.so.1(GOMP_parallel+0x49) [0x70398e2072a9]
+ 6  A3(+0x29a8) [0x5e899e5419a8]
+ 7  A3(+0x30af) [0x5e899e5420af]
+ 8  /lib/x86_64-linux-gnu/libc.so.6(+0x2a575) [0x70398da2a575]
+ 9  /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x88) [0x70398da2a628]
+10  A3(+0x1425) [0x5e899e540425]
+=================================
+--------------------------------------------------------------------------
+prterun noticed that process rank 0 with PID 8959 on node Ubuntu25 exited on
+signal 11 (Segmentation fault).
+--------------------------------------------------------------------------
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 1 2 1e-8
+[Ubuntu25:9079 :0:9079] Caught signal 11 (Segmentation fault: address not mapped to object at address (nil))
+==== backtrace (tid:   9079) ====
+ 0  /lib/x86_64-linux-gnu/libucs.so.0(ucs_handle_error+0x2e4) [0x7eaf57a1e6f4]
+ 1  /lib/x86_64-linux-gnu/libucs.so.0(+0x3209c) [0x7eaf57a2009c]
+ 2  /lib/x86_64-linux-gnu/libucs.so.0(+0x3226d) [0x7eaf57a2026d]
+ 3  /lib/x86_64-linux-gnu/libc.so.6(+0x45f60) [0x7eaf57245f60]
+ 4  A3(+0x34e8) [0x575c176c14e8]
+ 5  /lib/x86_64-linux-gnu/libgomp.so.1(GOMP_parallel+0x49) [0x7eaf57ae52a9]
+ 6  A3(+0x29a8) [0x575c176c09a8]
+ 7  A3(+0x30af) [0x575c176c10af]
+ 8  /lib/x86_64-linux-gnu/libc.so.6(+0x2a575) [0x7eaf5722a575]
+ 9  /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x88) [0x7eaf5722a628]
+10  A3(+0x1425) [0x575c176bf425]
+=================================
+--------------------------------------------------------------------------
+prterun noticed that process rank 0 with PID 9079 on node Ubuntu25 exited on
+signal 11 (Segmentation fault).
+--------------------------------------------------------------------------
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=2 mpirun -np 2 A3 1 2 1e-8
+[Ubuntu25:9107 :0:9107] Caught signal 11 (Segmentation fault: address not mapped to object at address (nil))
+--------------------------------------------------------------------------
+prterun noticed that process rank 0 with PID 9107 on node Ubuntu25 exited on
+signal 11 (Segmentation fault).
+--------------------------------------------------------------------------
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 1 2 1e-8
+[Ubuntu25:9178 :0:9178] Caught signal 11 (Segmentation fault: address not mapped to object at address (nil))
+==== backtrace (tid:   9178) ====
+ 0  /lib/x86_64-linux-gnu/libucs.so.0(ucs_handle_error+0x2e4) [0x79a5b427b6f4]
+ 1  /lib/x86_64-linux-gnu/libucs.so.0(+0x3209c) [0x79a5b427d09c]
+ 2  /lib/x86_64-linux-gnu/libucs.so.0(+0x3226d) [0x79a5b427d26d]
+ 3  /lib/x86_64-linux-gnu/libc.so.6(+0x45f60) [0x79a5b3a45f60]
+ 4  A3(+0x34f7) [0x5683207c64f7]
+ 5  /lib/x86_64-linux-gnu/libgomp.so.1(GOMP_parallel+0x49) [0x79a5b43422a9]
+ 6  A3(+0x29a8) [0x5683207c59a8]
+ 7  A3(+0x30be) [0x5683207c60be]
+ 8  /lib/x86_64-linux-gnu/libc.so.6(+0x2a575) [0x79a5b3a2a575]
+ 9  /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x88) [0x79a5b3a2a628]
+10  A3(+0x1425) [0x5683207c4425]
+=================================
+--------------------------------------------------------------------------
+prterun noticed that process rank 0 with PID 9178 on node Ubuntu25 exited on
+signal 11 (Segmentation fault).
+--------------------------------------------------------------------------
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 1 2 1e-8
+[Ubuntu25:9280 :0:9280] Caught signal 11 (Segmentation fault: address not mapped to object at address (nil))
+==== backtrace (tid:   9280) ====
+ 0  /lib/x86_64-linux-gnu/libucs.so.0(ucs_handle_error+0x2e4) [0x7421e20806f4]
+ 1  /lib/x86_64-linux-gnu/libucs.so.0(+0x3209c) [0x7421e208209c]
+ 2  /lib/x86_64-linux-gnu/libucs.so.0(+0x3226d) [0x7421e208226d]
+ 3  /lib/x86_64-linux-gnu/libc.so.6(+0x45f60) [0x7421e1845f60]
+ 4  A3(+0x34f7) [0x5a1daa8cd4f7]
+ 5  /lib/x86_64-linux-gnu/libgomp.so.1(GOMP_parallel+0x49) [0x7421e21472a9]
+ 6  A3(+0x29a8) [0x5a1daa8cc9a8]
+ 7  A3(+0x30be) [0x5a1daa8cd0be]
+ 8  /lib/x86_64-linux-gnu/libc.so.6(+0x2a575) [0x7421e182a575]
+ 9  /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x88) [0x7421e182a628]
+10  A3(+0x1425) [0x5a1daa8cb425]
+=================================
+--------------------------------------------------------------------------
+prterun noticed that process rank 0 with PID 9280 on node Ubuntu25 exited on
+signal 11 (Segmentation fault).
+--------------------------------------------------------------------------
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 1 2 1e-8
+Getting somewhere!
+[Ubuntu25:9358 :0:9358] Caught signal 11 (Segmentation fault: address not mapped to object at address (nil))
+==== backtrace (tid:   9358) ====
+ 0  /lib/x86_64-linux-gnu/libucs.so.0(ucs_handle_error+0x2e4) [0x7985dea376f4]
+ 1  /lib/x86_64-linux-gnu/libucs.so.0(+0x3209c) [0x7985dea3909c]
+ 2  /lib/x86_64-linux-gnu/libucs.so.0(+0x3226d) [0x7985dea3926d]
+ 3  /lib/x86_64-linux-gnu/libc.so.6(+0x45f60) [0x7985de245f60]
+ 4  A3(+0x34f7) [0x57cfd51aa4f7]
+ 5  /lib/x86_64-linux-gnu/libgomp.so.1(GOMP_parallel+0x49) [0x7985deafe2a9]
+ 6  A3(+0x29b7) [0x57cfd51a99b7]
+ 7  A3(+0x30be) [0x57cfd51aa0be]
+ 8  /lib/x86_64-linux-gnu/libc.so.6(+0x2a575) [0x7985de22a575]
+ 9  /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x88) [0x7985de22a628]
+10  A3(+0x1425) [0x57cfd51a8425]
+=================================
+--------------------------------------------------------------------------
+prterun noticed that process rank 0 with PID 9358 on node Ubuntu25 exited on
+signal 11 (Segmentation fault).
+--------------------------------------------------------------------------
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 1 2 1e-8
+free(): double free detected in tcache 2
+[Ubuntu25:09458] *** Process received signal ***
+[Ubuntu25:09458] Signal: Aborted (6)
+[Ubuntu25:09458] Signal code:  (-6)
+[Ubuntu25:09458] [ 0] /lib/x86_64-linux-gnu/libc.so.6(+0x45f60) [0x75b899845f60]
+[Ubuntu25:09458] [ 1] /lib/x86_64-linux-gnu/libc.so.6(pthread_kill+0x11d) [0x75b8998a5fed]
+[Ubuntu25:09458] [ 2] /lib/x86_64-linux-gnu/libc.so.6(gsignal+0x1e) [0x75b899845e2e]
+[Ubuntu25:09458] [ 3] /lib/x86_64-linux-gnu/libc.so.6(abort+0x27) [0x75b899828888]
+[Ubuntu25:09458] [ 4] /lib/x86_64-linux-gnu/libc.so.6(+0x29915) [0x75b899829915]
+[Ubuntu25:09458] [ 5] /lib/x86_64-linux-gnu/libc.so.6(+0xb08a5) [0x75b8998b08a5]
+[Ubuntu25:09458] [ 6] /lib/x86_64-linux-gnu/libc.so.6(+0xb5f68) [0x75b8998b5f68]
+[Ubuntu25:09458] [ 7] A3(+0x2ce4) [0x587e70955ce4]
+[Ubuntu25:09458] [ 8] A3(+0x30df) [0x587e709560df]
+[Ubuntu25:09458] [ 9] /lib/x86_64-linux-gnu/libc.so.6(+0x2a575) [0x75b89982a575]
+[Ubuntu25:09458] [10] /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x88) [0x75b89982a628]
+[Ubuntu25:09458] [11] A3(+0x1425) [0x587e70954425]
+[Ubuntu25:09458] *** End of error message ***
+--------------------------------------------------------------------------
+prterun noticed that process rank 0 with PID 9458 on node Ubuntu25 exited on
+signal 6 (Aborted).
+--------------------------------------------------------------------------
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 1 2 1e-8
+Function 1 outputted: 0.147571074722311 and took an average of 0.000134488222222s
+Parallel output is not within tolerance
+Serial time: 0.000024725000000s
+Speedup is: 0.183845095068220
+Efficiency is: 0.183845095068220
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 1 0 1e-8
+Function 1 outputted: 0.267794504461961 and took an average of 0.000035225222222s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 1 2 1e-8
+Function 1 outputted: 0.147571074722311 and took an average of 0.000065385333333s
+Parallel output is not within tolerance
+Serial time: 0.000038547666667s
+Speedup is: 0.589546075572490
+Efficiency is: 0.589546075572490
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ 
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 1 2 1e-8
+Function 1 outputted: 0.267794504461518 and took an average of 0.000093177444444s
+Parallel output is within tolerance
+Serial time: 0.000025397000000s
+Speedup is: 0.272565964342824
+Efficiency is: 0.272565964342824
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 1 2 1e-9
+Function 1 outputted: 0.267794504459969 and took an average of 0.000113337333333s
+Parallel output is within tolerance
+Serial time: 0.000067681111111s
+Speedup is: 0.597165198091043
+Efficiency is: 0.597165198091043
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 2 2 1e-9
+Function 2 outputted: 0.004111797259974 and took an average of 0.001431114111111s
+Parallel output is within tolerance
+Serial time: 0.001069188555556s
+Speedup is: 0.747102238217358
+Efficiency is: 0.747102238217358
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 0 2 1e-9
+Function 0 outputted: 0.483217695475171 and took an average of 0.000067362666667s
+Parallel output is within tolerance
+Serial time: 0.000026835222222s
+Speedup is: 0.398369357243714
+Efficiency is: 0.398369357243714
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ 
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 1 2 1e-8
+Function 1 outputted: 0.267794504461518 and took an average of 0.000093177444444s
+Parallel output is within tolerance
+Serial time: 0.000025397000000s
+Speedup is: 0.272565964342824
+Efficiency is: 0.272565964342824
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 1 2 1e-9
+Function 1 outputted: 0.267794504459969 and took an average of 0.000113337333333s
+Parallel output is within tolerance
+Serial time: 0.000067681111111s
+Speedup is: 0.597165198091043
+Efficiency is: 0.597165198091043
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 2 2 1e-9
+Function 2 outputted: 0.004111797259974 and took an average of 0.001431114111111s
+Parallel output is within tolerance
+Serial time: 0.001069188555556s
+Speedup is: 0.747102238217358
+Efficiency is: 0.747102238217358
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 0 2 1e-9
+Function 0 outputted: 0.483217695475171 and took an average of 0.000067362666667s
+Parallel output is within tolerance
+Serial time: 0.000026835222222s
+Speedup is: 0.398369357243714
+Efficiency is: 0.398369357243714
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=2 mpirun -np 2 A3 0 2 1e-9
+Function 0 outputted: 0.483217695475171 and took an average of 0.000463677111111s
+Parallel output is within tolerance
+Serial time: 0.000010681444444s
+Speedup is: 0.023036384993964
+Efficiency is: 0.011518192496982
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.577393921944877 and took an average of 0.000594757333333s
+Parallel output is not within tolerance
+Serial time: 0.000011374888889s
+Speedup is: 0.019125260423673
+Efficiency is: 0.004781315105918
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=8 mpirun -np 8 A3 0 2 1e-9
+Function 0 outputted: 0.585327915233192 and took an average of 0.004115501000000s
+Parallel output is not within tolerance
+Serial time: 0.000018357888889s
+Speedup is: 0.004460669281551
+Efficiency is: 0.000557583660194
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=8 mpirun -np 8 A3 0 1 1e-9
+Function 0 outputted: 0.483217695475171 and took an average of 0.000090433444444s
+Parallel output is within tolerance
+Serial time: 0.000017008555556s
+Speedup is: 0.188078156925723
+Efficiency is: 0.023509769615715
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=8 mpirun -np 8 A3 0 2 1e-9
+Function 0 outputted: 0.578842070338525 and took an average of 0.001199645777778s
+Parallel output is not within tolerance
+Serial time: 0.000016721000000s
+Speedup is: 0.013938281040737
+Efficiency is: 0.001742285130092
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=8 mpirun -np 8 A3 0 2 1e-8
+Function 0 outputted: 0.595450814801605 and took an average of 0.013770422111111s
+Parallel output is not within tolerance
+Serial time: 0.000010926000000s
+Speedup is: 0.000793439729869
+Efficiency is: 0.000099179966234
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 0 2 1e-9
+Function 0 outputted: 0.483217695475171 and took an average of 0.000024184000000s
+Parallel output is within tolerance
+Serial time: 0.000009721000000s
+Speedup is: 0.401959973536211
+Efficiency is: 0.401959973536211
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=2 mpirun -np 2 A3 0 2 1e-9
+Function 0 outputted: 0.483217695475171 and took an average of 0.000045143444444s
+Parallel output is within tolerance
+Serial time: 0.000009647111111s
+Speedup is: 0.213699048219113
+Efficiency is: 0.106849524109556
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.825160662115619 and took an average of 0.000086351111111s
+Parallel output is not within tolerance
+Serial time: 0.000010154222222s
+Speedup is: 0.117592258994286
+Efficiency is: 0.029398064748572
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=8 mpirun -np 8 A3 0 2 1e-9
+Function 0 outputted: 0.593666278733393 and took an average of 0.000206912000000s
+Parallel output is not within tolerance
+Serial time: 0.000010707555556s
+Speedup is: 0.051749321235873
+Efficiency is: 0.006468665154484
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 0 2 1e-9
+Function 0 outputted: 0.483217695475171 and took an average of 0.000023526555556s
+Parallel output is within tolerance
+Serial time: 0.000009434555556s
+Speedup is: 0.401017290154285
+Efficiency is: 0.401017290154285
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=2 mpirun -np 2 A3 0 2 1e-9
+Function 0 outputted: 0.483217695475171 and took an average of 0.000045718111111s
+Parallel output is within tolerance
+Serial time: 0.000009923777778s
+Speedup is: 0.217064474813062
+Efficiency is: 0.108532237406531
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.948377733515658 and took an average of 0.000083049333333s
+Parallel output is not within tolerance
+Serial time: 0.000009794666667s
+Speedup is: 0.117937932473893
+Efficiency is: 0.029484483118473
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.952809322820870 and took an average of 0.000109052888889s
+Parallel output is not within tolerance
+Serial time: 0.000010029333333s
+Speedup is: 0.091967607970051
+Efficiency is: 0.022991901992513
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.540578437869261 and took an average of 0.000113827777778s
+Parallel output is not within tolerance
+Serial time: 0.000010488444444s
+Speedup is: 0.092143101176230
+Efficiency is: 0.023035775294057
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: -0.331385626880610 and took an average of 0.000097355666667s
+Parallel output is not within tolerance
+Serial time: 0.000010320888889s
+Speedup is: 0.106012204962118
+Efficiency is: 0.026503051240529
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.567974827661668 and took an average of 0.000086405222222s
+Parallel output is not within tolerance
+Serial time: 0.000009969777778s
+Speedup is: 0.115383972419369
+Efficiency is: 0.028845993104842
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=2 mpirun -np 2 A3 0 2 1e-9
+Function 0 outputted: 0.483217695475171 and took an average of 0.000047223000000s
+Parallel output is within tolerance
+Serial time: 0.000009972000000s
+Speedup is: 0.211168286639973
+Efficiency is: 0.105584143319986
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.773749699411065 and took an average of 0.000100729666667s
+Parallel output is not within tolerance
+Serial time: 0.000010158555556s
+Speedup is: 0.100849688991552
+Efficiency is: 0.025212422247888
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: -0.360767220756061 and took an average of 0.000257157555556s
+Parallel output is not within tolerance
+Serial time: 0.000010666666667s
+Speedup is: 0.041479110515047
+Efficiency is: 0.010369777628762
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.892841429896515 and took an average of 0.000084667444444s
+Parallel output is not within tolerance
+Serial time: 0.000010425333333s
+Speedup is: 0.123132727127179
+Efficiency is: 0.030783181781795
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.093381205486835 and took an average of 0.000155689555556s
+Parallel output is not within tolerance
+Serial time: 0.000010747333333s
+Speedup is: 0.069030535124747
+Efficiency is: 0.017257633781187
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.532628724804086 and took an average of 0.000105953333333s
+Parallel output is not within tolerance
+Serial time: 0.000010569111111s
+Speedup is: 0.099752511587900
+Efficiency is: 0.024938127896975
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.090987261390415 and took an average of 0.000096090222222s
+Parallel output is not within tolerance
+Serial time: 0.000011145555556s
+Speedup is: 0.115990527420979
+Efficiency is: 0.028997631855245
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.764904158079462 and took an average of 0.000099076777778s
+Parallel output is not within tolerance
+Serial time: 0.000010232000000s
+Speedup is: 0.103273443378932
+Efficiency is: 0.025818360844733
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.233731438205934 and took an average of 0.000086124000000s
+Parallel output is not within tolerance
+Serial time: 0.000010209888889s
+Speedup is: 0.118548707548286
+Efficiency is: 0.029637176887071
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.483217695475171 and took an average of 0.000121038333333s
+Parallel output is within tolerance
+Serial time: 0.000010188111111s
+Speedup is: 0.084172599130674
+Efficiency is: 0.021043149782668
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.076263861025150 and took an average of 0.000089914000000s
+Parallel output is not within tolerance
+Serial time: 0.000010246444444s
+Speedup is: 0.113958276179962
+Efficiency is: 0.028489569044991
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.542024132951621 and took an average of 0.000174945222222s
+Parallel output is not within tolerance
+Serial time: 0.000016428222222s
+Speedup is: 0.093904949295244
+Efficiency is: 0.023476237323811
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.473661393904264 and took an average of 0.000112022111111s
+Parallel output is not within tolerance
+Serial time: 0.000010704333333s
+Speedup is: 0.095555540126504
+Efficiency is: 0.023888885031626
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ 
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: -0.199189136107806 and took an average of 0.000142656000000s
+Parallel output is not within tolerance
+Serial time: 0.000010446111111s
+Speedup is: 0.073225879816784
+Efficiency is: 0.018306469954196
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.727194958510608 and took an average of 0.000126941555556s
+Parallel output is not within tolerance
+Serial time: 0.000010304444444s
+Speedup is: 0.081174713822817
+Efficiency is: 0.020293678455704
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+A3.c: In function ‘mode2’:
+A3.c:310:21: error: loop nest expected before ‘sum’
+  310 |                     sum = sum + privateSum;
+      |                     ^~~
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.628485846904538 and took an average of 0.000070838444444s
+Parallel output is not within tolerance
+Serial time: 0.000010179888889s
+Speedup is: 0.143705709078229
+Efficiency is: 0.035926427269557
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.013012991452169 and took an average of 0.000095456444444s
+Parallel output is not within tolerance
+Serial time: 0.000010746777778s
+Speedup is: 0.112583051257817
+Efficiency is: 0.028145762814454
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.130878852631714 and took an average of 0.000082252333333s
+Parallel output is not within tolerance
+Serial time: 0.000009979444444s
+Speedup is: 0.121327189637317
+Efficiency is: 0.030331797409329
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.580805900101191 and took an average of 0.000162527333333s
+Parallel output is not within tolerance
+Serial time: 0.000010652444444s
+Speedup is: 0.065542479692308
+Efficiency is: 0.016385619923077
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: -0.168670678566513 and took an average of 0.000217673000000s
+Parallel output is not within tolerance
+Serial time: 0.000010814222222s
+Speedup is: 0.049681045523437
+Efficiency is: 0.012420261380859
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.500122147387572 and took an average of 0.000075127444444s
+Parallel output is not within tolerance
+Serial time: 0.000010120000000s
+Speedup is: 0.134704435573921
+Efficiency is: 0.033676108893480
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.540578437869261 and took an average of 0.000098047777778s
+Parallel output is not within tolerance
+Serial time: 0.000010284777778s
+Speedup is: 0.104895572453343
+Efficiency is: 0.026223893113336
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.220869528715588 and took an average of 0.000133771444444s
+Parallel output is not within tolerance
+Serial time: 0.000017031666667s
+Speedup is: 0.127319150491336
+Efficiency is: 0.031829787622834
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.104452931510035 and took an average of 0.000073427333333s
+Parallel output is not within tolerance
+Serial time: 0.000010158666667s
+Speedup is: 0.138349933267342
+Efficiency is: 0.034587483316835
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.140704764903405 and took an average of 0.000079052555556s
+Parallel output is not within tolerance
+Serial time: 0.000010170444444s
+Speedup is: 0.128654214566124
+Efficiency is: 0.032163553641531
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.540578437869261 and took an average of 0.000133905555556s
+Parallel output is not within tolerance
+Serial time: 0.000010286111111s
+Speedup is: 0.076816163963040
+Efficiency is: 0.019204040990760
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.558093988512178 and took an average of 0.000077867222222s
+Parallel output is not within tolerance
+Serial time: 0.000010107111111s
+Speedup is: 0.129799302231009
+Efficiency is: 0.032449825557752
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.775536860897990 and took an average of 0.000085194555556s
+Parallel output is not within tolerance
+Serial time: 0.000030797555556s
+Speedup is: 0.361496757095856
+Efficiency is: 0.090374189273964
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: -0.228942853449726 and took an average of 0.000094103333333s
+Parallel output is not within tolerance
+Serial time: 0.000010511444444s
+Speedup is: 0.111701085095583
+Efficiency is: 0.027925271273896
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.144557479925399 and took an average of 0.000149316555556s
+Parallel output is not within tolerance
+Serial time: 0.000010250333333s
+Speedup is: 0.068648337722462
+Efficiency is: 0.017162084430616
+K is: 99
+The total number of accepted intervals is: 99
+^[[Aflorafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.572706462997169 and took an average of 0.000082925000000s
+Parallel output is not within tolerance
+Serial time: 0.000009898444444s
+Speedup is: 0.119366227849800
+Efficiency is: 0.029841556962450
+K is: 99
+The total number of accepted intervals is: 99
+^[[Aflorafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.275240053326159 and took an average of 0.000128521888889s
+Parallel output is not within tolerance
+Serial time: 0.000010573111111s
+Speedup is: 0.082267006830655
+Efficiency is: 0.020566751707664
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+0: sum: 0.146242
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+2: sum: -0.140726
+test
+1: sum: 0.145016
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+3: sum: -0.218868
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+1: sum: 0.145016
+test
+test
+test
+0: sum: 0.146242
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+2: sum: -0.126938
+test
+3: sum: -0.088984
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+2: sum: -0.126938
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+1: sum: 0.145016
+0: sum: 0.146242
+test
+test
+test
+test
+3: sum: 0.139816
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+0: sum: 0.146242
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+1: sum: 0.145016
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+3: sum: -0.088984
+test
+2: sum: -0.126938
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+1: sum: 0.145016
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+2: sum: -0.126938
+0: sum: 0.146242
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+3: sum: -0.088984
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+2: sum: -0.126938
+test
+test
+test
+test
+test
+test
+test
+test
+test
+1: sum: 0.145016
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+0: sum: 0.146242
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+3: sum: 0.139816
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+1: sum: 0.145016
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+0: sum: 0.146242
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+2: sum: 0.109503
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+3: sum: 0.139816
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+0: sum: 0.146242
+test
+test
+test
+test
+test
+2: sum: -0.126938
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+1: sum: 0.145016
+test
+3: sum: -0.088984
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+2: sum: -0.126938
+1: sum: 0.145016
+test
+test
+test
+test
+0: sum: 0.146242
+test
+3: sum: -0.088984
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+3: sum: 0.139816
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+test
+0: sum: 0.146242
+test
+test
+test
+test
+test
+test
+1: sum: 0.145016
+test
+test
+test
+2: sum: -0.126938
+Function 0 outputted: 0.304136653792967 and took an average of 0.002229969888889s
+Parallel output is not within tolerance
+Serial time: 0.000017989888889s
+Speedup is: 0.008067323679359
+Efficiency is: 0.002016830919840
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ 
+Rank 2, Thread 2
+Rank 2, Thread 2
+Rank 2, Thread 1
+Rank 2, Thread 1
+Rank 2, Thread 3
+Rank 2, Thread 3
+Rank 2, Thread 1
+Rank 2, Thread 3
+Rank 2, Thread 0
+Rank 2, Thread 2
+Rank 2, Thread 3
+Rank 2, Thread 1
+Rank 2, Thread 2
+Rank 2, Thread 1
+Rank 2, Thread 2
+Rank 2, Thread 1
+Rank 2, Thread 2
+Rank 2, Thread 1
+Rank 2, Thread 2
+Rank 2, Thread 1
+Rank 1, Thread 1
+Rank 1, Thread 3
+Rank 1, Thread 3
+Rank 1, Thread 2
+Rank 1, Thread 2
+Rank 1, Thread 3
+Rank 1, Thread 3
+Rank 1, Thread 1
+Rank 1, Thread 3
+Rank 1, Thread 0
+Rank 1, Thread 2
+Rank 1, Thread 3
+Rank 1, Thread 1
+Rank 1, Thread 2
+Rank 1, Thread 1
+Rank 1, Thread 0
+Rank 1, Thread 3
+Rank 1, Thread 3
+Rank 1, Thread 1
+Rank 1, Thread 0
+Rank 1, Thread 1
+Rank 1, Thread 0
+Rank 1, Thread 1
+Rank 1, Thread 0
+Rank 1, Thread 3
+Rank 0, Thread 2
+Rank 0, Thread 1
+Rank 0, Thread 2
+Rank 0, Thread 1
+Rank 0, Thread 2
+Rank 0, Thread 3
+Rank 0, Thread 3
+Rank 0, Thread 2
+Rank 0, Thread 2
+Rank 0, Thread 1
+Rank 0, Thread 0
+Rank 0, Thread 2
+Rank 0, Thread 3
+Rank 0, Thread 1
+Rank 0, Thread 3
+Rank 0, Thread 0
+Rank 0, Thread 3
+Rank 0, Thread 3
+Rank 0, Thread 1
+Rank 0, Thread 2
+Rank 0, Thread 1
+Rank 0, Thread 3
+Rank 0, Thread 1
+Rank 0, Thread 2
+Rank 0, Thread 1
+Rank 3, Thread 1
+Rank 3, Thread 3
+Rank 3, Thread 1
+Rank 3, Thread 3
+Rank 3, Thread 1
+Rank 3, Thread 3
+Rank 3, Thread 1
+Rank 3, Thread 3
+Rank 3, Thread 1
+Rank 3, Thread 3
+Rank 3, Thread 1
+Rank 3, Thread 1
+Rank 3, Thread 0
+Rank 3, Thread 1
+Rank 3, Thread 0
+Rank 3, Thread 1
+Rank 3, Thread 0
+Rank 3, Thread 1
+Rank 3, Thread 0
+Rank 3, Thread 1
+Rank 3, Thread 0
+Rank 3, Thread 0
+Rank 3, Thread 3
+Rank 3, Thread 3
+Rank 0, Thread 2
+Rank 0, Thread 2
+Rank 0, Thread 0
+Rank 1, Thread 2
+Rank 1, Thread 2
+Rank 1, Thread 1
+Rank 1, Thread 3
+Rank 3, Thread 1
+Rank 3, Thread 2
+Rank 3, Thread 1
+Rank 3, Thread 2
+Rank 2, Thread 3
+Rank 2, Thread 3
+Rank 2, Thread 1
+Rank 2, Thread 3
+Rank 1, Thread 1
+Rank 0, Thread 1
+Rank 3, Thread 1
+Rank 3, Thread 2
+Rank 1, Thread 3
+Rank 2, Thread 1
+Rank 0, Thread 1
+Rank 0, Thread 1
+Rank 3, Thread 1
+Rank 3, Thread 2
+Rank 1, Thread 3
+Rank 2, Thread 2
+Rank 0, Thread 0
+Rank 0, Thread 0
+Rank 3, Thread 1
+Rank 1, Thread 2
+Rank 1, Thread 3
+Rank 1, Thread 3
+Rank 2, Thread 1
+Rank 2, Thread 3
+Rank 3, Thread 3
+Rank 0, Thread 0
+Rank 0, Thread 2
+Rank 1, Thread 2
+Rank 3, Thread 1
+Rank 3, Thread 2
+Rank 2, Thread 1
+Rank 0, Thread 1
+Rank 1, Thread 3
+Rank 1, Thread 1
+Rank 1, Thread 3
+Rank 3, Thread 1
+Rank 0, Thread 0
+Rank 3, Thread 2
+Rank 1, Thread 0
+Rank 1, Thread 2
+Rank 0, Thread 1
+Rank 0, Thread 3
+Rank 3, Thread 1
+Rank 1, Thread 0
+Rank 1, Thread 2
+Rank 1, Thread 1
+Rank 1, Thread 0
+Rank 1, Thread 3
+Rank 1, Thread 0
+Rank 1, Thread 1
+Rank 1, Thread 3
+Rank 1, Thread 0
+Rank 0, Thread 0
+Rank 0, Thread 3
+Rank 0, Thread 1
+Rank 0, Thread 2
+Rank 0, Thread 0
+Rank 0, Thread 3
+Rank 0, Thread 2
+Rank 0, Thread 2
+Rank 0, Thread 1
+Rank 0, Thread 3
+Rank 0, Thread 2
+Rank 3, Thread 2
+Rank 3, Thread 1
+Rank 3, Thread 2
+Rank 3, Thread 1
+Rank 3, Thread 3
+Rank 3, Thread 1
+Rank 3, Thread 3
+Rank 3, Thread 1
+Rank 3, Thread 2
+Rank 2, Thread 3
+Rank 2, Thread 1
+Rank 2, Thread 2
+Rank 2, Thread 1
+Rank 2, Thread 3
+Rank 2, Thread 2
+Rank 2, Thread 3
+Rank 2, Thread 2
+Rank 2, Thread 3
+Rank 2, Thread 2
+Rank 2, Thread 3
+Rank 2, Thread 2
+Rank 2, Thread 1
+Rank 2, Thread 2
+Rank 2, Thread 3
+Rank 2, Thread 2
+Rank 2, Thread 1
+Rank 2, Thread 2
+Rank 2, Thread 3
+Rank 0, Thread 2
+Rank 0, Thread 1
+Rank 0, Thread 2
+Rank 1, Thread 3
+Rank 1, Thread 1
+Rank 1, Thread 3
+Rank 2, Thread 2
+Rank 2, Thread 1
+Rank 0, Thread 1
+Rank 0, Thread 2
+Rank 2, Thread 2
+Rank 1, Thread 1
+Rank 0, Thread 1
+Rank 2, Thread 3
+Rank 2, Thread 2
+Rank 0, Thread 2
+Rank 0, Thread 1
+Rank 1, Thread 3
+Rank 2, Thread 1
+Rank 2, Thread 2
+Rank 2, Thread 3
+Rank 2, Thread 2
+Rank 2, Thread 1
+Rank 0, Thread 2
+Rank 0, Thread 1
+Rank 0, Thread 2
+Rank 0, Thread 1
+Rank 0, Thread 2
+Rank 0, Thread 1
+Rank 0, Thread 3
+Rank 0, Thread 1
+Rank 1, Thread 1
+Rank 1, Thread 2
+Rank 1, Thread 1
+Rank 3, Thread 0
+Rank 3, Thread 0
+Rank 0, Thread 3
+Rank 0, Thread 1
+Rank 1, Thread 3
+Rank 1, Thread 1
+Rank 1, Thread 2
+Rank 1, Thread 1
+Rank 1, Thread 3
+Rank 3, Thread 3
+Rank 3, Thread 1
+Rank 3, Thread 3
+Rank 3, Thread 1
+Rank 3, Thread 3
+Rank 3, Thread 1
+Rank 0, Thread 3
+Rank 0, Thread 1
+Rank 0, Thread 3
+Rank 0, Thread 1
+Rank 2, Thread 2
+Rank 2, Thread 2
+Rank 2, Thread 0
+Rank 2, Thread 1
+Rank 2, Thread 0
+Rank 2, Thread 1
+Rank 3, Thread 3
+Rank 3, Thread 1
+Rank 3, Thread 3
+Rank 3, Thread 1
+Rank 3, Thread 3
+Rank 3, Thread 1
+Rank 0, Thread 3
+Rank 0, Thread 1
+Rank 0, Thread 3
+Rank 2, Thread 0
+Rank 2, Thread 2
+Rank 2, Thread 0
+Rank 2, Thread 2
+Rank 2, Thread 0
+Rank 2, Thread 2
+Rank 3, Thread 3
+Rank 3, Thread 1
+Rank 3, Thread 3
+Rank 1, Thread 0
+Rank 3, Thread 1
+Rank 3, Thread 3
+Rank 3, Thread 1
+Rank 3, Thread 3
+Rank 3, Thread 1
+Rank 1, Thread 2
+Rank 1, Thread 0
+Rank 1, Thread 2
+Rank 3, Thread 3
+Rank 3, Thread 1
+Rank 1, Thread 0
+Rank 1, Thread 2
+Rank 1, Thread 1
+Rank 1, Thread 3
+Rank 1, Thread 1
+Rank 1, Thread 3
+Rank 1, Thread 2
+Rank 1, Thread 3
+Rank 1, Thread 1
+Rank 1, Thread 3
+Rank 1, Thread 2
+Rank 1, Thread 3
+Rank 1, Thread 1
+Rank 1, Thread 3
+Rank 1, Thread 2
+Rank 0, Thread 1
+Rank 0, Thread 3
+Rank 0, Thread 1
+Rank 0, Thread 3
+Rank 0, Thread 1
+Rank 0, Thread 3
+Rank 0, Thread 1
+Rank 0, Thread 3
+Rank 0, Thread 1
+Rank 0, Thread 3
+Rank 0, Thread 1
+Rank 0, Thread 3
+Rank 2, Thread 3
+Rank 2, Thread 1
+Rank 2, Thread 2
+Rank 2, Thread 1
+Rank 2, Thread 2
+Rank 2, Thread 1
+Rank 2, Thread 2
+Rank 2, Thread 1
+Rank 2, Thread 2
+Rank 2, Thread 1
+Rank 2, Thread 2
+Rank 3, Thread 1
+Rank 3, Thread 1
+Rank 3, Thread 2
+Rank 3, Thread 1
+Rank 3, Thread 2
+Rank 3, Thread 1
+Rank 1, Thread 2
+Rank 1, Thread 0
+Rank 1, Thread 0
+Rank 1, Thread 2
+Rank 1, Thread 0
+Rank 1, Thread 2
+Rank 1, Thread 3
+Rank 1, Thread 2
+Rank 1, Thread 0
+Rank 3, Thread 2
+Rank 3, Thread 1
+Rank 3, Thread 3
+Rank 3, Thread 1
+Rank 3, Thread 2
+Rank 3, Thread 1
+Rank 0, Thread 1
+Rank 0, Thread 3
+Rank 0, Thread 1
+Rank 0, Thread 3
+Rank 0, Thread 1
+Rank 0, Thread 3
+Rank 0, Thread 1
+Rank 0, Thread 3
+Rank 0, Thread 1
+Rank 0, Thread 3
+Rank 0, Thread 1
+Rank 0, Thread 3
+Rank 0, Thread 1
+Rank 2, Thread 1
+Rank 2, Thread 2
+Rank 2, Thread 1
+Rank 2, Thread 2
+Rank 2, Thread 1
+Rank 2, Thread 2
+Rank 2, Thread 1
+Rank 2, Thread 2
+Rank 2, Thread 1
+Rank 2, Thread 2
+Rank 2, Thread 1
+Rank 2, Thread 2
+Rank 2, Thread 1
+Rank 2, Thread 2
+Rank 3, Thread 3
+Rank 3, Thread 1
+Rank 3, Thread 2
+Rank 1, Thread 1
+Rank 1, Thread 3
+Rank 1, Thread 0
+Rank 1, Thread 3
+Rank 1, Thread 3
+Rank 3, Thread 1
+Rank 3, Thread 2
+Rank 3, Thread 1
+Rank 3, Thread 3
+Rank 3, Thread 1
+Rank 3, Thread 3
+Rank 1, Thread 3
+Rank 1, Thread 3
+Rank 1, Thread 3
+Rank 1, Thread 0
+Rank 3, Thread 0
+Rank 3, Thread 3
+Rank 3, Thread 0
+Rank 1, Thread 2
+Rank 1, Thread 3
+Rank 2, Thread 1
+Rank 2, Thread 2
+Rank 0, Thread 3
+Rank 0, Thread 1
+Rank 0, Thread 2
+Rank 3, Thread 1
+Rank 3, Thread 2
+Rank 0, Thread 1
+Rank 0, Thread 2
+Rank 2, Thread 1
+Rank 2, Thread 2
+Rank 2, Thread 1
+Rank 2, Thread 2
+Rank 2, Thread 1
+Rank 1, Thread 1
+Rank 1, Thread 3
+Rank 1, Thread 2
+Rank 1, Thread 3
+Rank 1, Thread 1
+Rank 3, Thread 1
+Rank 3, Thread 2
+Rank 3, Thread 1
+Rank 3, Thread 2
+Rank 3, Thread 1
+Rank 0, Thread 1
+Rank 0, Thread 3
+Rank 0, Thread 1
+Rank 2, Thread 2
+Rank 0, Thread 3
+Rank 1, Thread 3
+Rank 1, Thread 1
+Rank 3, Thread 2
+Rank 3, Thread 1
+Rank 0, Thread 1
+Rank 0, Thread 2
+Rank 0, Thread 2
+Rank 0, Thread 1
+Rank 2, Thread 1
+Rank 2, Thread 2
+Rank 0, Thread 3
+Rank 0, Thread 1
+Rank 0, Thread 2
+Rank 0, Thread 1
+Rank 0, Thread 3
+Rank 3, Thread 2
+Rank 3, Thread 0
+Rank 3, Thread 0
+Rank 1, Thread 0
+Rank 1, Thread 1
+Rank 1, Thread 0
+Rank 2, Thread 3
+Rank 2, Thread 1
+Rank 2, Thread 3
+Rank 0, Thread 2
+Rank 0, Thread 1
+Rank 0, Thread 2
+Rank 0, Thread 1
+Rank 0, Thread 2
+Rank 0, Thread 3
+Rank 0, Thread 3
+Rank 2, Thread 1
+Rank 2, Thread 3
+Rank 2, Thread 1
+Rank 2, Thread 3
+Rank 2, Thread 1
+Rank 2, Thread 2
+Rank 2, Thread 1
+Rank 1, Thread 3
+Rank 1, Thread 0
+Rank 3, Thread 1
+Rank 3, Thread 1
+Rank 3, Thread 1
+Rank 3, Thread 2
+Rank 3, Thread 0
+Rank 2, Thread 3
+Rank 2, Thread 1
+Rank 2, Thread 2
+Rank 3, Thread 2
+Rank 3, Thread 0
+Rank 1, Thread 1
+Rank 1, Thread 0
+Rank 1, Thread 1
+Rank 1, Thread 0
+Rank 3, Thread 0
+Rank 3, Thread 1
+Rank 2, Thread 1
+Rank 2, Thread 2
+Rank 1, Thread 0
+Rank 1, Thread 1
+Rank 3, Thread 3
+Rank 3, Thread 0
+Rank 3, Thread 1
+Rank 1, Thread 2
+Rank 1, Thread 0
+Rank 1, Thread 2
+Rank 1, Thread 1
+Rank 1, Thread 2
+Rank 0, Thread 1
+Rank 0, Thread 2
+Rank 2, Thread 1
+Rank 1, Thread 1
+Rank 3, Thread 3
+Rank 3, Thread 1
+Rank 3, Thread 2
+Rank 3, Thread 1
+Rank 3, Thread 2
+Rank 3, Thread 1
+Rank 3, Thread 2
+Rank 3, Thread 1
+Rank 3, Thread 2
+Rank 3, Thread 1
+Rank 3, Thread 2
+Rank 3, Thread 3
+Rank 3, Thread 2
+Rank 3, Thread 3
+Rank 3, Thread 2
+Rank 3, Thread 3
+Rank 3, Thread 2
+Rank 3, Thread 3
+Rank 0, Thread 2
+Rank 0, Thread 3
+Rank 0, Thread 2
+Rank 0, Thread 3
+Rank 0, Thread 2
+Rank 0, Thread 3
+Rank 0, Thread 2
+Rank 0, Thread 3
+Rank 0, Thread 2
+Rank 0, Thread 3
+Rank 0, Thread 2
+Rank 0, Thread 3
+Rank 0, Thread 2
+Rank 0, Thread 3
+Rank 0, Thread 2
+Rank 3, Thread 1
+Rank 3, Thread 3
+Rank 3, Thread 2
+Rank 3, Thread 3
+Rank 3, Thread 1
+Rank 3, Thread 3
+Rank 0, Thread 3
+Rank 0, Thread 2
+Rank 0, Thread 3
+Rank 0, Thread 2
+Rank 0, Thread 3
+Rank 0, Thread 2
+Rank 0, Thread 3
+Rank 0, Thread 2
+Rank 1, Thread 0
+Rank 1, Thread 1
+Rank 2, Thread 3
+Rank 1, Thread 0
+Rank 1, Thread 3
+Rank 2, Thread 1
+Rank 2, Thread 2
+Rank 1, Thread 0
+Rank 1, Thread 3
+Rank 2, Thread 0
+Rank 2, Thread 2
+Rank 2, Thread 0
+Rank 2, Thread 2
+Rank 1, Thread 3
+Rank 1, Thread 0
+Rank 1, Thread 3
+Rank 2, Thread 0
+Rank 2, Thread 2
+Rank 2, Thread 0
+Rank 2, Thread 2
+Rank 2, Thread 0
+Rank 2, Thread 2
+Rank 2, Thread 0
+Rank 2, Thread 2
+Rank 2, Thread 0
+Rank 2, Thread 2
+Rank 2, Thread 0
+Rank 2, Thread 2
+Rank 1, Thread 0
+Rank 1, Thread 3
+Rank 1, Thread 0
+Rank 1, Thread 3
+Rank 1, Thread 0
+Rank 1, Thread 3
+Rank 1, Thread 0
+Rank 1, Thread 3
+Rank 1, Thread 0
+Rank 1, Thread 3
+Rank 1, Thread 1
+Rank 1, Thread 0
+Rank 1, Thread 1
+Rank 1, Thread 0
+Rank 1, Thread 1
+Rank 2, Thread 0
+Rank 2, Thread 2
+Rank 2, Thread 0
+Rank 2, Thread 2
+Rank 2, Thread 0
+Rank 2, Thread 2
+Rank 2, Thread 3
+Rank 2, Thread 0
+Rank 2, Thread 3
+Rank 2, Thread 0
+Rank 2, Thread 3
+Rank 2, Thread 0
+Rank 2, Thread 3
+Rank 2, Thread 0
+Rank 2, Thread 3
+Rank 0, Thread 2
+Rank 0, Thread 3
+Rank 0, Thread 2
+Rank 0, Thread 3
+Rank 0, Thread 2
+Rank 0, Thread 3
+Rank 0, Thread 2
+Rank 0, Thread 3
+Rank 0, Thread 2
+Rank 0, Thread 3
+Rank 1, Thread 3
+Rank 1, Thread 3
+Rank 1, Thread 2
+Rank 1, Thread 3
+Rank 1, Thread 2
+Rank 1, Thread 3
+Rank 1, Thread 2
+Rank 1, Thread 3
+Rank 1, Thread 2
+Rank 1, Thread 3
+Rank 1, Thread 2
+Rank 1, Thread 3
+Rank 3, Thread 2
+Rank 3, Thread 2
+Rank 3, Thread 1
+Rank 3, Thread 2
+Rank 3, Thread 1
+Rank 3, Thread 2
+Rank 3, Thread 1
+Rank 3, Thread 2
+Rank 3, Thread 1
+Rank 3, Thread 1
+Rank 3, Thread 1
+Rank 3, Thread 1
+Rank 0, Thread 2
+Rank 2, Thread 0
+Rank 2, Thread 3
+Rank 3, Thread 2
+Rank 3, Thread 0
+Rank 3, Thread 2
+Rank 1, Thread 2
+Rank 1, Thread 3
+Rank 1, Thread 2
+Rank 0, Thread 3
+Rank 0, Thread 2
+Rank 0, Thread 3
+Rank 0, Thread 2
+Rank 0, Thread 3
+Rank 2, Thread 0
+Rank 2, Thread 3
+Rank 2, Thread 0
+Rank 3, Thread 0
+Rank 3, Thread 3
+Rank 3, Thread 2
+Rank 1, Thread 3
+Rank 1, Thread 2
+Rank 1, Thread 2
+Rank 1, Thread 1
+Rank 3, Thread 3
+Rank 3, Thread 1
+Rank 2, Thread 3
+Rank 0, Thread 2
+Rank 0, Thread 3
+Rank 0, Thread 2
+Rank 0, Thread 3
+Rank 0, Thread 2
+Rank 0, Thread 3
+Rank 1, Thread 2
+Rank 1, Thread 1
+Rank 1, Thread 2
+Rank 1, Thread 3
+Rank 1, Thread 2
+Rank 1, Thread 1
+Rank 3, Thread 2
+Rank 3, Thread 1
+Rank 3, Thread 3
+Rank 3, Thread 2
+Rank 2, Thread 2
+Rank 2, Thread 0
+Rank 0, Thread 2
+Rank 0, Thread 3
+Rank 2, Thread 2
+Rank 2, Thread 0
+Rank 2, Thread 2
+Rank 2, Thread 0
+Rank 2, Thread 2
+Rank 2, Thread 0
+Rank 2, Thread 2
+Rank 0, Thread 2
+Function 0 outputted: 0.922992532765938 and took an average of 0.001954448333333s
+Parallel output is not within tolerance
+Serial time: 0.000015198333333s
+Speedup is: 0.007776277875513
+Efficiency is: 0.001944069468878
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+A3.c: In function ‘mode2’:
+A3.c:248:9: error: loop nest expected before ‘{’ token
+  248 |         {
+      |         ^
+A3.c:263:9: error: loop nest expected before ‘{’ token
+  263 |         {
+      |         ^
+A3.c:272:9: error: loop nest expected before ‘{’ token
+  272 |         {
+      |         ^
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.483978063384264 and took an average of 0.000092211333333s
+Parallel output is not within tolerance
+Serial time: 0.000010309444444s
+Speedup is: 0.111802357386766
+Efficiency is: 0.027950589346691
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.343295612461161 and took an average of 0.000105747111111s
+Parallel output is not within tolerance
+Serial time: 0.000010066555556s
+Speedup is: 0.095194615245594
+Efficiency is: 0.023798653811399
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.483217695475171 and took an average of 0.000307615777778s
+Parallel output is within tolerance
+Serial time: 0.000015666777778s
+Speedup is: 0.050929695124729
+Efficiency is: 0.012732423781182
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.110621592088991 and took an average of 0.000139983444444s
+Parallel output is not within tolerance
+Serial time: 0.000014187000000s
+Speedup is: 0.101347699053302
+Efficiency is: 0.025336924763326
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.635809249875139 and took an average of 0.000142971000000s
+Parallel output is not within tolerance
+Serial time: 0.000009982555556s
+Speedup is: 0.069822240563170
+Efficiency is: 0.017455560140793
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.437460850611579 and took an average of 0.000111261888889s
+Parallel output is not within tolerance
+Serial time: 0.000014457000000s
+Speedup is: 0.129936675930764
+Efficiency is: 0.032484168982691
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.677857724288591 and took an average of 0.000094196000000s
+Parallel output is not within tolerance
+Serial time: 0.000010050222222s
+Speedup is: 0.106694787700348
+Efficiency is: 0.026673696925087
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.123397473694571 and took an average of 0.000108110000000s
+Parallel output is not within tolerance
+Serial time: 0.000010048444444s
+Speedup is: 0.092946484547630
+Efficiency is: 0.023236621136908
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.580671127316008 and took an average of 0.000082017777778s
+Parallel output is not within tolerance
+Serial time: 0.000011174666667s
+Speedup is: 0.136246884144359
+Efficiency is: 0.034061721036090
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.584957235362286 and took an average of 0.000101349000000s
+Parallel output is not within tolerance
+Serial time: 0.000014026333333s
+Speedup is: 0.138396366351233
+Efficiency is: 0.034599091587808
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.005571683758702 and took an average of 0.000166439555556s
+Parallel output is not within tolerance
+Serial time: 0.000012003555556s
+Speedup is: 0.072119608319616
+Efficiency is: 0.018029902079904
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.366085939253508 and took an average of 0.000154586111111s
+Parallel output is not within tolerance
+Serial time: 0.000014186555556s
+Speedup is: 0.091771217049118
+Efficiency is: 0.022942804262280
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.949112326710741 and took an average of 0.000087645333333s
+Parallel output is not within tolerance
+Serial time: 0.000010105111111s
+Speedup is: 0.115295483818610
+Efficiency is: 0.028823870954653
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.485544457355277 and took an average of 0.000095808777778s
+Parallel output is not within tolerance
+Serial time: 0.000010206444444s
+Speedup is: 0.106529325195211
+Efficiency is: 0.026632331298803
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.115261899433168 and took an average of 0.000085360777778s
+Parallel output is not within tolerance
+Serial time: 0.000010770555556s
+Speedup is: 0.126176867595967
+Efficiency is: 0.031544216898992
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.540578437869261 and took an average of 0.000141903333333s
+Parallel output is not within tolerance
+Serial time: 0.000011903333333s
+Speedup is: 0.083883394798969
+Efficiency is: 0.020970848699742
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.768515687360962 and took an average of 0.000144554888889s
+Parallel output is not within tolerance
+Serial time: 0.000010710000000s
+Speedup is: 0.074089503871645
+Efficiency is: 0.018522375967911
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.483217695475171 and took an average of 0.000101671888889s
+Parallel output is within tolerance
+Serial time: 0.000016125111111s
+Speedup is: 0.158599503632084
+Efficiency is: 0.039649875908021
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.483217695475171 and took an average of 0.000073410222222s
+Parallel output is within tolerance
+Serial time: 0.000010208777778s
+Speedup is: 0.139064798726176
+Efficiency is: 0.034766199681544
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.483217695475171 and took an average of 0.000077431444444s
+Parallel output is within tolerance
+Serial time: 0.000012056777778s
+Speedup is: 0.155709064505797
+Efficiency is: 0.038927266126449
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.483217695475171 and took an average of 0.000164209888889s
+Parallel output is within tolerance
+Serial time: 0.000010735777778s
+Speedup is: 0.065378387686760
+Efficiency is: 0.016344596921690
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.483217695475171 and took an average of 0.000084236222222s
+Parallel output is within tolerance
+Serial time: 0.000010216555556s
+Speedup is: 0.121284588577525
+Efficiency is: 0.030321147144381
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.483217695475171 and took an average of 0.000114713222222s
+Parallel output is within tolerance
+Serial time: 0.000011167444444s
+Speedup is: 0.097350978623992
+Efficiency is: 0.024337744655998
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.483217695475171 and took an average of 0.000115594333333s
+Parallel output is within tolerance
+Serial time: 0.000049658777778s
+Speedup is: 0.429595260821129
+Efficiency is: 0.107398815205282
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.483217695475171 and took an average of 0.000108195777778s
+Parallel output is within tolerance
+Serial time: 0.000020005444444s
+Speedup is: 0.184900417145081
+Efficiency is: 0.046225104286270
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.483217695475171 and took an average of 0.000854444111111s
+Parallel output is within tolerance
+Serial time: 0.000014265444444s
+Speedup is: 0.016695585186820
+Efficiency is: 0.004173896296705
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.483217695475171 and took an average of 0.000614025444444s
+Parallel output is within tolerance
+Serial time: 0.000011170888889s
+Speedup is: 0.018192876190976
+Efficiency is: 0.004548219047744
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-9
+Function 0 outputted: 0.483217695475171 and took an average of 0.000751423555556s
+Parallel output is within tolerance
+Serial time: 0.000013268000000s
+Speedup is: 0.017657152084074
+Efficiency is: 0.004414288021018
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=8 mpirun -np 8 A3 0 2 1e-9
+Function 0 outputted: 0.483217695475171 and took an average of 0.001171448666667s
+Parallel output is within tolerance
+Serial time: 0.000018122888889s
+Speedup is: 0.015470493419450
+Efficiency is: 0.001933811677431
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=8 mpirun -np 8 A3 0 2 1e-9
+Function 0 outputted: 0.483217695475171 and took an average of 0.018148294222222s
+Parallel output is within tolerance
+Serial time: 0.000016582222222s
+Speedup is: 0.000913706931303
+Efficiency is: 0.000114213366413
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=8 mpirun -np 8 A3 0 2 1e-9
+Function 0 outputted: 0.483217695475171 and took an average of 0.011065994222222s
+Parallel output is within tolerance
+Serial time: 0.000014952444444s
+Speedup is: 0.001351206601428
+Efficiency is: 0.000168900825179
+K is: 99
+The total number of accepted intervals is: 99
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=8 mpirun -np 8 A3 0 2 1e-8
+Function 0 outputted: 0.483217695475171 and took an average of 0.003075741444444s
+Parallel output is within tolerance
+Serial time: 0.000015985444444s
+Speedup is: 0.005197265353146
+Efficiency is: 0.000649658169143
+K is: 200
+The total number of accepted intervals is: 200
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=8 mpirun -np 8 A3 2 2 1e-8
+Function 2 outputted: 0.004111797259814 and took an average of 0.004265023777778s
+Parallel output is not within tolerance
+Serial time: 0.000004377444444s
+Speedup is: 0.001026358743240
+Efficiency is: 0.000128294842905
+K is: 200
+The total number of accepted intervals is: 200
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=8 mpirun -np 8 A3 2 2 1e-8
+Function 2 outputted: 0.004111797259814 and took an average of 0.007857339111111s
+Parallel output is not within tolerance
+Serial time: 0.000004043111111s
+Speedup is: 0.000514564925089
+Efficiency is: 0.000064320615636
+K is: 400
+The total number of accepted intervals is: 400
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=8 mpirun -np 8 A3 2 2 1e-8
+Function 2 outputted: 0.004111797259950 and took an average of 0.014734510222222s
+Parallel output is not within tolerance
+Serial time: 0.000004542888889s
+Speedup is: 0.000308316246713
+Efficiency is: 0.000038539530839
+K is: 800
+The total number of accepted intervals is: 800
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=8 mpirun -np 8 A3 2 1 1e-8
+Function 2 outputted: 0.004111797259950 and took an average of 0.001091231777778s
+Parallel output is not within tolerance
+Serial time: 0.000004468888889s
+Speedup is: 0.004095270115748
+Efficiency is: 0.000511908764469
+K is: 800
+The total number of accepted intervals is: 1495
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=8 mpirun -np 8 A3 2 0 1e-8
+Function 2 outputted: -0.258653581664379 and took an average of 0.000002405666667s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=8 mpirun -np 8 A3 2 0 1e-8
+Function 2 outputted: -0.258653581664379 and took an average of 0.000011722000000s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=8 mpirun -np 8 A3 2 0 1e-8
+Function 2 outputted: -0.258653581664379 and took an average of 0.000003530888889s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ 
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ mpicc -fopenmp A3.c -lm -o A3
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 0 0 1e-6
+Function 0 outputted: 0.483217698795448 and took an average of 0.000001931444444s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 2 A3 0 0 1e-6
+Function 0 outputted: 0.483217698795448 and took an average of 0.000002091666667s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 4 A3 0 0 1e-6
+Function 0 outputted: 0.483217698795448 and took an average of 0.000009429444444s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 8 A3 0 0 1e-6
+Function 0 outputted: 0.483217698795448 and took an average of 0.000002106444444s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 4 A3 0 0 1e-6
+Function 0 outputted: 0.483217698795448 and took an average of 0.000002092777778s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 4 A3 0 0 1e-8
+Function 0 outputted: 0.483217695475281 and took an average of 0.000007299222222s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 8 A3 0 0 1e-8
+Function 0 outputted: 0.483217695475281 and took an average of 0.000008079777778s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 2 A3 0 0 1e-8
+Function 0 outputted: 0.483217695475281 and took an average of 0.000007026666667s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 0 0 1e-8
+Function 0 outputted: 0.483217695475281 and took an average of 0.000006833222222s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 0 1 1e-6
+Function 0 outputted: 0.000000000000000 and took an average of 0.000000875555556s
+Parallel output is not within tolerance
+Serial time: 0.000001928444444s
+Speedup is: 2.202538071062186
+Efficiency is: 2.202538071062186
+K is: 25
+The total number of accepted intervals is: 25
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 0 1 1e-6
+Function 0 outputted: 0.000000000000000 and took an average of 0.000002855000000s
+Parallel output is not within tolerance
+Serial time: 0.000002015666667s
+Speedup is: 0.706012842965727
+Efficiency is: 0.706012842965727
+K is: 25
+The total number of accepted intervals is: 25
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 0 1 1e-8
+Function 0 outputted: 0.000000000000000 and took an average of 0.000000944444444s
+Parallel output is not within tolerance
+Serial time: 0.000006797555556s
+Speedup is: 7.197411764707327
+Efficiency is: 7.197411764707327
+K is: 25
+The total number of accepted intervals is: 25
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 2 A3 0 1 1e-8
+Function 0 outputted: 0.483217695475171 and took an average of 0.000038973222222s
+Parallel output is within tolerance
+Serial time: 0.000007293333333s
+Speedup is: 0.187137037110971
+Efficiency is: 0.093568518555486
+K is: 50
+The total number of accepted intervals is: 50
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 4 A3 0 1 1e-8
+Function 0 outputted: 0.483217695475172 and took an average of 0.000045089666667s
+Parallel output is within tolerance
+Serial time: 0.000007626888889s
+Speedup is: 0.169149373963471
+Efficiency is: 0.042287343490868
+K is: 100
+The total number of accepted intervals is: 100
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 8 A3 0 1 1e-8
+Function 0 outputted: 0.483217695475171 and took an average of 0.000368108000000s
+Parallel output is within tolerance
+Serial time: 0.000008698888889s
+Speedup is: 0.023631349736730
+Efficiency is: 0.002953918717091
+K is: 200
+The total number of accepted intervals is: 200
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 8 A3 0 1 1e-6
+Function 0 outputted: 0.483217695475171 and took an average of 0.000133708333333s
+Parallel output is within tolerance
+Serial time: 0.000003627666667s
+Speedup is: 0.027131193518232
+Efficiency is: 0.003391399189779
+K is: 200
+The total number of accepted intervals is: 200
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 4 A3 0 1 1e-6
+Function 0 outputted: 0.483217695475172 and took an average of 0.000043534222222s
+Parallel output is within tolerance
+Serial time: 0.000002203333333s
+Speedup is: 0.050611524011717
+Efficiency is: 0.012652881002929
+K is: 100
+The total number of accepted intervals is: 100
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 2 A3 0 1 1e-6
+Function 0 outputted: 0.483217695475171 and took an average of 0.000036917000000s
+Parallel output is within tolerance
+Serial time: 0.000002138888889s
+Speedup is: 0.057937776333134
+Efficiency is: 0.028968888166567
+K is: 50
+The total number of accepted intervals is: 50
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 1 0 1e-6
+Function 1 outputted: 0.267794487485582 and took an average of 0.000007863000000s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 1 A3 1 0 1e-8
+Function 1 outputted: 0.267794504461961 and took an average of 0.000026367444444s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 2 A3 1 0 1e-8
+Function 1 outputted: 0.267794504461961 and took an average of 0.000026342666667s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 4 A3 1 0 1e-8
+Function 1 outputted: 0.267794504461961 and took an average of 0.000102526888889s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 4 A3 1 0 1e-8
+Function 1 outputted: 0.267794504461961 and took an average of 0.000046928444444s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 8 A3 1 0 1e-8
+Function 1 outputted: 0.267794504461961 and took an average of 0.000039388333333s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 8 A3 1 0 1e-6
+Function 1 outputted: 0.267794487485582 and took an average of 0.000010900666667s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 8 A3 1 0 1e-6
+Function 1 outputted: 0.267794487485582 and took an average of 0.000030801000000s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 8 A3 1 0 1e-6
+Function 1 outputted: 0.267794487485582 and took an average of 0.000010222111111s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 8 A3 1 0 1e-6
+Function 1 outputted: 0.267794487485582 and took an average of 0.000008270000000s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 4 A3 1 0 1e-6
+Function 1 outputted: 0.267794487485582 and took an average of 0.000012491333333s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 4 A3 1 0 1e-6
+Function 1 outputted: 0.267794487485582 and took an average of 0.000008059222222s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 4 A3 1 0 1e-6
+Function 1 outputted: 0.267794487485582 and took an average of 0.000023844777778s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 4 A3 1 0 1e-6
+Function 1 outputted: 0.267794487485582 and took an average of 0.000007931000000s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 2 A3 1 0 1e-6
+Function 1 outputted: 0.267794487485582 and took an average of 0.000007887222222s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 2 A3 1 1 1e-6
+Function 1 outputted: 0.267794504458526 and took an average of 0.000038190777778s
+Parallel output is within tolerance
+Serial time: 0.000007713666667s
+Speedup is: 0.201977207993835
+Efficiency is: 0.100988603996918
+K is: 50
+The total number of accepted intervals is: 50
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 4 A3 1 1 1e-6
+Function 1 outputted: 0.267794504458893 and took an average of 0.000042136777778s
+Parallel output is within tolerance
+Serial time: 0.000007999000000s
+Speedup is: 0.189834164401045
+Efficiency is: 0.047458541100261
+K is: 100
+The total number of accepted intervals is: 100
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 8 A3 1 1 1e-6
+Function 1 outputted: 0.267794504458899 and took an average of 0.000226764000000s
+Parallel output is within tolerance
+Serial time: 0.000012870222222s
+Speedup is: 0.056756020453960
+Efficiency is: 0.007094502556745
+K is: 200
+The total number of accepted intervals is: 200
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 8 A3 1 1 1e-8
+Function 1 outputted: 0.267794504458899 and took an average of 0.000191255000000s
+Parallel output is within tolerance
+Serial time: 0.000027111666667s
+Speedup is: 0.141756642527869
+Efficiency is: 0.017719580315984
+K is: 200
+The total number of accepted intervals is: 200
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 4 A3 1 1 1e-8
+Function 1 outputted: 0.267794504460367 and took an average of 0.000056630333333s
+Parallel output is within tolerance
+Serial time: 0.000026953222222s
+Speedup is: 0.475950266151039
+Efficiency is: 0.118987566537760
+K is: 100
+The total number of accepted intervals is: 116
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=1 mpirun -np 2 A3 1 1 1e-8
+Function 1 outputted: 0.267794504420407 and took an average of 0.000078773111111s
+Parallel output is within tolerance
+Serial time: 0.000025399111111s
+Speedup is: 0.322433768996189
+Efficiency is: 0.161216884498094
+K is: 50
+The total number of accepted intervals is: 82
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=2 mpirun -np 4 A3 1 0 1e-6
+Function 1 outputted: 0.267794487485582 and took an average of 0.000036243888889s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 2 A3 1 0 1e-6
+Function 1 outputted: 0.267794487485582 and took an average of 0.000007779777778s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 1 0 1e-6
+Function 1 outputted: 0.267794487485582 and took an average of 0.000074886111111s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=2 mpirun -np 4 A3 1 0 1e-6
+Function 1 outputted: 0.267794487485582 and took an average of 0.000007948444444s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=2 mpirun -np 4 A3 1 0 1e-8
+Function 1 outputted: 0.267794504461961 and took an average of 0.000065446333333s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 2 A3 1 0 1e-8
+Function 1 outputted: 0.267794504461961 and took an average of 0.000037825777778s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 1 0 1e-8
+Function 1 outputted: 0.267794504461961 and took an average of 0.000028259222222s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=2 mpirun -np 4 A3 1 2 1e-6
+Function 1 outputted: 0.267794504458893 and took an average of 0.000288388777778s
+Parallel output is within tolerance
+Serial time: 0.000008279888889s
+Speedup is: 0.028710856756252
+Efficiency is: 0.007177714189063
+K is: 100
+The total number of accepted intervals is: 100
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 2 A3 1 2 1e-6
+Function 1 outputted: 0.267794504458526 and took an average of 0.000952508222222s
+Parallel output is within tolerance
+Serial time: 0.000008133444444s
+Speedup is: 0.008538975574898
+Efficiency is: 0.004269487787449
+K is: 50
+The total number of accepted intervals is: 50
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 1 2 1e-6
+Function 1 outputted: 0.267794504458893 and took an average of 0.000687128111111s
+Parallel output is within tolerance
+Serial time: 0.000009045000000s
+Speedup is: 0.013163484150541
+Efficiency is: 0.003290871037635
+K is: 100
+The total number of accepted intervals is: 100
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 1 2 1e-8
+Function 1 outputted: 0.267794504460367 and took an average of 0.000881173333333s
+Parallel output is within tolerance
+Serial time: 0.000026125444444s
+Speedup is: 0.029648473752168
+Efficiency is: 0.007412118438042
+K is: 100
+The total number of accepted intervals is: 100
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 2 A3 1 2 1e-8
+Function 1 outputted: 0.267794504420407 and took an average of 0.000784441000000s
+Parallel output is within tolerance
+Serial time: 0.000030239222222s
+Speedup is: 0.038548752834468
+Efficiency is: 0.019274376417234
+K is: 50
+The total number of accepted intervals is: 50
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=2 mpirun -np 4 A3 1 2 1e-8
+Function 1 outputted: 0.267794504460367 and took an average of 0.000288345888889s
+Parallel output is within tolerance
+Serial time: 0.000064310111111s
+Speedup is: 0.223031135831077
+Efficiency is: 0.055757783957769
+K is: 100
+The total number of accepted intervals is: 100
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=2 mpirun -np 4 A3 0 2 1e-8
+Function 0 outputted: 0.483217695475171 and took an average of 0.000330325000000s
+Parallel output is within tolerance
+Serial time: 0.000007935222222s
+Speedup is: 0.024022469453481
+Efficiency is: 0.006005617363370
+K is: 100
+The total number of accepted intervals is: 100
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 2 A3 0 2 1e-8
+Function 0 outputted: 0.483217695475171 and took an average of 0.000455900000000s
+Parallel output is within tolerance
+Serial time: 0.000007741777778s
+Speedup is: 0.016981306816802
+Efficiency is: 0.008490653408401
+K is: 50
+The total number of accepted intervals is: 50
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-8
+Function 0 outputted: 0.483217695475171 and took an average of 0.000600440111111s
+Parallel output is within tolerance
+Serial time: 0.000007756888889s
+Speedup is: 0.012918672062957
+Efficiency is: 0.003229668015739
+K is: 100
+The total number of accepted intervals is: 100
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-6
+Function 0 outputted: 0.483217695475171 and took an average of 0.000915234888889s
+Parallel output is within tolerance
+Serial time: 0.000002767111111s
+Speedup is: 0.003023389017073
+Efficiency is: 0.000755847254268
+K is: 100
+The total number of accepted intervals is: 100
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 2 A3 0 2 1e-6
+Function 0 outputted: 0.483217695475171 and took an average of 0.000461366222222s
+Parallel output is within tolerance
+Serial time: 0.000020690444444s
+Speedup is: 0.044846032171117
+Efficiency is: 0.022423016085559
+K is: 50
+The total number of accepted intervals is: 50
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=2 mpirun -np 4 A3 0 2 1e-6
+Function 0 outputted: 0.483217695475171 and took an average of 0.000187586222222s
+Parallel output is within tolerance
+Serial time: 0.000002486666667s
+Speedup is: 0.013256126367969
+Efficiency is: 0.003314031591992
+K is: 100
+The total number of accepted intervals is: 100
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ 
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=2 mpirun -np 4 A3 1 0 1e-6
+Function 1 outputted: 0.267794487485582 and took an average of 0.000036243888889s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 2 A3 1 0 1e-6
+Function 1 outputted: 0.267794487485582 and took an average of 0.000007779777778s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 1 0 1e-6
+Function 1 outputted: 0.267794487485582 and took an average of 0.000074886111111s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=2 mpirun -np 4 A3 1 0 1e-6
+Function 1 outputted: 0.267794487485582 and took an average of 0.000007948444444s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=2 mpirun -np 4 A3 1 0 1e-8
+Function 1 outputted: 0.267794504461961 and took an average of 0.000065446333333s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 2 A3 1 0 1e-8
+Function 1 outputted: 0.267794504461961 and took an average of 0.000037825777778s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 1 0 1e-8
+Function 1 outputted: 0.267794504461961 and took an average of 0.000028259222222s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=2 mpirun -np 4 A3 1 2 1e-6
+Function 1 outputted: 0.267794504458893 and took an average of 0.000288388777778s
+Parallel output is within tolerance
+Serial time: 0.000008279888889s
+Speedup is: 0.028710856756252
+Efficiency is: 0.007177714189063
+K is: 100
+The total number of accepted intervals is: 100
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 2 A3 1 2 1e-6
+Function 1 outputted: 0.267794504458526 and took an average of 0.000952508222222s
+Parallel output is within tolerance
+Serial time: 0.000008133444444s
+Speedup is: 0.008538975574898
+Efficiency is: 0.004269487787449
+K is: 50
+The total number of accepted intervals is: 50
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 1 2 1e-6
+Function 1 outputted: 0.267794504458893 and took an average of 0.000687128111111s
+Parallel output is within tolerance
+Serial time: 0.000009045000000s
+Speedup is: 0.013163484150541
+Efficiency is: 0.003290871037635
+K is: 100
+The total number of accepted intervals is: 100
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 1 2 1e-8
+Function 1 outputted: 0.267794504460367 and took an average of 0.000881173333333s
+Parallel output is within tolerance
+Serial time: 0.000026125444444s
+Speedup is: 0.029648473752168
+Efficiency is: 0.007412118438042
+K is: 100
+The total number of accepted intervals is: 100
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 2 A3 1 2 1e-8
+Function 1 outputted: 0.267794504420407 and took an average of 0.000784441000000s
+Parallel output is within tolerance
+Serial time: 0.000030239222222s
+Speedup is: 0.038548752834468
+Efficiency is: 0.019274376417234
+K is: 50
+The total number of accepted intervals is: 50
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=2 mpirun -np 4 A3 1 2 1e-8
+Function 1 outputted: 0.267794504460367 and took an average of 0.000288345888889s
+Parallel output is within tolerance
+Serial time: 0.000064310111111s
+Speedup is: 0.223031135831077
+Efficiency is: 0.055757783957769
+K is: 100
+The total number of accepted intervals is: 100
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=2 mpirun -np 4 A3 0 2 1e-8
+Function 0 outputted: 0.483217695475171 and took an average of 0.000330325000000s
+Parallel output is within tolerance
+Serial time: 0.000007935222222s
+Speedup is: 0.024022469453481
+Efficiency is: 0.006005617363370
+K is: 100
+The total number of accepted intervals is: 100
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 2 A3 0 2 1e-8
+Function 0 outputted: 0.483217695475171 and took an average of 0.000455900000000s
+Parallel output is within tolerance
+Serial time: 0.000007741777778s
+Speedup is: 0.016981306816802
+Efficiency is: 0.008490653408401
+K is: 50
+The total number of accepted intervals is: 50
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-8
+Function 0 outputted: 0.483217695475171 and took an average of 0.000600440111111s
+Parallel output is within tolerance
+Serial time: 0.000007756888889s
+Speedup is: 0.012918672062957
+Efficiency is: 0.003229668015739
+K is: 100
+The total number of accepted intervals is: 100
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 2 1e-6
+Function 0 outputted: 0.483217695475171 and took an average of 0.000915234888889s
+Parallel output is within tolerance
+Serial time: 0.000002767111111s
+Speedup is: 0.003023389017073
+Efficiency is: 0.000755847254268
+K is: 100
+The total number of accepted intervals is: 100
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 2 A3 0 2 1e-6
+Function 0 outputted: 0.483217695475171 and took an average of 0.000461366222222s
+Parallel output is within tolerance
+Serial time: 0.000020690444444s
+Speedup is: 0.044846032171117
+Efficiency is: 0.022423016085559
+K is: 50
+The total number of accepted intervals is: 50
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=2 mpirun -np 4 A3 0 2 1e-6
+Function 0 outputted: 0.483217695475171 and took an average of 0.000187586222222s
+Parallel output is within tolerance
+Serial time: 0.000002486666667s
+Speedup is: 0.013256126367969
+Efficiency is: 0.003314031591992
+K is: 100
+The total number of accepted intervals is: 100
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=2 mpirun -np 4 A3 0 0 1e-6
+Function 0 outputted: 0.483217698795448 and took an average of 0.000002077222222s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 2 A3 0 0 1e-6
+Function 0 outputted: 0.483217698795448 and took an average of 0.000001874888889s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 0 1e-6
+Function 0 outputted: 0.483217698795448 and took an average of 0.000002067000000s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 0 1e-8
+Function 0 outputted: 0.483217695475281 and took an average of 0.000011728222222s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 2 A3 0 0 1e-8
+Function 0 outputted: 0.483217695475281 and took an average of 0.000007043000000s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 2 A3 0 0 1e-8
+Function 0 outputted: 0.483217695475281 and took an average of 0.000006800222222s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 2 A3 0 0 1e-8
+Function 0 outputted: 0.483217695475281 and took an average of 0.000007065888889s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 2 A3 0 0 1e-8
+Function 0 outputted: 0.483217695475281 and took an average of 0.000022825000000s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=2 mpirun -np 4 A3 0 0 1e-8
+Function 0 outputted: 0.483217695475281 and took an average of 0.000006958888889s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ OMP_NUM_THREADS=4 mpirun -np 4 A3 0 0 1e-8
+Function 0 outputted: 0.483217695475281 and took an average of 0.000048382444444s
+florafluff@Ubuntu25:~/Documents/CS3745_Assignment3$ 

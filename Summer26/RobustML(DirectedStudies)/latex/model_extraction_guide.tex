@@ -1,0 +1,616 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{RML\\
+\large Study Guide to Model Extraction Attacks}
+\author{Refat Ishrak Hemel}
+\date{July 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+Model extraction attacks are a class of security threats where an adversary aims to replicate the functionality, structure, or parameters of a proprietary black-box machine learning model (the victim model) by interacting with its public API. 
+
+This study guide categorizes these attacks into 7 primary categories:
+\begin{enumerate}
+    \item \textbf{Query-Based Attacks}: Stealing models purely by sending queries and examining the predictions.
+    \item \textbf{Data-Driven Attacks}: Using natural, synthetic, or out-of-domain datasets to optimize extraction.
+    \item \textbf{Side-Channel Attacks}: Stealing parameters or architecture via physical or software execution cues.
+    \item \textbf{Gradient-Based Attacks}: Stealing models by estimating or directly hijacking backpropagation gradients.
+    \item \textbf{Attacks on Text Models}: Stealing language representation models (Transformers, LLMs).
+    \item \textbf{Attacks on Vision Models}: Stealing image classification or generation networks.
+    \item \textbf{Attacks on Graph Models}: Stealing Graph Neural Networks (GNNs) or training topology.
+\end{enumerate}
+
+---
+
+\section{Category 1: Query-Based Attacks}
+
+\subsection{General Mechanics (Intuition)}
+Query-based attacks represent the most classic form of model extraction. The attacker treats the target model as a complete black box, having access to neither its architecture, its parameters, nor its training data. 
+
+The core intuition is simple:
+\begin{quote}
+    \textit{``If a model behaves in a certain way on a set of inputs, we can train a second model to mimic that behavior on the same inputs, or write a system of equations to solve for the model's exact parameters.''}
+\end{quote}
+
+For example, imagine a teacher (the victim model) who knows the answer to any question. A student (the attacker) asks the teacher many questions and writes down the answers. By studying the questions and answers, the student can learn to think exactly like the teacher, eventually recreating their knowledge without ever reading their original textbooks.
+
+---
+
+\subsection{Deep-Dive 1.1: Substitute Model Training}
+
+\subsubsection{General Mechanics}
+Substitute model training is used when the target model is too complex to solve directly (e.g., a deep neural network). 
+1. \textbf{Initialize}: The attacker starts with a small set of inputs (the seed set) and a local model (the clone/substitute model).
+2. \textbf{Query}: The attacker sends these inputs to the victim API and receives predicted labels (hard labels like ``Cat/Dog'' or soft labels like probability distributions).
+3. **Augment (Jacobian-Based)**: To make the clone model represent the victim's decision boundary accurately with a small query budget, the attacker perturbs the inputs in the direction of the clone model's gradients (the Jacobian matrix).
+4. \textbf{Iterate}: The perturbed samples are queried, added to the dataset, and used to retrain the clone model. This pushes the queries directly toward the victim's decision boundary where the model is most uncertain.
+
+\subsubsection{Mathematical Formulation}
+Let $\tilde{f}$ be the substitute model. The attacker wants to generate a perturbed input $x^*$ from a seed input $x$ to probe the model's boundary for class $c$:
+\begin{equation}
+    x^* = x + \lambda \cdot \text{sgn}\left( \nabla_x \tilde{f}(x)_c \right)
+\end{equation}
+where $\nabla_x \tilde{f}(x)_c$ is the gradient of the predicted probability of class $c$ with respect to the input features, $\text{sgn}$ is the sign function (returning $+1$ or $-1$), and $\lambda$ is the step size.
+
+\subsubsection{Mathematical Example}
+Consider a toy model classifying 2D inputs $x = [x_1, x_2]^T$ with step size $\lambda = 0.1$ and seed point $x = [0.5, 0.6]^T$. Let the substitute model's probability for class 0 be:
+$$\tilde{f}(x)_0 = 0.5 x_1 + 0.8 x_2$$
+
+\begin{enumerate}
+    \item \textbf{Step 1: Compute Gradient}: Find the partial derivatives with respect to the input features:
+    $$\nabla_x \tilde{f}(x)_0 = \left[ \frac{\partial \tilde{f}}{\partial x_1}, \frac{\partial \tilde{f}}{\partial x_2} \right]^T = [0.5, 0.8]^T$$
+    
+    \item \textbf{Step 2: Apply Sign Function}: Take the sign of each gradient element:
+    $$\text{sgn}([0.5, 0.8]^T) = [1, 1]^T$$
+    
+    \item \textbf{Step 3: Calculate Perturbed Sample}: Add the step to the original input:
+    $$x^* = [0.5, 0.6]^T + 0.1 \cdot [1, 1]^T = [0.6, 0.7]^T$$
+    This new sample $x^*$ is sent to the target API to find the boundary label.
+\end{enumerate}
+
+---
+
+\subsection{Deep-Dive 1.2: Equation Solving}
+
+\subsubsection{General Mechanics}
+Equation solving is used when the victim model is a simple, standard machine learning algorithm (like Linear or Logistic Regression). 
+1. \textbf{Linear Relationship}: These models make predictions by multiplying inputs by weights and adding a bias. If the API returns exact prediction confidence scores (probabilities), we can reverse-engineer this math.
+2. \textbf{System of Equations}: Since the parameters are unknown, we can treat them as variables in a system of linear equations.
+3. \textbf{Solve}: By querying the API with a set of linearly independent inputs, we generate enough equations to solve for the exact weights and bias.
+
+\subsubsection{Mathematical Formulation}
+For a logistic regression model with weights $w \in \mathbb{R}^d$ and bias $b \in \mathbb{R}$, the output probability for class 1 is:
+$$p(x) = \frac{1}{1 + e^{-(w^T x + b)}}$$
+
+We can invert this sigmoid function (logit transform) to yield a linear equation:
+\begin{equation}
+    w^T x + b = \ln \left( \frac{p(x)}{1 - p(x)} \right)
+\end{equation}
+
+By querying $d+1$ linearly independent inputs, we form the matrix equation:
+\begin{equation}
+    X w' = Y
+\end{equation}
+where $X$ is the input matrix with a column of ones appended, $w' = [w_1, \dots, w_d, b]^T$ is the parameter vector, and $Y_i = \ln \left( \frac{p(x_i)}{1 - p(x_i)} \right)$. We solve it via:
+\begin{equation}
+    w' = X^{-1} Y
+\end{equation}
+
+\subsubsection{Mathematical Example}
+Consider a 1D input space ($d=1$, meaning we have $2$ parameters: weight $w_1$ and bias $b$).
+\begin{enumerate}
+    \item \textbf{Step 1: Query API}: We query the API with two inputs:
+    \begin{itemize}
+        \item Query $x_1 = 2 \implies$ receives confidence score $p_1 = 0.8808$
+        \item Query $x_2 = 0.5 \implies$ receives confidence score $p_2 = 0.6225$
+    \end{itemize}
+    
+    \item \textbf{Step 2: Linearize the Outputs}:
+    \begin{align*}
+        y_1 &= \ln \left( \frac{0.8808}{1 - 0.8808} \right) = \ln(7.39) \approx 2.0 \\
+        y_2 &= \ln \left( \frac{0.6225}{1 - 0.6225} \right) = \ln(1.65) \approx 0.5
+    \end{align*}
+    This gives the system of linear equations:
+    \begin{align*}
+        2 w_1 + b &= 2.0 \\
+        0.5 w_1 + b &= 0.5
+    \end{align*}
+    
+    \item \textbf{Step 3: Solve the System}: Subtracting the second equation from the first:
+    $$(2 - 0.5) w_1 = 2.0 - 0.5 \implies 1.5 w_1 = 1.5 \implies w_1 = 1.0$$
+    Substituting $w_1 = 1.0$ back:
+    $$2(1.0) + b = 2.0 \implies b = 0.0$$
+    The exact parameters of the victim model are successfully recovered: $w_1 = 1.0$, $b = 0.0$.
+\end{enumerate}
+
+---
+
+\subsection{Deep-Dive 1.3: Decision Tree Path-Finding (Equation Solving)}
+
+\subsubsection{General Mechanics (Intuition)}
+Imagine trying to map out the layout of a maze (the decision tree) without being able to see it. You start in one room (a leaf node) and choose a direction to walk (e.g., changing the value of a continuous feature like size). You walk in a straight line until you cross a threshold and enter a new room. 
+
+Because MLaaS APIs return predictions with a high-precision confidence score, the confidence score acts as a unique ``room number'' (leaf identifier). The moment the confidence score flips, you know you have hit a boundary wall. You write down the exact coordinate of the wall (the split threshold $t$), step past it to explore the new room, and repeat the process until the entire maze is mapped.
+
+\subsubsection{Mathematical Formulation}
+Let $T$ be the target decision tree and $O(x)$ be the leaf-identity oracle returning a unique confidence score representing the leaf node reached by query $x$:
+\begin{equation}
+    O(x) = id_v
+\end{equation}
+
+For each feature $i$ of the query vector $x$:
+\begin{enumerate}
+    \item \textbf{Continuous Feature Line Search}: 
+    Let feature $X_i \in [a, b]$. If $O(x[x_i \leftarrow a]) \neq O(x[x_i \leftarrow b])$, a split threshold $t$ exists on the path. The attacker performs a binary search to find $t$ up to a precision threshold $\epsilon$:
+    \begin{equation}
+        t = \text{BinarySearch}(a, b) \quad \text{where} \quad O(x[x_i \leftarrow t]) \neq O(x[x_i \leftarrow t + \epsilon])
+    \end{equation}
+    The predicate for the current leaf is extracted as $x_i > t$ or $x_i \le t$.
+    
+    \item \textbf{Categorical Feature Category Split}:
+    For categorical feature $X_i \in \mathcal{V}$, the attacker varies the feature value across all categories, grouping them into:
+    \begin{align}
+        S &= \{ v \in \mathcal{V} \mid O(x[x_i \leftarrow v]) = id_v \} \quad \text{(belongs to current leaf)} \\
+        V &= \{ v \in \mathcal{V} \mid O(x[x_i \leftarrow v]) \neq id_v \} \quad \text{(leads to unvisited leaves)}
+    \end{align}
+\end{enumerate}
+
+To explore adjacent leaves, the attacker generates new queries by stepping over thresholds:
+\begin{equation}
+    x_{new} = x[x_i \leftarrow t - \epsilon] \quad \text{or} \quad x_{new} = x[x_i \leftarrow v] \quad (\text{for } v \in V)
+\end{equation}
+
+\subsubsection{Mathematical Example}
+Consider a target decision tree classifying samples using two features: a continuous feature $\text{Size} \in [0, 100]$ and a categorical feature $\text{Color} \in \{\text{Red}, \text{Blue}\}$. Suppose the hidden target tree is structured as:
+\begin{itemize}
+    \item Split 1: $\text{Size} \le 40 \implies \text{Leaf 1}$ (confidence = 0.95)
+    \item Split 2: $\text{Size} > 40$ and $\text{Color} = \text{Red} \implies \text{Leaf 2}$ (confidence = 0.85)
+    \item Split 3: $\text{Size} > 40$ and $\text{Color} = \text{Blue} \implies \text{Leaf 3}$ (confidence = 0.75)
+\end{itemize}
+
+The extraction progresses as follows:
+\begin{enumerate}
+    \item \textbf{Step 1: Initialize Seed Query}:
+    The attacker starts with a random query $x^{(0)} = \{\text{Size} = 50, \ \text{Color} = \text{Red}\}$ and queries the oracle:
+    $$O(x^{(0)}) = 0.85 \quad (\text{identifies Leaf 2})$$
+    
+    \item \textbf{Step 2: Line Search for Continuous Feature (Size)}:
+    The attacker queries the boundaries of feature $\text{Size}$ with $\text{Color} = \text{Red}$:
+    \begin{align*}
+        O(\{\text{Size} = 0, \ \text{Color} = \text{Red}\}) &= 0.95 \quad (\text{Leaf 1}) \\
+        O(\{\text{Size} = 100, \ \text{Color} = \text{Red}\}) &= 0.85 \quad (\text{Leaf 2})
+    \end{align*}
+    Since the outputs differ, a split exists in $[0, 50]$. The attacker runs a binary search on the interval $[0, 50]$:
+    \begin{itemize}
+        \item Midpoint Size = 25 $\implies O(\{\text{Size} = 25\}) = 0.95$ (Leaf 1). Split lies in $(25, 50]$.
+        \item Midpoint Size = 37.5 $\implies O(\{\text{Size} = 37.5\}) = 0.95$ (Leaf 1). Split lies in $(37.5, 50]$.
+        \item The search converges to the threshold $t = 40$.
+    \end{itemize}
+    The attacker extracts the predicate $\text{Size} > 40$ for the current leaf and creates a query to explore the left branch:
+    $$x^{(1)} = \{\text{Size} = 39, \ \text{Color} = \text{Red}\} \quad (\text{leads to Leaf 1})$$
+    
+    \item \textbf{Step 3: Category Split for Categorical Feature (Color)}:
+    The attacker varies $\text{Color}$ for the query $\text{Size} = 50$:
+    $$O(\{\text{Size} = 50, \ \text{Color} = \text{Blue}\}) = 0.75 \quad (\text{Leaf 3})$$
+    Since this is a different leaf, the attacker extracts the predicate $\text{Color} = \text{Red}$ for Leaf 2 and schedules a query to explore the Blue branch:
+    $$x^{(2)} = \{\text{Size} = 50, \ \text{Color} = \text{Blue}\} \quad (\text{leads to Leaf 3})$$
+\end{enumerate}
+
+By processing $x^{(1)}$ and $x^{(2)}$ in the queue, the attacker successfully reconstructs the complete tree structure.
+
+---
+
+\section{Category 2: Data-Driven Attacks}
+
+\subsection{General Mechanics (Intuition)}
+Data-Driven attacks focus on \textbf{where} the attacker obtains the dataset used to query the target model. Since the attacker has no access to the victim model's private training dataset, they must obtain or generate an alternative dataset.
+
+The core intuition splits this category into three approaches:
+\begin{enumerate}
+    \item \textbf{Problem Domain (PD) Attacks}: The attacker queries the model using natural data from the same domain as the target task.
+    \begin{itemize}
+        \item \textit{Intuition}: If we want to steal a model that classifies handwriting, we collect a public set of handwritten letters. This is highly effective but difficult if the domain is private (e.g. clinical datasets).
+    \end{itemize}
+    \item \textbf{Non-Problem Domain (NPD) Attacks}: The attacker queries the model using natural data from a completely unrelated domain.
+    \begin{itemize}
+        \item \textit{Intuition}: If we want to steal a face-detector model, we query it with pictures of flowers or cars. Even though the input is unrelated, the victim model is forced to make predictions (e.g., classifying a leaf as a ``smiling face'' with a low probability). These predictions reveal the underlying decision boundaries of the target model.
+    \end{itemize}
+    \item \textbf{Data-Free (DF) Attacks}: The attacker has zero real data, so they use a generative model (like a Generative Adversarial Network, or GAN) to synthetically build inputs.
+    \begin{itemize}
+        \item \textit{Intuition}: This is like drawing random scribbles, showing them to a teacher, and observing their reactions to learn what a ``letter'' looks like. Over time, the generator adjusts the scribbles to become realistic inputs.
+    \end{itemize}
+\end{enumerate}
+
+---
+
+\subsection{Deep-Dive 2.1: Non-Problem Domain Attacks (Copycat CNN)}
+
+\subsubsection{General Mechanics}
+In a Non-Problem Domain attack (such as Copycat CNN), the attacker uses an arbitrary public dataset to query the target black-box model. If the target model outputs soft probabilities (e.g. confidence scores for each class), the attacker can train their clone model to match these probabilities using standard Mean Squared Error (MSE) minimization.
+
+\subsubsection{Mathematical Formulation}
+Let the victim model's soft prediction for a query sample $x_i$ be the probability vector $y_i = [p_{i,1}, p_{i,2}, \dots, p_{i,C}]^T$. Let the clone model's prediction be $\tilde{y}_i = [\tilde{p}_{i,1}, \tilde{p}_{i,2}, \dots, \tilde{p}_{i,C}]^T$, where $C$ is the number of classes.
+
+For $M$ queries, the attacker trains the clone model by minimizing the Mean Squared Error (MSE) loss:
+\begin{equation}
+    L_{\text{MSE}} = \frac{1}{M \cdot C} \sum_{i=1}^M \sum_{c=1}^C \left( p_{i,c} - \tilde{p}_{i,c} \right)^2
+\end{equation}
+
+\subsubsection{Mathematical Example}
+Consider a target classification model with $C=2$ classes. We query the model with a single out-of-domain sample ($M=1$).
+\begin{enumerate}
+    \item \textbf{Step 1: Get Soft Predictions}: 
+    \begin{itemize}
+        \item The target model outputs: $y_1 = [0.70, 0.30]^T$
+        \item The local clone model predicts: $\tilde{y}_1 = [0.50, 0.50]^T$
+    \end{itemize}
+    
+    \item \textbf{Step 2: Calculate Squared Differences}: Compute the error for each class:
+    \begin{align*}
+        \text{Error}_{\text{class 1}} &= (0.70 - 0.50)^2 = (0.20)^2 = 0.04 \\
+        \text{Error}_{\text{class 2}} &= (0.30 - 0.50)^2 = (-0.20)^2 = 0.04
+    \end{align*}
+    
+    \item \textbf{Step 3: Compute Total MSE Loss}: Average the squared errors:
+    $$L_{\text{MSE}} = \frac{0.04 + 0.04}{1 \cdot 2} = \frac{0.08}{2} = 0.04$$
+    The clone model performs backpropagation to minimize this loss, adjusting its parameters to output predictions closer to the victim's distribution $[0.70, 0.30]^T$.
+\end{enumerate}
+
+---
+
+\subsection{Deep-Dive 2.2: Data-Free Attacks (Generator Disagreement)}
+
+\subsubsection{General Mechanics}
+In a Data-Free attack, the attacker has no real data. They train a generator network $G$ to synthesize query samples. 
+1. \textbf{Synthesize}: The generator takes a random noise vector $z$ and outputs a synthetic image $x = G(z)$.
+2. \textbf{Disagreement Maximization}: To find where the clone model deviates from the victim model, the generator is trained to produce samples where the victim model $f_V$ and the clone model $\tilde{f}$ \textbf{disagree} the most.
+3. \textbf{Clone Minimization}: The clone model $\tilde{f}$ is then trained on these synthetic samples to minimize the disagreement, shifting its predictions toward the victim's predictions.
+
+\subsubsection{Mathematical Formulation}
+The disagreement between the victim model $f_V(x) = [p_1, \dots, p_C]^T$ and the clone model $\tilde{f}(x) = [\tilde{p}_1, \dots, \tilde{p}_C]^T$ is measured using the $L_1$ distance.
+
+The clone model $\tilde{f}$ minimizes this distance:
+\begin{equation}
+    L_S = \sum_{c=1}^C | p_c - \tilde{p}_c |
+\end{equation}
+
+The generator $G$ maximizes this distance (minimizes the negative distance):
+\begin{equation}
+    L_G = - \sum_{c=1}^C | p_c - \tilde{p}_c |
+\end{equation}
+
+\subsubsection{Mathematical Example}
+Consider a classification task with $C=2$ classes. The generator synthesizes a sample $x$, which is queried against both models.
+\begin{enumerate}
+    \item \textbf{Step 1: Get Soft Predictions}:
+    \begin{itemize}
+        \item The target model outputs: $y = [0.80, 0.20]^T$
+        \item The local clone model predicts: $\tilde{y} = [0.30, 0.70]^T$
+    \end{itemize}
+    
+    \item \textbf{Step 2: Calculate Disagreement ($L_1$ Distance)}:
+    \begin{align*}
+        L_S &= |0.80 - 0.30| + |0.20 - 0.70| \\
+        &= |0.50| + |-0.50| = 0.50 + 0.50 = 1.00
+    \end{align*}
+    
+    \item \textbf{Step 3: Update Step}:
+    \begin{itemize}
+        \item The generator loss is $L_G = -1.00$. The generator updates its parameters to generate samples that yield even larger disagreement.
+        \item The clone model loss is $L_S = 1.00$. The clone model updates its weights to make its predictions closer to $[0.80, 0.20]^T$.
+    \end{itemize}
+\end{enumerate}
+
+---
+
+\section{Category 3: Side-Channel Attacks}
+
+\subsection{General Mechanics (Intuition)}
+Side-Channel attacks do not focus on the inputs or outputs (the queries) of a machine learning model. Instead, they monitor the physical or system \textbf{byproducts} of the model's execution on a computer processor.
+
+The core intuition is best understood through an analogy:
+\begin{quote}
+    \textit{``Imagine a safe. You do not know the combination code (the model parameters). Instead of guessing numbers, you place a stethoscope against the safe door and listen to the clicking sounds of the gears inside as you turn the dial. The clicking sounds are a byproduct (a side-channel) that leaks information about the combination.''}
+\end{quote}
+
+This category is divided into two types:
+\begin{enumerate}
+    \item \textbf{Software Side-Channels}: These monitor software-level execution cues (such as API execution time, cache memory hits or misses, or network latency).
+    \item \textbf{Hardware Side-Channels}: These monitor physical hardware byproducts from the physical processor chip (such as electric power consumption, electromagnetic radiation, heat, or acoustic noise).
+\end{enumerate}
+
+---
+
+\subsection{Deep-Dive 3.1: Software Side-Channels (Cache-Timing Attacks)}
+
+\subsubsection{General Mechanics}
+During neural network execution, non-linear activation functions like ReLU (Rectified Linear Unit) contain conditional branches:
+\begin{equation}
+    f(x) = \max(0, x) = 
+    \begin{cases} 
+        0 & \text{if } x < 0 \\ 
+        x & \text{if } x \geq 0 
+    \end{cases}
+\end{equation}
+If $x \geq 0$, the processor executes instructions to process the value. If $x < 0$, it branches to return zero. 
+Furthermore, lookup tables for non-linear activations (like Sigmoid or Tanh) are stored in cache memory. Fetching data from the cache is very fast (a ``Cache Hit''), while fetching from main memory is slow (a ``Cache Miss''). By measuring the exact time it takes to process queries, the attacker can identify which path was taken, which tells them whether internal neurons had positive or negative values.
+
+\subsubsection{Mathematical Example}
+Consider a neuron computing $z = w_1 x_1 + w_2 x_2 + b$, followed by a ReLU activation $a = \max(0, z)$.
+An attacker knows that an active branch ($z \geq 0$) takes a fast execution time of $T_{\text{fast}} = 10$~ns, while an inactive branch ($z < 0$) takes a slow execution time of $T_{\text{slow}} = 45$~ns due to a branch misprediction.
+\begin{enumerate}
+    \item \textbf{Step 1: First Query}: The attacker queries $x^{(1)} = [2.0, 1.0]^T$ and measures execution time $t^{(1)} = 10.2$~ns. Since $t^{(1)} \approx T_{\text{fast}}$, the attacker knows $z^{(1)} \geq 0$:
+    $$2.0 w_1 + 1.0 w_2 + b \geq 0$$
+    
+    \item \textbf{Step 2: Second Query}: The attacker queries $x^{(2)} = [-3.0, -2.0]^T$ and measures execution time $t^{(2)} = 44.8$~ns. Since $t^{(2)} \approx T_{\text{slow}}$, the attacker knows $z^{(2)} < 0$:
+    $$-3.0 w_1 - 2.0 w_2 + b < 0$$
+    
+    \item \textbf{Step 3: Define Parameter Boundaries}: By repeating this with many inputs, the attacker compiles a system of linear inequalities that narrows down the values of the weights $w_1, w_2$ and bias $b$ to extract the neuron's parameters.
+\end{enumerate}
+
+---
+
+\subsection{Deep-Dive 3.2: Hardware Side-Channels (Power Analysis of Arithmetic)}
+
+\subsubsection{General Mechanics}
+Flipping a transistor inside a microchip draws a tiny amount of electrical current. Performing arithmetic multiplications (e.g. $A \times B$) draws significantly more electrical power than additions ($A + B$) or idle states. By measuring the electrical power consumption graph (a power trace) of a processor using an oscilloscope, an attacker can count how many multiplications were performed, allowing them to reverse-engineer the model's architecture (number of layers, number of neurons) and parameter sparsity.
+
+\subsubsection{Mathematical Example}
+Let a processor's multiplier circuit draw power:
+\begin{itemize}
+    \item $P_{\text{mult}} = 50$~mW (milliwatts) when multiplying non-zero numbers.
+    \item $P_{\text{add}} = 10$~mW when performing addition.
+    \item $P_{\text{idle}} = 2$~mW when idle.
+\end{itemize}
+A target neuron computes $y = w_1 x_1 + w_2 x_2$.
+\begin{enumerate}
+    \item \textbf{Step 1: Power Trace Capture}: The attacker monitors the processor's power draw during a single neuron computation and captures the sequence of power consumption spikes over time:
+    $$\text{Trace} = [51\text{ mW}, \ 50\text{ mW}, \ 11\text{ mW}]$$
+    
+    \item \textbf{Step 2: Decode Operations}: The attacker decodes the spikes by mapping them to arithmetic operations:
+    \begin{itemize}
+        \item Spike 1 ($51$~mW) $\approx P_{\text{mult}} \implies$ Multiplication 1 occurred ($w_1 \cdot x_1$).
+        \item Spike 2 ($50$~mW) $\approx P_{\text{mult}} \implies$ Multiplication 2 occurred ($w_2 \cdot x_2$).
+        \item Spike 3 ($11$~mW) $\approx P_{\text{add}} \implies$ Addition occurred.
+    \end{itemize}
+    
+    \item \textbf{Step 3: Deduce Structure}: The attacker concludes the operation was $(w_1 \cdot x_1) + (w_2 \cdot x_2)$, indicating the neuron has exactly 2 input connections. If $w_1$ was zero, the processor optimization would skip the first multiplication, and the trace would show only $[11\text{ mW}]$, leaking weight sparsity.
+\end{enumerate}
+
+---
+
+\section{Category 4: Gradient-Based Attacks}
+
+\subsection{General Mechanics (Intuition)}
+Gradient-Based attacks rely on obtaining the model's \textbf{gradients} (slopes) during learning or inference. In machine learning, gradients are vectors of partial derivatives that point in the direction of the steepest increase of a function. 
+
+The core intuition can be visualized as climbing a hill:
+\begin{quote}
+    \textit{``Imagine trying to find the peak of a hill in the dark. Instead of wandering randomly, you feel the slope of the ground under your feet to know which direction goes up. That slope is the gradient. If an attacker can feel this slope (either directly from a shared file or by estimating it through inputs), they can clone the model much faster.''}
+\end{quote}
+
+This category is divided into two approaches:
+\begin{enumerate}
+    \item \textbf{Direct Gradient Theft}: The attacker intercepts the actual gradients computed by the victim model. This occurs in collaborative environments like Federated Learning or distributed training, where clients must share gradients over a network.
+    \item \textbf{Gradient Estimation}: The attacker cannot access the internal parameters or gradients. Instead, they estimate the gradients of the black-box model's outputs by making slight perturbations to their input queries and measuring the change.
+\end{enumerate}
+
+---
+
+\subsection{Deep-Dive 4.1: Direct Gradient Theft (Deep Leakage)}
+
+\subsubsection{General Mechanics}
+In collaborative settings like Federated Learning, multiple clients train a shared model. Clients do not share private training data ($x$); instead, they compute the gradient of the loss function with respect to the model's weights ($\frac{\partial L}{\partial w}$) locally and send it to a central server.
+However, because gradients are derived directly from the input data, an attacker (e.g., a malicious server) who intercepts these gradients can solve for the private training input $x$. This is known as \textbf{Deep Leakage from Gradients}.
+
+\subsubsection{Mathematical Formulation}
+For a simple linear neuron computing $z = w \cdot x$ with loss $L = \frac{1}{2}(z - y)^2$ where $y$ is the target:
+\begin{equation}
+    L = \frac{1}{2}(w \cdot x - y)^2
+\end{equation}
+By the chain rule, the gradient of the loss with respect to weight $w$ is:
+\begin{equation}
+    g = \frac{\partial L}{\partial w} = (w \cdot x - y) \cdot x = w \cdot x^2 - y \cdot x
+\end{equation}
+If the attacker intercepts the gradient value $g$ and knows the current weight $w$ and target $y$, they can set up a quadratic equation:
+\begin{equation}
+    w \cdot x^2 - y \cdot x - g = 0
+\end{equation}
+The attacker solves this quadratic equation for $x$ to steal the client's private training sample.
+
+\subsubsection{Mathematical Example}
+Consider a client training a local model weight $w = 2.0$ with a target label $y = 3.0$ and a private input $x$.
+\begin{enumerate}
+    \item \textbf{Step 1: Compute Gradient}: The client calculates the local loss gradient and sends it to the server:
+    $$g = (2.0 x - 3.0) \cdot x = 2.0 x^2 - 3.0 x$$
+    Assume the computed gradient value is $g = 2.0$.
+    
+    \item \textbf{Step 2: Server Interception}: The server intercepts $g = 2.0$. Knowing $w = 2.0$ and $y = 3.0$, the server constructs the quadratic equation:
+    $$2.0 x^2 - 3.0 x - 2.0 = 0$$
+    
+    \item \textbf{Step 3: Solve for Private Input}: Solve using the quadratic formula $x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$:
+    $$x = \frac{3 \pm \sqrt{(-3)^2 - 4(2)(-2)}}{2(2)} = \frac{3 \pm \sqrt{9 + 16}}{4} = \frac{3 \pm 5}{4}$$
+    This yields two solutions: $x^{(1)} = 2.0$ and $x^{(2)} = -0.5$. Since input values (like image pixels) are positive, the server recovers the exact private training sample: $x = 2.0$.
+\end{enumerate}
+
+---
+
+\subsection{Deep-Dive 4.2: Gradient Estimation (Finite Differences)}
+
+\subsubsection{General Mechanics}
+If a model outputs soft probabilities, an attacker can estimate the gradient of a prediction function with respect to the input features. This is done using the concept of **finite differences** from calculus. By modifying one input feature by a tiny step size $h$ while keeping the other features constant, the attacker approximates the partial derivative for that feature.
+
+\subsubsection{Mathematical Formulation}
+Let $f(x)$ be the probability of a target class for input vector $x = [x_1, \dots, x_d]^T$. The partial derivative of the model's output with respect to the $j$-th input feature is approximated as:
+\begin{equation}
+    \frac{\partial f}{\partial x_j} \approx \frac{f(x + h \cdot e_j) - f(x)}{h}
+\end{equation}
+where $h$ is a small step size, and $e_j$ is the unit vector with a 1 in the $j$-th coordinate and 0 elsewhere.
+
+The complete estimated gradient vector is:
+\begin{equation}
+    \nabla_x f(x) \approx \left[ \frac{\partial f}{\partial x_1}, \ \dots, \ \frac{\partial f}{\partial x_d} \right]^T
+\end{equation}
+
+\subsubsection{Mathematical Example}
+Consider a model with a 2D input $x = [x_1, x_2]^T$ and $1$ output class probability. We want to estimate the gradient of this probability at the base point $x = [3.0, 4.0]^T$ using step size $h = 0.1$.
+\begin{enumerate}
+    \item \textbf{Step 1: Query API at Perturbed Inputs}: We query the API at three points:
+    \begin{itemize}
+        \item Base point: $x = [3.0, 4.0]^T \implies f(x) = 0.65$
+        \item Perturbed $x_1$: $x + h \cdot e_1 = [3.1, 4.0]^T \implies f(x + h \cdot e_1) = 0.68$
+        \item Perturbed $x_2$: $x + h \cdot e_2 = [3.0, 4.1]^T \implies f(x + h \cdot e_2) = 0.63$
+    \end{itemize}
+    
+    \item \textbf{Step 2: Calculate Partial Derivatives}:
+    \begin{align*}
+        \frac{\partial f}{\partial x_1} &\approx \frac{0.68 - 0.65}{0.1} = \frac{0.03}{0.1} = 0.30 \\
+        \frac{\partial f}{\partial x_2} &\approx \frac{0.63 - 0.65}{0.1} = \frac{-0.02}{0.1} = -0.20
+    \end{align*}
+    
+    \item \textbf{Step 3: Assemble Gradient Vector}: Combined, the estimated gradient is:
+    $$\nabla_x f(x) \approx [0.30, -0.20]^T$$
+    The attacker uses this vector to adjust input queries in directions that maximize changes in the victim's predictions.
+\end{enumerate}
+
+---
+
+\section{Category 5: Attacks on Text Models}
+
+\subsection{General Mechanics (Intuition)}
+Text model extraction targets sequential natural language processors, such as BERT classifiers, question-answering systems, or Large Language Models (LLMs).
+
+The core intuition focuses on the sequential structure of words:
+\begin{quote}
+    \textit{``Unlike tabular data, text queries consist of sequences of words (tokens). The attacker steals the language task's knowledge by sending natural or synthetic sentences to a black-box API, collecting the returned predictions, and training their local clone model on these text-prediction pairs.''}
+\end{quote}
+Because both the attacker and the victim typically fine-tune their classifiers on top of the same pre-trained language model (e.g. BERT or RoBERTa), they already share a matching syntactic and semantic understanding of language. This allows the clone model to align its classification boundaries with the victim API using very few queries.
+
+---
+
+\subsection{Deep-Dive 5.1: Text Model Extraction (Cross-Entropy Minimization)}
+
+\subsubsection{General Mechanics}
+To extract a text classifier, the attacker queries the target model with a set of sentences. When the target API returns soft probabilities for each class, the attacker updates their local clone model by minimizing the Cross-Entropy loss between the clone's predictions and the target API's probabilities.
+
+\subsubsection{Mathematical Formulation}
+Let $q_c$ be the victim model's output probability for class $c$, and $p_c$ be the clone model's output probability for class $c$. The Cross-Entropy loss for $C$ classes is:
+\begin{equation}
+    L_{\text{CE}} = - \sum_{c=1}^C q_c \ln(p_c)
+\end{equation}
+
+\subsubsection{Mathematical Example}
+Consider a 2-class sentiment classifier (Positive vs. Negative). We query the API with the sentence $x = \text{``very good''}$.
+\begin{enumerate}
+    \item \textbf{Step 1: Get Model Predictions}:
+    \begin{itemize}
+        \item Target model outputs: $q = [0.90, 0.10]^T$
+        \item Local clone predicts: $p = [0.70, 0.30]^T$
+    \end{itemize}
+    
+    \item \textbf{Step 2: Calculate Cross-Entropy Loss}:
+    \begin{align*}
+        L_{\text{CE}} &= - \left[ q_1 \ln(p_1) + q_2 \ln(p_2) \right] \\
+        &= - \left[ 0.90 \ln(0.70) + 0.10 \ln(0.30) \right] \\
+        &\approx - \left[ 0.90(-0.357) + 0.10(-1.204) \right] \\
+        &= - \left[ -0.321 - 0.120 \right] = 0.441
+    \end{align*}
+    
+    \item \textbf{Step 3: Update Step}: The clone model performs backpropagation to minimize $L_{\text{CE}} = 0.441$, shifting its parameters to make its output for ``very good'' closer to the target model's $[0.90, 0.10]^T$.
+\end{enumerate}
+
+---
+
+\section{Category 6: Attacks on Vision Models}
+
+\subsection{General Mechanics (Intuition)}
+Vision model extraction targets convolutional or attention-based neural networks that classify, segment, or detect objects in high-dimensional image grids.
+
+The core intuition:
+\begin{quote}
+    \textit{``Images consist of structured pixels. To steal a vision model, the attacker queries the victim model with a database of natural images (either task-related, or completely unrelated out-of-domain images like cars/cats) to obtain predictions, and trains their own local vision architecture to mimic the visual boundaries of the victim.''}
+\end{quote}
+
+---
+
+\subsection{Deep-Dive 6.1: Soft-Label Knowledge Distillation}
+
+\subsubsection{General Mechanics}
+To extract the victim's deep feature representations, the attacker queries the model and copies the soft probability distributions. To highlight the hidden relationship between classes (e.g., how much a picture of a dog looks like a cat versus a car), they apply a Temperature scale $T > 1$ during probability calculation. This is called **Knowledge Distillation**.
+
+\subsubsection{Mathematical Formulation}
+Let the raw logits of the victim model be $z^V$ and the logits of the clone model be $z^A$. The temperature-scaled soft probability for class $c$ is computed using the modified softmax function:
+\begin{equation}
+    P_T(z)_c = \frac{e^{z_c / T}}{\sum_{j=1}^C e^{z_j / T}}
+\end{equation}
+The clone is trained to minimize the difference between target soft probabilities $P_T(z^V)$ and clone soft probabilities $P_T(z^A)$.
+
+\subsubsection{Mathematical Example}
+Consider $C=2$ classes (Dog vs. Cat) with temperature parameter $T = 2.0$.
+\begin{enumerate}
+    \item \textbf{Step 1: Compute Target Temperature-Scaled Probabilities}: Let the victim's logits be $z^V = [4.0, 2.0]^T$:
+    \begin{align*}
+        P_T(z^V)_1 &= \frac{e^{4.0 / 2.0}}{e^{4.0 / 2.0} + e^{2.0 / 2.0}} = \frac{e^{2.0}}{e^{2.0} + e^{1.0}} = \frac{7.389}{7.389 + 2.718} \approx 0.731 \\
+        P_T(z^V)_2 &= 1 - 0.731 = 0.269
+    \end{align*}
+    So $q = [0.731, 0.269]^T$.
+    
+    \item \textbf{Step 2: Compute Clone Temperature-Scaled Probabilities}: Let the clone's logits be $z^A = [1.0, 1.0]^T$:
+    \begin{align*}
+        P_T(z^A)_1 &= \frac{e^{1.0 / 2.0}}{e^{1.0 / 2.0} + e^{1.0 / 2.0}} = 0.500 \\
+        P_T(z^A)_2 &= 0.500
+    \end{align*}
+    So $p = [0.500, 0.500]^T$.
+    
+    \item \textbf{Step 3: Distillation Loss}: The clone computes the loss to align its predictions $p$ with the temperature-scaled target outputs $q$, capturing the fine-grained visual categories of the victim.
+\end{enumerate}
+
+---
+
+\section{Category 7: Attacks on Graph Models}
+
+\subsection{General Mechanics (Intuition)}
+Graph model extraction targets Graph Neural Networks (GNNs) that process non-Euclidean data structured as nodes (vertices) and edges (connections). 
+
+The core intuition:
+\begin{quote}
+    \textit{``Unlike text or images, graph data is defined by its connections. GNNs leverage homophily—the principle that connected nodes share similar features. By querying a GNN and analyzing node features and predictions, an attacker can reverse-engineer the private graph connections (topology) between nodes.''}
+\end{quote}
+
+---
+
+\subsection{Deep-Dive 7.1: Graph Link Reconstruction (Homophily Leakage)}
+
+\subsubsection{General Mechanics}
+To reconstruct a private connection (link) between two nodes in a graph database, the attacker uses the node representation embeddings. The GNN calculates the probability of a link between two nodes as a function of their embedding similarity (often a dot product followed by a sigmoid activation). If this similarity is high, the GNN predicts a link. The attacker intercepts the embeddings (or node features) to reconstruct the secret adjacency matrix.
+
+\subsubsection{Mathematical Formulation}
+Let $h_i$ and $h_j$ be the feature embedding vectors for node $i$ and node $j$. The probability of an edge existing between them ($A_{ij} = 1$) is:
+\begin{equation}
+    P(A_{ij} = 1) = \sigma\left( h_i^T h_j \right) = \frac{1}{1 + e^{-h_i^T h_j}}
+\end{equation}
+
+\subsubsection{Mathematical Example}
+An attacker wants to determine if a private link exists between Node 1 and Node 2. The embeddings are:
+$$h_1 = [0.8, -0.6]^T, \quad h_2 = [0.9, -0.2]^T$$
+\begin{enumerate}
+    \item \textbf{Step 1: Compute Embedding Dot Product}: Multiply corresponding elements and sum:
+    $$h_1^T h_2 = (0.8 \times 0.9) + (-0.6 \times -0.2) = 0.72 + 0.12 = 0.84$$
+    
+    \item \textbf{Step 2: Calculate Link Probability}: Apply the sigmoid function:
+    $$P(A_{12} = 1) = \sigma(0.84) = \frac{1}{1 + e^{-0.84}} = \frac{1}{1 + 0.4317} = \frac{1}{1.4317} \approx 0.698$$
+    
+    \item \textbf{Step 3: Reconstruct Edge}: Since the link probability ($69.8\%$) is greater than the classification threshold (typically $50\%$), the attacker reconstructs that Node 1 and Node 2 are connected in the private graph.
+\end{enumerate}
+
+\end{document}

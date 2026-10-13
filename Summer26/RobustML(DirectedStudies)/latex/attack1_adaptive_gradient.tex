@@ -1,0 +1,232 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{RML}
+\author{Refat Ishrak Hemel}
+\date{July 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction to Category 1}
+The primary objective of attacks in the \textbf{Adaptive Gradient \& Distribution Estimation} category is to optimize the query selection process (Active Learning) and apply data augmentation techniques to reconstruct black-box machine learning models under constrained query budgets. This category resolves the major bottlenecks of traditional query-based extraction, which suffer from high search time or large query overheads.
+
+This document reviews the mechanics, mathematical formulations, and evaluation metrics for the two primary papers in this category:
+\begin{enumerate}
+    \item \textbf{SwiftTheft}: \textit{A Time-Efficient Model Extraction Attack Framework Against Cloud-Based Deep Neural Networks} (Yang et al., 2024).
+    \item \textbf{AugSteal}: \textit{Advancing Model Steal With Data Augmentation in Active Learning Frameworks} (Gao et al., 2024).
+\end{enumerate}
+
+---
+
+\section{SwiftTheft (Yang et al., 2024)}
+
+\subsection{General Mechanics}
+Traditional active learning-based model stealing is highly inefficient. It requires the attacker to iteratively query the victim model, retrain a local substitute model, evaluate prediction uncertainty on a large candidate dataset, select the next batch of query samples, and repeat. 
+
+SwiftTheft resolves this by executing a \textbf{one-time, offline query selection} process using \textbf{Reference Models}:
+\begin{enumerate}
+    \item \textbf{Reference Model Training}: The attacker trains $m$ independent reference models (e.g., ResNet-34) offline using non-overlapping subsets of an arbitrary public dataset (like ImageNet64). These models act as feature mapping oracles.
+    \item \textbf{Feature Aggregation}: The attacker maps the candidate dataset pool to feature representations using all $m$ reference models, then sums their outputs to reduce individual model bias.
+    \item \textbf{Distribution Estimation}: A small set of seed samples is chosen. The framework fits a multivariate Gaussian distribution to their aggregated features.
+    \item \textbf{Likelihood Selection}: For all remaining candidate samples, the negative log-likelihood of belonging to the Gaussian distribution is calculated. The samples with the lowest likelihood (those furthest from the current selected distribution, representing maximum diversity) are added to the query set.
+    \item \textbf{One-Time Query \& Retraining}: Once the query budget is met, the selected samples are queried against the black-box model in a single batch, and the substitute model is trained.
+\end{enumerate}
+
+\subsection{Mathematical Formulations}
+
+\subsubsection{Feature Aggregation}
+Given $m$ reference models $F_R^1, F_R^2, \dots, F_R^m$, the attacker maps a candidate image $x_n \in D$ to a feature vector. The aggregated feature vector $z_n$ is defined as:
+\begin{equation}
+    z_n = \sum_{j=1}^{m} F_R^j(x_n)
+\end{equation}
+
+\subsubsection{Distribution Estimation}
+Let $S_i$ denote the index set of selected query samples at iteration $i$, and let $|S_i|$ be its cardinality. The features of the selected pool are assumed to follow a multivariate normal distribution $\mathcal{N}(\mu_i, \Sigma_i)$. Assuming feature independence (yielding a diagonal covariance matrix $\Sigma_i$), the mean vector $\mu_i$ and the variance vector $\sigma^2_i$ are computed element-wise:
+\begin{equation}
+    \mu_i = \frac{1}{|S_i|} \sum_{n \in S_i} z_n
+\end{equation}
+\begin{equation}
+    \sigma^2_i = \frac{1}{|S_i|} \sum_{n \in S_i} (z_n - \mu_i)^2
+\end{equation}
+
+\subsubsection{Likelihood Calculation \& Query Selection}
+The probability density of a candidate sample feature vector $z_n$ under the estimated distribution is:
+\begin{equation}
+    p_i(z_n) = \frac{1}{\sqrt{2\pi |\Sigma_i|}} \exp \left( -\frac{1}{2} (z_n - \mu_i)^T \Sigma_i^{-1} (z_n - \mu_i) \right)
+\end{equation}
+
+Taking the negative log-likelihood (omitting the normalization constants that do not affect ranking):
+\begin{equation}
+    \log p_i(z_n) = -\sum_{d=1}^{f} \frac{(z_{n,d} - \mu_{i,d})^2}{\sigma^2_{i,d}}
+\end{equation}
+where $f$ is the feature dimensionality. 
+
+In iteration $i$, the algorithm selects $K$ samples that minimize the log-probability (maximizing distance from the current pool):
+\begin{equation}
+    n_{k;i} = \arg\min_{n \in \tilde{S}_{k;i}} \log p_i(z_n)
+\end{equation}
+where $\tilde{S}_{1;i} = S \setminus S_i$ represents the pool of unselected samples, and $\tilde{S}_{k;i} = \tilde{S}_{k-1;i} \setminus \{n_{k-1;i}\}$ for $k \ge 2$.
+
+\subsection{Mathematical Example}
+Consider a toy setup with feature dimensionality $f=2$, $m=2$ reference models, and $N=3$ candidate samples in the public pool $D$:
+\begin{enumerate}
+    \item \textbf{Step 1: Feature Aggregation}: Let the outputs of the reference models for $x_1, x_2, x_3$ be:
+    \begin{align*}
+        F_R^1(x_1) &= [0.1, 0.2]^T, \quad F_R^2(x_1) = [0.15, 0.25]^T \implies z_1 = [0.25, 0.45]^T \\
+        F_R^1(x_2) &= [0.55, 0.45]^T, \quad F_R^2(x_2) = [0.40, 0.55]^T \implies z_2 = [0.95, 1.00]^T \\
+        F_R^1(x_3) &= [0.85, 0.70]^T, \quad F_R^2(x_3) = [0.90, 0.95]^T \implies z_3 = [1.75, 1.65]^T
+    \end{align*}
+    \item \textbf{Step 2: Distribution Estimation}: Suppose the selected set currently contains two seed samples: $S_0 = \{1, 2\}$. The mean $\mu_0$ and diagonal covariance $\Sigma_0 = \text{diag}(\sigma^2_0)$ of $S_0$ are computed as:
+    \begin{align*}
+        \mu_{0} &= \frac{z_1 + z_2}{2} = \frac{[0.25+0.95, 0.45+1.00]^T}{2} = [0.60, 0.725]^T \\
+        \sigma^2_{0,1} &= \frac{(0.25 - 0.60)^2 + (0.95 - 0.60)^2}{2} = \frac{0.1225 + 0.1225}{2} = 0.1225 \\
+        \sigma^2_{0,2} &= \frac{(0.45 - 0.725)^2 + (1.00 - 0.725)^2}{2} = \frac{0.0756 + 0.0756}{2} = 0.0756
+    \end{align*}
+    Thus, $\sigma^2_0 = [0.1225, 0.0756]^T$.
+    \item \textbf{Step 3: Likelihood Calculation}: We compute the negative log-likelihood of the remaining unselected candidate $x_3$ belonging to this selected distribution:
+    \begin{align*}
+        \log p_0(z_3) &= - \left[ \frac{(1.75 - 0.60)^2}{0.1225} + \frac{(1.65 - 0.725)^2}{0.0756} \right] \\
+        &= - \left[ \frac{1.3225}{0.1225} + \frac{0.8556}{0.0756} \right] \approx - [10.796 + 11.317] \approx -22.113
+    \end{align*}
+    Since $-22.113$ is a very low log-likelihood (highly negative), it indicates $x_3$ is extremely distinct from the currently selected pool and represents a high-information query that will be selected to maximize diversity.
+\end{enumerate}
+
+---
+
+
+\section{AugSteal (Gao et al., 2024)}
+
+\subsection{General Mechanics}
+AugSteal targets the highly restrictive \textbf{hard-label black-box scenario} (where the API returns only the predicted class name rather than soft probabilities) and optimizes substitute model training using data augmentation.
+\begin{enumerate}
+    \item \textbf{CAM-based Filtering (Pre-step)}: Large-scale public datasets (e.g., ImageNet) contain background noise. AugSteal uses a pre-trained ResNet-50 and Class Activation Mapping (CAM) to identify sensitive regions, generate bounding boxes, crop the object of interest, and resize them to build a high-quality dataset $D_{\text{steal}}$.
+    \item \textbf{Margin Probability Clustering (MPCL)}:
+    \begin{itemize}
+        \item The candidate samples are queried against the current substitute model $\tilde{f}$.
+        \item The samples are clustered into subsets based on their predicted hard labels.
+        \item Within each cluster, the margin probability (difference between the highest predicted class probability and the average probability of other classes) is computed.
+        \item The attacker selects samples with the lowest margin probability (highest uncertainty) to query the black-box model.
+    \end{itemize}
+    \item \textbf{FusionAug Training}: To maximize substitute model performance without wasting black-box query budget, AugSteal introduces a dynamic training process that alternates between:
+    \begin{itemize}
+        \item \textit{GridMix}: Blending two labeled images using complementary grid masks. Unlike traditional occlusion (zero-padding), the cropped regions are filled with pixels from another image to avoid non-informative inputs.
+        \item \textit{MulAug}: Standard transformations (rotation, translation, shearing, color jitter) on a single image.
+    \end{itemize}
+\end{enumerate}
+
+\subsection{Mathematical Formulations}
+
+\subsubsection{Active Selection via Margin Probability (MPCL)}
+For a sample $d_i \in D_{\text{steal}}$, let $P_c(d_i)$ be the probability of $d_i$ belonging to class $c$ as predicted by the substitute model $\tilde{f}$. The Margin Probability is:
+\begin{equation}
+    P_{\text{margin}}(d_i) = \max_{c} P_c(d_i) - \frac{1}{k - 1} \sum_{c=1}^{k} P_c(d_i)
+\end{equation}
+where $k$ is the total number of classes. A smaller value indicates higher model uncertainty.
+
+Samples are clustered based on their hard labels:
+\begin{equation}
+    Dc_{\text{cluster}} = \{d_i \in D_{\text{steal}} \mid \arg\max_j P_j(d_i) = c\}
+\end{equation}
+The samples with the lowest $P_{\text{margin}}$ within each cluster are selected to query the black box.
+
+\subsubsection{GridMix Composition \& Loss}
+Two training images $x_a$ and $x_b$ are blended using grid-like masks:
+\begin{equation}
+    x = \text{Mask}_1 \odot x_a + \text{Mask}_2 \odot x_b
+\end{equation}
+where $\odot$ denotes the Hadamard (element-wise) product and $\text{Mask}_2 = 1 - \text{Mask}_1$.
+
+If the input image has side length $w$ and grid size is $r$, the image is split into $(w/r)^2$ blocks. In each block, a mask of size $z \times z$ (with random offsets $\delta_x, \delta_y$) is generated. The representation weight (pixel retention ratio) is:
+\begin{equation}
+    \rho = \frac{z}{r}
+\end{equation}
+
+The GridMix Cross-Entropy loss is formulated as:
+\begin{equation}
+    L_{\text{Grid}} = \rho^2 L_{\text{CE}}(\tilde{f}(x), y_a) + (1 - \rho^2) L_{\text{CE}}(\tilde{f}(x), y_b)
+\end{equation}
+
+\subsubsection{Dynamic Loss Selector}
+The final loss $L_{\text{AugSteal}}$ dynamically switches between $L_{\text{Grid}}$ and multi-augmentation loss $L_{\text{Mul}}$ using a random variable $\gamma \sim \text{Uniform}(0, 1)$ and a threshold $\omega$:
+\begin{equation}
+    L_{\text{AugSteal}} = \begin{cases} L_{\text{Grid}} & \text{if } \gamma \ge \omega \\ L_{\text{Mul}} & \text{otherwise} \end{cases}
+\end{equation}
+
+\subsection{Mathematical Example}
+Consider a toy model extracting a classification model with $k=3$ classes (0, 1, 2):
+\begin{enumerate}
+    \item \textbf{Step 1: Margin Probability Calculation (MPCL)}: Suppose the current substitute model $\tilde{f}$ predicts the class probabilities for an image $d_1$ as:
+    $$P(d_1) = [0.60, 0.30, 0.10]^T$$
+    The highest probability is $\max_c P_c(d_1) = 0.60$ (class 0). 
+    According to the margin calculation (relative to the average of other classes):
+    \begin{align*}
+        P_{\text{margin}}(d_1) &= \max_{c} P_c(d_1) - \frac{1}{k - 1} \sum_{c \neq \text{predicted}} P_c(d_1) \\
+        &= 0.60 - \frac{0.30 + 0.10}{2} = 0.60 - 0.20 = 0.40
+    \end{align*}
+    If we have another sample $d_2$ with prediction $P(d_2) = [0.45, 0.40, 0.15]^T$, its margin is:
+    $$P_{\text{margin}}(d_2) = 0.45 - \frac{0.40 + 0.15}{2} = 0.45 - 0.275 = 0.175$$
+    Since $0.175 < 0.40$, $d_2$ has lower margin probability (higher uncertainty) and is prioritized for query.
+    
+    \item \textbf{Step 2: GridMix Blending}: Let image $x_a$ be a $4 \times 4$ grid of pixels of value $1$, and $x_b$ be a grid of pixels of value $0$. Let grid size $r=2$, and mask size $z=1$ (hence $\rho = \frac{1}{2} = 0.5$). 
+    The blended image $x$ keeps a $1\times 1$ block of $x_a$ in each $2\times 2$ block:
+    $$x = \text{Mask}_1 \odot x_a + \text{Mask}_2 \odot x_b$$
+    Since $\rho^2 = 0.25$, the blended image $x$ retains exactly $25\%$ of pixels from $x_a$ (value 1) and $75\%$ from $x_b$ (value 0).
+    
+    \item \textbf{Step 3: GridMix Loss Computation}: Suppose the substitute model prediction for $x$ is $\tilde{f}(x) = [0.70, 0.20, 0.10]^T$, and the true labels are $y_a = 0$ (class 0) and $y_b = 1$ (class 1). The cross-entropy losses are:
+    \begin{align*}
+        L_{\text{CE}}(\tilde{f}(x), y_a) &= -\ln(0.70) \approx 0.357 \\
+        L_{\text{CE}}(\tilde{f}(x), y_b) &= -\ln(0.20) \approx 1.609
+    \end{align*}
+    The resulting GridMix loss is:
+    \begin{align*}
+        L_{\text{Grid}} &= (0.5)^2 (0.357) + (1 - (0.5)^2) (1.609) \\
+        &= 0.25(0.357) + 0.75(1.609) \approx 0.089 + 1.207 = 1.296
+    \end{align*}
+\end{enumerate}
+
+---
+
+
+\section{Advantages and Disadvantages}
+
+\begin{table}[h]
+\centering
+\caption{Comparative Analysis of SwiftTheft and AugSteal}
+\begin{tabular}{p{2cm} p{6.5cm} p{6.5cm}}
+\toprule
+\textbf{Attack} & \textbf{Advantages} & \textbf{Disadvantages} \\
+\midrule
+\textbf{SwiftTheft} & 
+\begin{itemize}
+    \item \textbf{98\% Selection Time Reduction}: Eliminates iterative surrogate model retraining.
+    \item \textbf{Model-Agnostic}: Selected query pool is transferable to target models.
+    \item \textbf{Zero Selection Query Overhead}: No target model querying during active selection.
+\end{itemize} & 
+\begin{itemize}
+    \item \textbf{Reference Training Cost}: Upfront overhead to train reference models.
+    \item \textbf{Data Pool Dependency}: Requires large public reference dataset.
+\end{itemize} \\
+\midrule
+\textbf{AugSteal} & 
+\begin{itemize}
+    \item \textbf{SOTA Agreement Accuracy}: Achieves up to an 8.21\% accuracy gain under tight budgets.
+    \item \textbf{CAM Background Filtering}: Crops out background noise to boost feature representations.
+    \item \textbf{Hadamard Blend (GridMix)}: Uses real pixel filling instead of zero-padding.
+\end{itemize} & 
+\begin{itemize}
+    \item \textbf{High Compute Overhead}: Continuous clustering and augmentation are computationally expensive.
+    \item \textbf{Hard-Label Limitations}: Relies heavily on the early accuracy of the clone model predictions.
+\end{itemize} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}

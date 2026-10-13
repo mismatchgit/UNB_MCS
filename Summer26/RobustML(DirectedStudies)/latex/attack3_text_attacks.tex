@@ -1,0 +1,176 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{RML\\
+\large Category 3: Attacks on Text Models}
+\author{Refat Ishrak Hemel}
+\date{July 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction to Category 3}
+Natural Language Processing (NLP) models, particularly transformer-based architectures (like BERT, GPT, and Llama), have become central to modern text applications. Due to their high commercial value and tendency to memorize training data, they are prime targets for attacks. Attacks in this category are split into model extraction (stealing BERT/LLM prediction capability), training data extraction (extracting private training records, emails, or prompts), and model inversion (private text reconstruction).
+
+This document reviews the mechanics, mathematical formulations, and evaluation metrics for the primary papers in this category:
+\begin{enumerate}
+    \item \textbf{Thieves on Sesame Street}: \textit{Model Extraction of BERT-based APIs} (Krishna et al., 2020)
+    \item \textbf{BERT API Vulnerability}: \textit{Model Extraction and Adversarial Transferability} (He et al., 2021)
+    \item \textbf{ETHICIST}: \textit{Targeted Training Data Extraction Through Loss Smoothed Soft Prompting and Calibrated Confidence Estimation} (Zhang et al., 2023)
+    \item \textbf{Text Revealer}: \textit{Private Text Reconstruction via Model Inversion Attacks against Transformers} (Zhang et al., 2022)
+    \item \textbf{Prompt Stealing}: \textit{Prompt Stealing Attacks Against Large Language Models} (Sha and Zhang, 2024)
+    \item \textbf{Special Characters Attack}: \textit{Toward Scalable Training Data Extraction From Large Language Models} (Bai et al., 2024)
+\end{enumerate}
+
+---
+
+\section{Thieves on Sesame Street (Krishna et al., 2020)}
+
+\subsection{General Mechanics}
+Model extraction of large pre-trained language models (like BERT) typically assumes the attacker has a subset of the target domain's training dataset. \textit{Thieves on Sesame Street} breaks this assumption:
+\begin{enumerate}
+    \item \textbf{Pre-trained Prior}: Since both the victim and clone models fine-tune a massive pre-trained language model (e.g., BERT), they share a strong linguistic representation space prior.
+    \item \textbf{Random Word Queries}: Instead of natural domain sentences, the attacker constructs queries by generating random sequences of words (e.g., sampling from Wikipedia or English dictionaries) and applying simple task heuristics.
+    \item \textbf{API Querying}: The random word queries are sent to the target BERT-based classifier/QA API to receive soft labels (predicted logits or probabilities).
+    \item \textbf{Surrogate Fine-Tuning}: The attacker fine-tunes their local BERT model using the random queries and target outputs, aligning the clone's classification boundaries with the victim API.
+\end{enumerate}
+
+\subsection{Mathematical Formulations}
+Let $x_q$ be a generated query consisting of random words. The target model $f_V$ outputs a class probability distribution:
+$$q(y \mid x_q) = f_V(x_q)$$
+The attacker trains their local clone model $f_A$ (parameterized by $\theta$) to predict $p_{\theta}(y \mid x_q)$. 
+
+The training objective is to minimize the Kullback-Leibler (KL) divergence over a query set of size $Q$:
+\begin{equation}
+    L_{\text{KL}}(\theta) = \frac{1}{Q} \sum_{i=1}^Q \sum_{c=1}^C q(c \mid x_q^i) \log \frac{q(c \mid x_q^i)}{p_{\theta}(c \mid x_q^i)}
+\end{equation}
+where $C$ is the number of classes.
+
+\subsection{Mathematical Example}
+Consider a target BERT classifier with $C=2$ classes (e.g., Sentiment classification: Positive vs. Negative).
+\begin{enumerate}
+    \item \textbf{Step 1: Random Query generation}: The attacker synthesizes a query of random words: $x_q = \text{``apple blue dog run''}$.
+    \item \textbf{Step 2: API Prediction}: The target BERT model yields prediction probability $q(x_q) = [0.80, 0.20]^T$. The local clone model yields prediction $p_{\theta}(x_q) = [0.60, 0.40]^T$.
+    \item \textbf{Step 3: KL Divergence Loss Calculation}:
+    \begin{align*}
+        L_{\text{KL}}(\theta) &= q(1) \log \frac{q(1)}{p_{\theta}(1)} + q(2) \log \frac{q(2)}{p_{\theta}(2)} \\
+        &= 0.80 \log \frac{0.80}{0.60} + 0.20 \log \frac{0.20}{0.40} \\
+        &= 0.80(0.2877) + 0.20(-0.6931) = 0.2301 - 0.1386 = 0.0915
+    \end{align*}
+    The gradient of this loss is backpropagated to update the clone's parameter $\theta$ to align with the victim's predictions.
+\end{enumerate}
+
+---
+
+\section{ETHICIST (Zhang et al., 2023)}
+
+\subsection{General Mechanics}
+ETHICIST recovers memorized training sequences (suffixes) from a target model given a starting phrase (prefix).
+\begin{enumerate}
+    \item \textbf{Soft Prompt Tuning}: The target language model parameters are kept completely frozen. The attacker prepends soft (continuous) prompt embeddings before the prefix, and tunes only the prompt embeddings to maximize suffix generation likelihood.
+    \item \textbf{Loss Smoothing}: If one token in the suffix has a very low probability, auto-regressive decoding fails. The attacker identifies the tokens with the highest loss (highest difficulty) dynamically during training and adds an extra smoothing loss to boost their likelihood.
+    \item \textbf{Calibrated Confidence}: Conditioning generation on different prefixes yields varying baseline likelihoods. ETHICIST runs auto-regressive generation multiple times, calculates how often each distinct suffix is repeated, and normalizes their confidence scores to rank predictions across different prefixes.
+\end{enumerate}
+
+\subsection{Mathematical Formulations}
+Given prefix $S$ and soft prompt $X$, the Maximum Likelihood Estimation (MLE) loss for suffix $T$ is:
+\begin{equation}
+    L_{\text{MLE}} = -\frac{1}{|T|} \sum_{i=1}^{|T|} \log P_M(t_i \mid X, S, t_{<i})
+\end{equation}
+
+Let $\sigma(i)$ be the index of the token in $T$ with the $i$-th highest loss value during a forward pass. The smoothing loss over the top $N$ difficult tokens is:
+\begin{equation}
+    L_{\text{Smooth}} = -\frac{1}{N} \sum_{i=1}^N \log P_M(t_{\sigma(i)} \mid X, S, t_{<\sigma(i)})
+\end{equation}
+The total loss minimized during prompt tuning is:
+\begin{equation}
+    L_{\text{Total}} = L_{\text{MLE}} + \alpha L_{\text{Smooth}}
+\end{equation}
+
+For a prefix, suppose we sample $K$ times and generate distinct suffixes $\{T_1, \dots, T_M\}$ with generation frequencies $\{r_1, \dots, r_M\}$. The calibrated confidence for suffix $T_i$ is:
+\begin{equation}
+    C(T_i) = \frac{r_i \exp(-|T_i| L^i_{\text{MLE}})}{\sum_{j=1}^M r_j \exp(-|T_j| L^j_{\text{MLE}})}
+\end{equation}
+
+\subsection{Mathematical Example}
+Suppose we set $K=5$ sampling operations, and generate $M=2$ distinct candidate suffixes $T_1$ and $T_2$ of length $|T| = 2$:
+\begin{align*}
+    T_1 & \text{ is generated } r_1 = 3 \text{ times, with } L^1_{\text{MLE}} = 0.50 \\
+    T_2 & \text{ is generated } r_2 = 2 \text{ times, with } L^2_{\text{MLE}} = 1.20
+\end{align*}
+
+\begin{enumerate}
+    \item \textbf{Step 1: Compute Raw Likelihoods}:
+    \begin{align*}
+        \text{Likelihood}(T_1) &= \exp(-2 \times 0.50) = e^{-1.0} \approx 0.368 \\
+        \text{Likelihood}(T_2) &= \exp(-2 \times 1.20) = e^{-2.4} \approx 0.091
+    \end{align*}
+    
+    \item \textbf{Step 2: Calibrated Confidence score}:
+    \begin{align*}
+        \text{Numerator}(T_1) &= r_1 \times \text{Likelihood}(T_1) = 3 \times 0.368 = 1.104 \\
+        \text{Numerator}(T_2) &= r_2 \times \text{Likelihood}(T_2) = 2 \times 0.091 = 0.182 \\
+        \text{Sum} &= 1.104 + 0.182 = 1.286 \\
+        C(T_1) &= \frac{1.104}{1.286} \approx 0.858 \\
+        C(T_2) &= \frac{0.182}{1.286} \approx 0.142
+    \end{align*}
+    $T_1$ is selected as the predicted suffix with a high confidence score of $0.858$.
+\end{enumerate}
+
+---
+
+\section{Advantages and Disadvantages}
+
+\begin{table}[h]
+\centering
+\caption{Comparative Analysis of Text-Based Extraction Attacks}
+\begin{tabular}{p{2.5cm} p{6.25cm} p{6.25cm}}
+\toprule
+\textbf{Attack} & \textbf{Advantages} & \textbf{Disadvantages} \\
+\midrule
+\textbf{Thieves on Sesame Street} & 
+\begin{itemize}
+    \item \textbf{Zero Real-Data Requirement}: Uses random sequences of words as queries.
+    \item \textbf{Highly Cheap}: Achieves success with a query budget of just a few hundred dollars.
+\end{itemize} & 
+\begin{itemize}
+    \item \textbf{Shared Prior Requirement}: Both victim and clone must use similar pre-trained base models (e.g. BERT).
+\end{itemize} \\
+\midrule
+\textbf{ETHICIST} & 
+\begin{itemize}
+    \item \textbf{No Model Parameter Modifications}: Safe to run on proprietary models as it only tunes prompt embeddings.
+    \item \textbf{Eliminates Prefix Bias}: Calibration makes it easy to compare extraction scores across different contexts.
+\end{itemize} & 
+\begin{itemize}
+    \item \textbf{Requires Prefix}: Requires the correct starting prefix of the training record.
+    \item \textbf{Sampling Cost}: Multiple generations ($K$ samplings) are required.
+\end{itemize} \\
+\midrule
+\textbf{Text Revealer} & 
+\begin{itemize}
+    \item \textbf{Transformer Inversion}: Reconstructs private sentences using target model predictions.
+\end{itemize} & 
+\begin{itemize}
+    \item \textbf{Requires Domain Knowledge}: Attacker must know the domain of the training dataset.
+\end{itemize} \\
+\midrule
+\textbf{Prompt Stealing} & 
+\begin{itemize}
+    \item \textbf{Extracts System Instructions}: Steals intellectual property embedded in prompt engineering.
+\end{itemize} & 
+\begin{itemize}
+    \item \textbf{Vulnerable to Variations}: Minor shifts in LLM output formats degrade reconstruction performance.
+\end{itemize} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}

@@ -1,0 +1,95 @@
+<mxfile host="Electron" modified="2026-07-16T15:40:00.000Z" agent="Antigravity AI Agent" version="20.0.0" type="device">
+  <diagram id="text_attacks" name="Attacks on Text Models Overview">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- ==================== STEP 1: INPUT TEXT QUERY ==================== -->
+        <mxCell id="input_box" value="&lt;b&gt;Text Query (x)&lt;/b&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&lt;br/&gt;&quot;The movie was very good!&quot;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3F4F6;strokeColor=#D1D5DB;fontColor=#1F2937;strokeWidth=1;fontSize=12;fontFamily=Helvetica;align=center;verticalAlign=top;spacingTop=10;" vertex="1" parent="1">
+          <mxGeometry x="30" y="160" width="160" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="chat_icon" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=none;verticalAlign=top;aspect=fixed;image=https://img.icons8.com/ios/100/chat.png;" vertex="1" parent="1">
+          <mxGeometry x="90" y="195" width="40" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- ==================== VICTIM CLASSIFIER (TOP) ==================== -->
+        <mxCell id="victim_box" value="&lt;b&gt;Victim Model (Teacher)&lt;/b&gt;&lt;br/&gt;Private Fine-Tuned Head&lt;br/&gt;&lt;br/&gt;Output: &lt;b&gt;Positive (90%)&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#111827;strokeColor=#000000;fontColor=#FFFFFF;strokeWidth=2;fontSize=12;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="270" y="50" width="220" height="90" as="geometry" />
+        </mxCell>
+        
+        <!-- ==================== SHARED FOUNDATION (CENTER) ==================== -->
+        <mxCell id="shared_base" value="&lt;b&gt;Shared Foundation&lt;/b&gt;&lt;br/&gt;(Pre-trained Transformer / BERT)&lt;br/&gt;&lt;br/&gt;Both share the same language embedding space" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3F4F6;strokeColor=#B0B3B8;fontColor=#4F5660;strokeWidth=1;dashed=1;fontSize=11;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="250" y="180" width="260" height="70" as="geometry" />
+        </mxCell>
+        
+        <!-- ==================== SURROGATE CLASSIFIER (BOTTOM, COLORED #CDCDE6) ==================== -->
+        <mxCell id="surrogate_box" value="&lt;b&gt;Surrogate Model (Student)&lt;/b&gt;&lt;br/&gt;Local Clone Head&lt;br/&gt;&lt;br/&gt;Output: &lt;b&gt;Positive (70%)&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CDCDE6;strokeColor=#7B7B9E;fontColor=#111827;strokeWidth=2;fontSize=12;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="270" y="290" width="220" height="90" as="geometry" />
+        </mxCell>
+        
+        <!-- ==================== LOSS & UPDATE (RIGHT, COLORED #CDCDE6) ==================== -->
+        <mxCell id="alignment_box" value="&lt;b&gt;Classifier Alignment&lt;/b&gt;&lt;br/&gt;(Cross-Entropy Loss)&lt;br/&gt;&lt;br/&gt;Minimizes difference: updates the Surrogate Head to match the Victim's prediction outputs." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#CDCDE6;strokeColor=#7B7B9E;fontColor=#111827;strokeWidth=2;fontSize=11;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="560" y="165" width="230" height="100" as="geometry" />
+        </mxCell>
+        
+        <!-- ==================== CONNECTORS ==================== -->
+        <!-- Query to Victim -->
+        <mxCell id="arr_q_vic" value="" style="curved=1;endArrow=classic;html=1;rounded=0;strokeColor=#111827;strokeWidth=2;exitX=1;exitY=0.25;entryX=0;entryY=0.5;" edge="1" parent="1" source="input_box" target="victim_box">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="200" y="180" as="sourcePoint" />
+            <mxPoint x="270" y="100" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="230" y="95" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Query to Surrogate -->
+        <mxCell id="arr_q_sur" value="" style="curved=1;endArrow=classic;html=1;rounded=0;strokeColor=#111827;strokeWidth=2;exitX=1;exitY=0.75;entryX=0;entryY=0.5;" edge="1" parent="1" source="input_box" target="surrogate_box">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="200" y="250" as="sourcePoint" />
+            <mxPoint x="270" y="330" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="230" y="335" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Victim to Alignment -->
+        <mxCell id="arr_vic_align" value="" style="curved=1;endArrow=classic;html=1;rounded=0;strokeColor=#111827;strokeWidth=2;exitX=1;exitY=0.5;entryX=0.5;entryY=0;" edge="1" parent="1" source="victim_box" target="alignment_box">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="500" y="95" as="sourcePoint" />
+            <mxPoint x="670" y="160" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="675" y="95" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Surrogate to Alignment -->
+        <mxCell id="arr_sur_align" value="" style="curved=1;endArrow=classic;html=1;rounded=0;strokeColor=#111827;strokeWidth=2;exitX=1;exitY=0.5;entryX=0.5;entryY=1;" edge="1" parent="1" source="surrogate_box" target="alignment_box">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="500" y="335" as="sourcePoint" />
+            <mxPoint x="670" y="270" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="675" y="335" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Feedback Loop to Surrogate Classifier -->
+        <mxCell id="arr_feedback" value="Update local head" style="endArrow=block;dashed=1;html=1;rounded=0;strokeColor=#7B7B9E;strokeWidth=2;exitX=0.5;exitY=1;entryX=1;entryY=0.75;fontFamily=Helvetica;fontSize=11;fontColor=#7B7B9E;" edge="1" parent="1" source="alignment_box" target="surrogate_box">
+          <mxGeometry x="-0.2" y="-12" relative="1" as="geometry">
+            <mxPoint x="675" y="275" as="sourcePoint" />
+            <mxPoint x="500" y="370" as="targetPoint" />
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="675" y="358" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

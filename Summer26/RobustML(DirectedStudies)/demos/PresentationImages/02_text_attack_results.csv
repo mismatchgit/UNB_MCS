@@ -1,0 +1,6 @@
+"original_text","perturbed_text","original_score","perturbed_score","original_output","perturbed_output","ground_truth_output","num_queries","result_type"
+"it 's a [[charming]] and often [[affecting]] journey . ","it 's a [[mignon]] and often [[afflicted]] journey . ",0.00011610984802246094,0.965117335319519,1,0,1,62,"Successful"
+"unflinchingly [[bleak]] and [[desperate]] ","unflinchingly [[eerie]] and [[sorrowful]] ",0.0010304450988769531,0.9980970621109009,0,1,0,56,"Successful"
+"allows us to hope that nolan is [[poised]] to embark a major career as a commercial yet [[inventive]] filmmaker . ","allows us to hope that nolan is [[prepped]] to embark a major career as a commercial yet [[shrewd]] filmmaker . ",0.0003600120544433594,0.9878638386726379,1,0,1,79,"Successful"
+"the acting , costumes , music , cinematography and [[sound]] are all [[astounding]] given the production 's austere locales . ","the acting , costumes , music , cinematography and [[noise]] are all [[staggering]] given the production 's austere locales . ",0.0003006458282470703,0.6114664077758789,1,0,1,40,"Successful"
+"it 's slow -- very , [[very]] [[slow]] . ","it 's slow -- very , [[perfectly]] [[lent]] . ",0.0003107786178588867,0.9995521306991577,0,1,0,65,"Successful"

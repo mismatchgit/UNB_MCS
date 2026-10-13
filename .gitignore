@@ -69,3 +69,11 @@ Winter26/CloudInfoMS/labsuser.pem
 *.pem
 *.key
 *.env
+
+# --- 7. Large Datasets, Models & Archives Exceeding GitHub Size Limits (>=50-100MB) ---
+*.pkl
+Winter26/ML/models_and_results.zip
+*.rar
+*Project_Fergusson_Hanyurwimfura.zip*
+Winter26/ML/Datasets/content/models/
+

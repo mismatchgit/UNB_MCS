@@ -1,0 +1,55 @@
+<mxfile host="Electron" modified="2026-08-06T20:40:00.000Z" version="21.6.8" type="device">
+  <diagram id="data_perturbation" name="Data Perturbation">
+    <mxGraphModel dx="1000" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Container box -->
+        <mxCell id="group_perturb" value="Data Perturbation: Logit Noise Injection" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;dashed=1;dashPattern=1 4;startSize=30;verticalAlign=top;align=left;spacingLeft=10;" parent="1" vertex="1">
+          <mxGeometry x="30" y="30" width="760" height="200" as="geometry" />
+        </mxCell>
+
+        <!-- Node 1: Input x -->
+        <mxCell id="node_input" value="Input Query&lt;br&gt;&lt;b&gt;Vector: x&lt;/b&gt;" style="whiteSpace=wrap;html=1;shape=document;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" parent="group_perturb" vertex="1">
+          <mxGeometry x="20" y="70" width="90" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Node 2: Core Model -->
+        <mxCell id="node_model" value="&lt;b&gt;Target Model&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Computes predictions&lt;/font&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d5e8d4;strokeColor=#82b366;" parent="group_perturb" vertex="1">
+          <mxGeometry x="160" y="55" width="110" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- Node 3: Raw Logits -->
+        <mxCell id="node_logits" value="&lt;b&gt;Raw Logits&lt;/b&gt;&lt;br&gt;z = [z_1, ..., z_C]" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="group_perturb" vertex="1">
+          <mxGeometry x="310" y="70" width="120" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Node 4: Noise Add -->
+        <mxCell id="node_noise" value="&lt;b&gt;Perturbation Layer&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Adds Laplace noise&lt;br&gt;&amp;#949;_i ~ Laplace(0, b)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="group_perturb" vertex="1">
+          <mxGeometry x="470" y="70" width="130" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Node 5: Output p -->
+        <mxCell id="node_output" value="&lt;b&gt;Softmax Output&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Perturbed probabilities&lt;br&gt;p_i ~ exp(z_i + &amp;#949;_i)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="group_perturb" vertex="1">
+          <mxGeometry x="630" y="65" width="110" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Connections -->
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;entryPerimeter=1;" parent="group_perturb" source="node_input" target="node_model" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitPerimeter=1;entryX=0;entryY=0.5;" parent="group_perturb" source="node_model" target="node_logits" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="group_perturb" source="node_logits" target="node_noise" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="group_perturb" source="node_noise" target="node_output" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

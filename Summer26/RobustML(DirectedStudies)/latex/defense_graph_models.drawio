@@ -1,0 +1,47 @@
+<mxfile host="Electron" modified="2026-08-06T20:47:00.000Z" version="21.6.8" type="device">
+  <diagram id="defense_graph_models" name="Graph DP Topology">
+    <mxGraphModel dx="1000" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Container box -->
+        <mxCell id="group_graph" value="Defense for Graph Models: Adjacency Differential Privacy" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;dashed=1;dashPattern=1 4;startSize=30;verticalAlign=top;align=left;spacingLeft=10;" parent="1" vertex="1">
+          <mxGeometry x="30" y="30" width="760" height="280" as="geometry" />
+        </mxCell>
+
+        <!-- Node 1: Original Graph -->
+        <mxCell id="node_graph" value="&lt;b&gt;Original Graph Topology&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Adjacency Matrix: A&lt;br&gt;True links between nodes&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="group_graph" vertex="1">
+          <mxGeometry x="20" y="100" width="160" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Node 2: Randomized Response -->
+        <mxCell id="node_rand" value="&lt;b&gt;Randomized Response&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Privacy Budget: &amp;#949;&lt;br&gt;Probability: p = e^&amp;#949; / (e^&amp;#949; + 1)&lt;br&gt;• With probability p: keep link&lt;br&gt;• With prob 1-p: flip link status&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="group_graph" vertex="1">
+          <mxGeometry x="220" y="80" width="200" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Node 3: Perturbed Graph -->
+        <mxCell id="node_perturbed" value="&lt;b&gt;Perturbed Topology&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Perturbed Adjacency Matrix: A_tilde&lt;br&gt;Guarantees link differential privacy&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="group_graph" vertex="1">
+          <mxGeometry x="460" y="100" width="180" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Node 4: GNN Core -->
+        <mxCell id="node_gnn" value="&lt;b&gt;GNN&lt;br&gt;Training&lt;/b&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d5e8d4;strokeColor=#82b366;" parent="group_graph" vertex="1">
+          <mxGeometry x="670" y="85" width="70" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- Connections -->
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="group_graph" source="node_graph" target="node_rand" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="group_graph" source="node_rand" target="node_perturbed" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;entryPerimeter=1;" parent="group_graph" source="node_perturbed" target="node_gnn" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

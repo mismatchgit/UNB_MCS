@@ -1,0 +1,27 @@
+Level 1:
+C[N-1][N-1] is equal to: 2.000000
+Level 1 took 0.020307 seconds
+
+Level 2B:
+C[N-1][N-1] is not correct.
+It is not correct because N%T is not 0 so there are rows left over that aren't run, so the last value of the array is never touched.
+
+Level 2C:
+Level 2C took 0.010348 seconds
+Speedup = 0.020307(serial) / 0.010348(perallel) = 1.962
+when running with 6 processors rows 3997, 3998, 3999, and 4000 weren't being touched, so I just added those rows (the remainder) onto the last processor's workload.
+
+Level 3:
+Level 3 took 0.009515 seconds
+Speedup = 0.020307(serial) / 0.009515(parallel) = 2.134
+Cyclic decomposition handles the remainder because every processor has the same cutoff point, so until that cutoff point is reached procesors will keep working, at which point everything will be finished.
+
+Level 4:
+The output is wrong because the result of C[i][j] is dependant on the result of C[i-1][j] which might not be processed yet due to the array being worked on in multiple places at once.
+At the boundary of two thread blocks the greater thread is trying to read from the end of the previous thread which hasn't been computed yet so it messes things up.
+Not every value of C is written to as each thread is trying to access them, so in certain situations it is reading then being written later which is why this doesn't work.
+This is a race condition because the data a thread is using might be different based on if a different thread has written to it or not yet, which is impossible to tell due to the process scheduler.
+
+Level 5:
+Some threads do print "started verification" before others finish.
+After adding a barrier threads only start printing "started verification" after every thread has finished.

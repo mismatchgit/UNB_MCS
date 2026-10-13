@@ -1,0 +1,32 @@
+CC = mpicc
+CFLAGS = -O3
+
+FILE = lab5.c
+BIN = lab5
+
+P ?= 2
+N ?= 1000
+
+all: $(BIN)
+
+$(BIN): $(FILE)
+	$(CC) $(CFLAGS) -o $(BIN) $(FILE)
+
+
+run: $(BIN)
+	mpirun --bind-to-core -np $(P) ./$(BIN) $(N)
+	$(MAKE) clean
+
+bench: $(BIN)
+	@printf "%10s %10s %15s\n" "N" "P" "Time(s)"
+	@for N in 1000 5000 10000 20000; do \
+		for P in 1 2 4 8; do \
+			TIME=$$(mpirun --bind-to-core -np $$P ./$(BIN) $$N | awk -F'Time = ' '{print $$2}' | awk '{print $$1}'); \
+			printf "%10s %10s %15s\n" $$N $$P $$TIME; \
+		done \
+	done
+	rm -f $(BIN)
+
+clean:
+	rm -f $(BIN)
+

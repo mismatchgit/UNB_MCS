@@ -1,0 +1,28 @@
+1.Ping-pong timing table
+
+Message Size (bytes) | Iterations | Avg RTT (micro seconds) | Est. One-way (micro seconds)
+--------------------------------------------------------------------
+                   1 |      10000 |        1.093 |             0.547
+                   8 |      10000 |        1.073 |             0.536
+                  64 |      10000 |        1.053 |             0.526
+                 512 |      10000 |        1.505 |             0.753
+                4096 |      10000 |        5.803 |             2.902
+
+
+2.Part A questions
+	2.1)Why is timing performed on rank 0 only?
+	Ans:Timing is performed inside the if (rank == 0) block using MPI_Wtime(). Only rank 0 	records the start and end times because it sends the message and receives the reply, 	allowing it to measure the complete round-trip time.
+
+	2.2)Why is RTT/2 only an approximation of one-way latency?
+	Ans:RTT includes both forward and return communication times. Since the two directions 	may not take exactly the same time due to network and system overhead, dividing RTT by 2 	only approximates the one-way latency.
+
+3.Part B. Questions
+	3.1)Why can this deadlock if all processes execute it simultaneously?
+	This can deadlock if all processes execute MPI_Send first because each process will wait 	for the destination process to receive the message before proceeding. Since every 	process is waiting and none have posted a matching MPI_Recv, a circular wait condition 	occurs. As a result, all processes remain blocked, causing a deadlock.
+
+4.Ring behaviour
+Rank 0: sent 0 to rank 1, received 3 from rank 3
+Rank 1: sent 1 to rank 2, received 0 from rank 0
+Rank 2: sent 2 to rank 3, received 1 from rank 1
+Rank 3: sent 3 to rank 0, received 2 from rank 2
+

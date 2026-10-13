@@ -1,0 +1,122 @@
+<mxfile host="Electron" modified="2026-07-15T09:40:00.000Z" agent="Antigravity AI Agent" version="20.0.0" type="device">
+  <diagram id="boundary_walk_diagram" name="Boundary Walk">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Y-Axis (x2) Line -->
+        <mxCell id="yaxis_line" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#111827;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="140" y="500" as="sourcePoint" />
+            <mxPoint x="140" y="100" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- X-Axis (x1) Line -->
+        <mxCell id="xaxis_line" value="" style="endArrow=none;html=1;rounded=0;strokeColor=#111827;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="140" y="500" as="sourcePoint" />
+            <mxPoint x="540" y="500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Y-Axis Label (x2) -->
+        <mxCell id="yaxis_label" value="x&lt;sub&gt;2&lt;/sub&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=18;fontStyle=1;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="90" y="270" width="40" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- X-Axis Label (x1) -->
+        <mxCell id="xaxis_label" value="x&lt;sub&gt;1&lt;/sub&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=18;fontStyle=1;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="320" y="510" width="40" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- Target Decision Boundary (Dashed Line) -->
+        <mxCell id="boundary_line" value="" style="endArrow=none;dashed=1;html=1;rounded=0;strokeColor=#000000;strokeWidth=2;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="140" y="140" as="sourcePoint" />
+            <mxPoint x="500" y="500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Boundary Label -->
+        <mxCell id="boundary_label" value="Victim Decision Boundary" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=12;fontColor=#000000;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="190" y="110" width="160" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Point 0 (x0) -->
+        <mxCell id="p0" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#2563EB;strokeColor=#1D4ED8;" vertex="1" parent="1">
+          <mxGeometry x="270" y="270" width="16" height="16" as="geometry" />
+        </mxCell>
+        
+        <!-- Point 0 Label -->
+        <mxCell id="l0" value="x&lt;sup&gt;(0)&lt;/sup&gt; (0.5, 0.6)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=12;fontColor=#111827;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="170" y="263" width="90" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Point 1 (x1) -->
+        <mxCell id="p1" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#2563EB;strokeColor=#1D4ED8;" vertex="1" parent="1">
+          <mxGeometry x="370" y="170" width="16" height="16" as="geometry" />
+        </mxCell>
+        
+        <!-- Point 1 Label -->
+        <mxCell id="l1" value="x&lt;sup&gt;(1)&lt;/sup&gt; (0.6, 0.7)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=12;fontColor=#111827;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="375" y="140" width="90" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Point 2 (x2) -->
+        <mxCell id="p2" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#2563EB;strokeColor=#1D4ED8;" vertex="1" parent="1">
+          <mxGeometry x="470" y="270" width="16" height="16" as="geometry" />
+        </mxCell>
+        
+        <!-- Point 2 Label -->
+        <mxCell id="l2" value="x&lt;sup&gt;(2)&lt;/sup&gt; (0.7, 0.6)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=12;fontColor=#111827;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="490" y="263" width="90" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Point 3 (x3) -->
+        <mxCell id="p3" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#2563EB;strokeColor=#1D4ED8;" vertex="1" parent="1">
+          <mxGeometry x="370" y="370" width="16" height="16" as="geometry" />
+        </mxCell>
+        
+        <!-- Point 3 Label -->
+        <mxCell id="l3" value="x&lt;sup&gt;(3)&lt;/sup&gt; (0.6, 0.5)" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;fontSize=12;fontColor=#111827;fontFamily=Helvetica;" vertex="1" parent="1">
+          <mxGeometry x="375" y="390" width="90" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Arrow x0 -> x1 -->
+        <mxCell id="arr1" value="" style="curved=1;endArrow=classic;html=1;rounded=0;strokeColor=#2563EB;strokeWidth=2;exitX=1;exitY=0;entryX=0;entryY=0.5;" edge="1" parent="1" source="p0" target="p1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="300" y="260" as="sourcePoint" />
+            <mxPoint x="360" y="180" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="320" y="200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Arrow x1 -> x2 -->
+        <mxCell id="arr2" value="" style="curved=1;endArrow=classic;html=1;rounded=0;strokeColor=#2563EB;strokeWidth=2;exitX=1;exitY=0.5;entryX=0.5;entryY=0;" edge="1" parent="1" source="p1" target="p2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="400" y="180" as="sourcePoint" />
+            <mxPoint x="460" y="260" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="450" y="200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Arrow x2 -> x3 -->
+        <mxCell id="arr3" value="" style="curved=1;endArrow=classic;html=1;rounded=0;strokeColor=#2563EB;strokeWidth=2;exitX=0.5;exitY=1;entryX=1;entryY=0.5;" edge="1" parent="1" source="p2" target="p3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="480" y="300" as="sourcePoint" />
+            <mxPoint x="400" y="380" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="450" y="350" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

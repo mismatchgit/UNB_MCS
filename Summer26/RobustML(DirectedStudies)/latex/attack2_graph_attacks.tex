@@ -1,0 +1,195 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{RML\\
+\large Category 2: Attacks on Graph Models}
+\author{Refat Ishrak Hemel}
+\date{July 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction to Category 2}
+Graph Neural Networks (GNNs) differ fundamentally from traditional grid-based models (like CNNs) because they process graph topology (represented by an adjacency matrix $A$) in addition to node features ($X$). Attacks in this category are split into GNN Model Extraction (stealing model predictions/parameters) and GNN Model Inversion/Link Stealing (extracting the private graph structure or relationships).
+
+This document reviews the mechanics, mathematical formulations, and evaluation metrics for the key papers in this category:
+\begin{enumerate}
+    \item \textbf{GraphMI}: \textit{Extracting Private Graph Data from Graph Neural Networks} (Zhang et al., 2021)
+    \item \textbf{MSA-AUD}: \textit{Model Stealing Attack against Graph Classification with Authenticity, Uncertainty and Diversity} (Zhu et al., 2023)
+    \item \textbf{Inductive GNN Stealing}: \textit{Efficient Model-Stealing Attacks Against Inductive Graph Neural Networks} (Podhajski et al., 2024)
+    \item \textbf{LLM Link Stealing}: \textit{Large Language Models for Link Stealing Attacks Against Graph Neural Networks} (Guan et al., 2024)
+\end{enumerate}
+
+---
+
+\section{GraphMI (Zhang et al., 2021)}
+
+\subsection{General Mechanics}
+GraphMI is a model inversion privacy attack aimed at reconstructing the training graph's private link structure (edges) by inverting GNN predictions.
+\begin{enumerate}
+    \item \textbf{Objective}: Reconstruct the adjacency matrix $A$ of a target GNN trained on a private graph, given access to node features $X$ and the model's predictions.
+    \item \textbf{Smoothing \& Sparsity Constraints}: Real-world graphs generally exhibit homophily (connected nodes tend to have similar features). GraphMI incorporates feature smoothness and graph sparsity constraints into the loss function to guide the reconstruction.
+    \item \textbf{Projected Gradient Descent (PGD)}: Since graph edges are discrete ($A_{ij} \in \{0, 1\}$), optimizing the discrete structure directly is NP-hard. GraphMI relaxes the variables to a continuous convex space $A_{ij} \in [0, 1]$ and solves the objective using PGD.
+\end{enumerate}
+
+\subsection{Mathematical Formulations}
+Given node features $X$ and a trained GNN parameter $\theta^*$, let $L_{\text{GNN}}(A) = \frac{1}{N} \sum_{i=1}^N \ell_i(A, f_{\theta^*}, x_i, y_i)$ be the cross-entropy prediction loss.
+
+To ensure homophily (connected nodes have similar features), the feature smoothness loss $L_s$ is defined as:
+\begin{equation}
+    L_s = \frac{1}{2} \sum_{i,j=1}^N A_{ij} \|x_i - x_j\|_2^2
+\end{equation}
+
+The combined attack loss is:
+\begin{equation}
+    L_{\text{attack}} = L_{\text{GNN}}(A) + \alpha L_s + \beta \|A\|_F
+\end{equation}
+where $\|A\|_F$ is the Frobenius norm promoting graph sparsity.
+
+To optimize, the symmetric adjacency matrix $A$ is flattened to a vector $a \in [0, 1]^n$ where $n = N(N-1)/2$. The Projected Gradient Descent (PGD) update is:
+\begin{equation}
+    a^{(t+1)} = \Pi_{[0, 1]^n} \left( a^{(t)} - \eta \nabla_a L_{\text{attack}}(a^{(t)}) \right)
+\end{equation}
+where $\Pi_{[0, 1]^n}(v_k) = \max(0, \min(1, v_k))$ is the element-wise projection onto the interval $[0, 1]$.
+
+\subsection{Mathematical Example}
+Consider a toy graph with $N=3$ nodes and node features $X = [x_1, x_2, x_3]^T \in \mathbb{R}^{3 \times 2}$ where:
+$$x_1 = [0.10, 0.20]^T, \quad x_2 = [0.15, 0.25]^T, \quad x_3 = [0.90, 0.80]^T$$
+Note that $x_1$ and $x_2$ are very similar, while $x_3$ is a distant outlier. Let the relaxed adjacency vector be $a = [a_{12}, a_{13}, a_{23}]^T \in [0, 1]^3$, initialized as $a^{(0)} = [0.50, 0.50, 0.50]^T$.
+
+\begin{enumerate}
+    \item \textbf{Step 1: Feature Smoothness Loss Calculation}: The pairwise squared Euclidean distances are:
+    \begin{align*}
+        \|x_1 - x_2\|_2^2 &= (0.10-0.15)^2 + (0.20-0.25)^2 = 0.0025 + 0.0025 = 0.005 \\
+        \|x_1 - x_3\|_2^2 &= (0.10-0.90)^2 + (0.20-0.80)^2 = 0.64 + 0.36 = 1.000 \\
+        \|x_2 - x_3\|_2^2 &= (0.15-0.90)^2 + (0.25-0.80)^2 = 0.5625 + 0.3025 = 0.865
+    \end{align*}
+    The smoothness loss is $L_s = a_{12} (0.005) + a_{13} (1.000) + a_{23} (0.865)$. At $a^{(0)}$:
+    $$L_s = 0.5(0.005) + 0.5(1.000) + 0.5(0.865) = 0.0025 + 0.500 + 0.4325 = 0.935$$
+    
+    \item \textbf{Step 2: Gradient Step}: Suppose the attack loss is dominated by smoothness: $L_{\text{attack}} = \alpha L_s$ where $\alpha = 10$. The gradient vector is:
+    $$\nabla_a L_{\text{attack}} = 10 \cdot \nabla_a L_s = 10 \cdot [0.005, 1.000, 0.865]^T = [0.05, 10.00, 8.65]^T$$
+    
+    \item \textbf{Step 3: PGD Update}: With learning rate $\eta = 0.1$, the updated continuous vector is:
+    $$a_{\text{temp}} = a^{(0)} - \eta \nabla_a L_{\text{attack}} = [0.50, 0.50, 0.50]^T - 0.1 \cdot [0.05, 10.00, 8.65]^T = [0.495, -0.50, -0.365]^T$$
+    Applying projection $\Pi_{[0, 1]^3}$ yields:
+    $$a^{(1)} = \Pi_{[0, 1]^3}([0.495, -0.50, -0.365]^T) = [0.495, 0.00, 0.00]^T$$
+    This mathematical step shows how the attack filters out the highly improbable edges $1\leftrightarrow 3$ and $2\leftrightarrow 3$ (set to 0), while retaining the edge $1\leftrightarrow 2$ (representing similar nodes).
+\end{enumerate}
+
+---
+
+\section{Inductive GNN Stealing via GCL (Podhajski et al., 2024)}
+
+\subsection{General Mechanics}
+This attack targets inductive GNNs (which generalize to unseen graphs) and improves query efficiency using Graph Contrastive Learning (GCL).
+\begin{enumerate}
+    \item \textbf{Objective}: Align the representation space of a surrogate GNN model $M_S$ with the target GNN $M_T$ using minimal queries.
+    \item \textbf{Node-Level Contrastive Learning}: For a query graph $G_Q$, the attacker generates two augmented graph views (e.g., using spectral graph augmentations like node/edge dropping). It maps the node representation vectors from the target GNN (original graph) and the surrogate GNN (augmented graph) into a shared projection space.
+    \item \textbf{Agreement Maximization}: The surrogate is trained by maximizing the agreement of corresponding node representation vectors (positives) while pushing representations of different nodes (negatives) apart.
+\end{enumerate}
+
+\subsection{Mathematical Formulations}
+Let $R \in \mathbb{R}^{n \times d}$ be the target GNN's response matrix for a query graph $G_Q$, and $H_S \in \mathbb{R}^{n \times d}$ be the surrogate model's node embedding matrix for an augmented graph view $G_Q'$. 
+
+Both matrices are mapped into a shared representation space via projection head $g(\cdot)$:
+\begin{equation}
+    t = g(R), \quad s = g(H_S)
+\end{equation}
+
+Let $x_i$ be the projection vector for node $v_i$. The symmetric Graph Contrastive Loss is defined as:
+\begin{equation}
+    J = -\frac{1}{2n}\sum_{i=1}^n \left[ \ell_i(t, s) + \ell_i(s, t) \right]
+\end{equation}
+\begin{equation}
+    \ell_i(x, y) = \log \frac{\exp(\text{sim}(x_i, y_i)/\tau)}{\sum_{k=1}^n \exp(\text{sim}(x_i, y_k)/\tau) + \sum_{k=1, k\neq i}^n \exp(\text{sim}(y_i, y_k)/\tau)}
+\end{equation}
+where $\text{sim}(u, v) = \frac{u^T v}{\|u\|_2 \|v\|_2}$ is the cosine similarity and $\tau$ is a temperature parameter.
+
+\subsection{Mathematical Example}
+Consider a graph containing $n=2$ nodes, where the target model representation projections $t$ and surrogate model projections $s$ for temperature $\tau = 1.0$ are:
+\begin{align*}
+    t_1 &= [0.80, 0.60]^T, \quad s_1 = [0.60, 0.80]^T \quad (\text{Node 1 representations}) \\
+    t_2 &= [-0.60, 0.80]^T, \quad s_2 = [-0.50, 0.866]^T \quad (\text{Node 2 representations})
+\end{align*}
+All vectors are L2-normalized, so $\text{sim}(u, v) = u^T v$.
+
+\begin{enumerate}
+    \item \textbf{Step 1: Compute Similarities}:
+    \begin{align*}
+        \text{sim}(t_1, s_1) &= 0.80(0.60) + 0.60(0.80) = 0.960 \\
+        \text{sim}(t_1, s_2) &= 0.80(-0.50) + 0.60(0.866) = -0.400 + 0.520 = 0.120 \\
+        \text{sim}(s_1, s_2) &= 0.60(-0.50) + 0.80(0.866) = -0.300 + 0.693 = 0.393
+    \end{align*}
+    
+    \item \textbf{Step 2: Contrastive Loss for Node 1}: The loss contribution $\ell_1(t, s)$ is:
+    \begin{align*}
+        \ell_1(t, s) &= \log \frac{\exp(\text{sim}(t_1, s_1))}{\exp(\text{sim}(t_1, s_1)) + \exp(\text{sim}(t_1, s_2)) + \exp(\text{sim}(s_1, s_2))} \\
+        &= \log \frac{e^{0.960}}{e^{0.960} + e^{0.120} + e^{0.393}} \\
+        &= \log \frac{2.612}{2.612 + 1.127 + 1.481} = \log \left( \frac{2.612}{5.220} \right) = \log(0.500) \approx -0.693
+    \end{align*}
+    
+    \item \textbf{Step 3: Loss Optimization}: The InfoNCE loss penalizes the surrogate model when representations of the same node ($t_1, s_1$) are not aligned, or when they are too close to other nodes ($t_1, s_2$). Minimized during training, this updates the surrogate weights to rotate $s_1$ closer to $t_1$.
+\end{enumerate}
+
+---
+
+\section{Advantages and Disadvantages}
+
+\begin{table}[h]
+\centering
+\caption{Comparative Analysis of Graph Model Attacks}
+\begin{tabular}{p{2cm} p{6.5cm} p{6.5cm}}
+\toprule
+\textbf{Attack} & \textbf{Advantages} & \textbf{Disadvantages} \\
+\midrule
+\textbf{GraphMI} & 
+\begin{itemize}
+    \item \textbf{Excellent Topology Recovery}: Successfully reconstructs private connections with high AUC.
+    \item \textbf{Exploits Homophily}: Leverages node feature smoothness to reduce the search space.
+\end{itemize} & 
+\begin{itemize}
+    \item \textbf{High Resource Demand}: PGD optimization is computationally intensive on large graphs ($O(N^2)$ scale).
+    \item \textbf{White-Box Requirement}: Requires knowledge of model parameters to compute gradients.
+\end{itemize} \\
+\midrule
+\textbf{MSA-AUD} & 
+\begin{itemize}
+    \item \textbf{Graph-Level Extraction}: Successfully adapts model stealing to graph classification tasks.
+    \item \textbf{Realistic Synthesized Graphs}: Boundary graphs look very realistic due to minimal edge-flipping.
+\end{itemize} & 
+\begin{itemize}
+    \item \textbf{Isomorphism Problem}: Subgraph mapping in Graph Mixup is computationally expensive.
+    \item \textbf{Dependency on Seed Dataset}: Requires a good set of starting graphs.
+\end{itemize} \\
+\midrule
+\textbf{Inductive GNN (GCL)} & 
+\begin{itemize}
+    \item \textbf{Superb Query Efficiency}: Graph contrastive learning allows rapid convergence with few queries.
+    \item \textbf{Works Inductively}: Successfully generalizes to new graphs.
+\end{itemize} & 
+\begin{itemize}
+    \item \textbf{Representation Access}: Requires access to high-dimensional embedding space or soft logits.
+\end{itemize} \\
+\midrule
+\textbf{LLM Link Stealing} & 
+\begin{itemize}
+    \item \textbf{Cross-Dataset Generalization}: Works zero-shot across datasets with different dimensions.
+    \item \textbf{Text Integration}: Fully utilizes semantic descriptions of node attributes.
+\end{itemize} & 
+\begin{itemize}
+    \item \textbf{LLM Query Costs}: Interacting with LLMs is slow and expensive.
+    \item \textbf{Inference Overhead}: Prompt construction for graphs can become excessively long.
+\end{itemize} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\end{document}

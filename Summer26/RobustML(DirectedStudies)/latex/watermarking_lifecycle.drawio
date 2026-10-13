@@ -1,0 +1,105 @@
+<mxfile host="Electron" modified="2026-08-06T20:20:00.000Z" version="21.6.8" type="device">
+  <diagram id="watermarking_lifecycle" name="Model Watermarking Lifecycle">
+    <mxGraphModel dx="1000" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- ================= ROW 1: TRAINING (DEFENDER SPACE) ================= -->
+        <!-- Node 1A: Training Inputs -->
+        <mxCell id="node_train_inputs" value="&lt;b&gt;Training Data&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;• Clean Data (Dog &amp;rarr; Dog)&lt;br&gt;• Trigger Set (Dog+Dot &amp;rarr; Bird)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="40" y="80" width="180" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Node 1B: Joint Training Process -->
+        <mxCell id="node_joint_train" value="&lt;b&gt;Joint Training&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Task Loss +&lt;br&gt;Watermark Loss&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="270" y="80" width="120" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Node 1C: Watermarked Model -->
+        <mxCell id="node_victim_model" value="&lt;b&gt;Watermarked&lt;br&gt;Victim Model&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;API Host&lt;/font&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+          <mxGeometry x="440" y="70" width="120" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- ================= ROW 2: EXTRACTION (ATTACKER SPACE) ================= -->
+        <!-- Node 2A: Attacker Queries -->
+        <mxCell id="node_attack_queries" value="&lt;b&gt;Attacker Queries&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Submits inputs, copies&lt;br&gt;backdoor mapping&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+          <mxGeometry x="270" y="200" width="120" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Node 2B: Suspect Stolen Model -->
+        <mxCell id="node_stolen_model" value="&lt;b&gt;Suspect Stolen&lt;br&gt;Model&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Replicated Clone&lt;/font&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#f8cecc;strokeColor=#b85450;" parent="1" vertex="1">
+          <mxGeometry x="440" y="190" width="120" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- ================= ROW 3: VERIFICATION (COURT SPACE) ================= -->
+        <!-- Node 3A: Trigger Inputs -->
+        <mxCell id="node_trigger_query" value="&lt;b&gt;Trigger Queries&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Secret Dog+Dot inputs&lt;br&gt;assigned to class Bird&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+          <mxGeometry x="120" y="320" width="140" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Node 3B: Decision Rhombus -->
+        <mxCell id="node_decision" value="&lt;b&gt;Accuracy&lt;br&gt;&amp;ge; &amp;#964; ?&lt;/b&gt;" style="shape=rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;align=center;" parent="1" vertex="1">
+          <mxGeometry x="320" y="305" width="90" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- Node 3C: Verified Output -->
+        <mxCell id="node_verified" value="&lt;b&gt;Ownership Verified!&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Stolen origin proven&lt;br&gt;legally in court&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+          <mxGeometry x="470" y="320" width="140" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ================= EDGES & CONNETIONS ================= -->
+        <!-- Training row -->
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="1" source="node_train_inputs" target="node_joint_train" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;entryPerimeter=1;" parent="1" source="node_joint_train" target="node_victim_model" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Extraction arrow -->
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitPerimeter=1;entryX=0.5;entryY=0;strokeColor=#b85450;strokeWidth=1.5;" parent="1" source="node_victim_model" target="node_attack_queries" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="label_query" value="Attacker Queries API" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontColor=#b85450;" parent="e3" vertex="1" connectable="0">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="60" y="10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;entryPerimeter=1;" parent="1" source="node_attack_queries" target="node_stolen_model" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Verification flow -->
+        <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="1" source="node_trigger_query" target="node_decision" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitPerimeter=1;entryX=0.5;entryY=0;dashed=1;strokeWidth=1.5;" parent="1" source="node_stolen_model" target="node_decision" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="500" y="290" />
+              <mxPoint x="365" y="290" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="label_suspect" value="Test Suspect Model" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="e6" vertex="1" connectable="0">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint x="-50" y="10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#82b366;strokeWidth=1.5;" parent="1" source="node_decision" target="node_verified" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="label_yes" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontColor=#82b366;fontStyle=1;" parent="e7" vertex="1" connectable="0">
+          <mxGeometry x="-0.1" relative="1" as="geometry">
+            <mxPoint y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

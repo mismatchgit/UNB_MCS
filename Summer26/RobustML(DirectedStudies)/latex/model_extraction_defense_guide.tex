@@ -1,0 +1,739 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{RML\\
+\large Study Guide to Model Extraction Defenses}
+\author{Refat Ishrak Hemel}
+\date{August 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+Model extraction defenses are security strategies and technical counter-measures designed to protect proprietary machine learning models (the victim models) from being replicated, stolen, or reconstructed by adversaries interacting through public APIs. 
+
+While extraction attacks attempt to clone a model's decision boundaries or parameters, defenses aim to detect malicious queries, prevent boundary estimation, verify model ownership post-theft, or adapt protection to specific data modalities. This study guide categorizes these defense techniques into 5 primary groups:
+\begin{enumerate}
+    \item \textbf{Attack Detection}: Identifying malicious query patterns over time before extraction is complete.
+    \item \textbf{Ownership Verification}: Embedding watermarks or identifying unique model signatures to prove theft in a court of law.
+    \item \textbf{Attack Prevention}: Directly modifying the API outputs, access permissions, or model parameters to degrade extraction utility.
+    \item \textbf{Integrated Defense}: Constructing holistic, multi-layered defense pipelines or specialized federated training counter-measures.
+    \item \textbf{Other Data Modalities}: Tailoring defenses specifically to Text, Vision, or Graph representation models.
+\end{enumerate}
+
+See Figure~\ref{fig:defense_pipeline} for a schematic of the active defense pipeline and ownership verification workflow.
+
+\begin{figure}[htbp]
+    \centering
+    % If compiling to PDF, export the draw.io diagram to PNG/PDF and uncomment:
+    % \includegraphics[width=0.9\textwidth]{model_extraction_defense_pipeline.png}
+    \caption{The Multi-Layered Active Defense Pipeline (combining access control, monitoring, and prediction perturbation) and Post-Theft Ownership Verification (using watermarking and fingerprinting).}
+    \label{fig:defense_pipeline}
+\end{figure}
+
+---
+
+\section{Category 1: Attack Detection}
+
+\subsection{General Mechanics (Intuition)}
+Attack detection focuses on monitoring user query traffic to flag suspicious activities. The key intuition is that benign users query a model naturally to obtain predictions for distinct, varied inputs, whereas an extraction attacker must systematically query the model near its decision boundaries to clone its behavior.
+
+\begin{quote}
+    \textit{``Benign users explore the space widely or follow natural distributions. Attackers, however, perform local searches, boundary exploration, or Jacobian-based perturbations, leaving a trail of highly correlated, closely clustered queries.''}
+\end{quote}
+
+By measuring the relationship (e.g., distance, density, or distribution) of consecutive queries, the defender can detect and block a malicious agent before their query budget allows full reconstruction.
+
+See Figure~\ref{fig:monitoring_pipeline} for a detailed view of the parallel monitoring checks and anomaly evaluation flow.
+
+\begin{figure}[htbp]
+    \centering
+    % If compiling to PDF, export the draw.io diagram to PNG/PDF and uncomment:
+    % \includegraphics[width=0.9\textwidth]{monitoring_defense_pipeline.png}
+    \caption{The Parallel Monitoring-Based Attack Detection Architecture, routing user queries to PRADA, Cosine Similarity, and Entropy analysis engines before aggregate evaluation.}
+    \label{fig:monitoring_pipeline}
+\end{figure}
+
+---
+
+\subsection{Deep-Dive 1.1: Monitoring-Based Methods (PRADA)}
+
+\subsubsection{General Mechanics}
+PRADA (Pathological Query Distance Analysis) detects model extraction attacks by analyzing the distribution of distances between queries. 
+When an attacker trains a substitute model using synthetic query generation (e.g., Jacobian-based data augmentation), they generate new queries by adding small perturbations to existing samples. This shifts inputs directly toward the decision boundaries.
+PRADA calculates the distance from each incoming query to its nearest neighbor among all previous queries from the same user. For benign traffic, these distances follow a normal or multi-modal distribution. For extraction attacks, the distances are abnormally small and highly concentrated. PRADA uses a normality test (like the Shapiro-Wilk test) on these distances to flag anomalous, pathological query behavior.
+
+\subsubsection{Mathematical Formulation}
+Let $Q = \{x_1, x_2, \dots, x_N\}$ be a sequence of $N$ queries sent by a user, where each input $x_i \in \mathbb{R}^d$. 
+
+For each query $x_i$ (for $i > 1$), we compute the minimum Euclidean distance to all previous queries in the sequence:
+\begin{equation}
+    d_i = \min_{j < i} \|x_i - x_j\|_2
+\end{equation}
+
+This yields a set of nearest-neighbor distances $D = \{d_2, d_3, \dots, d_N\}$. We compute the mean $\mu_D$ and standard deviation $\sigma_D$ of these distances. PRADA then performs a statistical test (e.g., Shapiro-Wilk) to determine if $D$ departs from a normal distribution:
+\begin{equation}
+    W = \frac{\left( \sum_{i=2}^N a_i d_{(i)} \right)^2}{\sum_{i=2}^N (d_i - \mu_D)^2}
+\end{equation}
+where $d_{(i)}$ is the $i$-th order statistic (the $i$-th smallest number in the sorted set of distances), and $a_i$ are constants derived from the covariances of order statistics of a normal distribution. If $W$ falls below a threshold $\tau$, the query sequence is flagged as non-normal (pathological) and blocked.
+
+\subsubsection{Mathematical Example}
+Consider a defender tracking a sequence of 3 queries ($N=3$) in a 2D space:
+\begin{align*}
+    x_1 &= [0.10, 0.20]^T \\
+    x_2 &= [0.12, 0.21]^T \\
+    x_3 &= [0.11, 0.22]^T
+\end{align*}
+
+We compute the nearest-neighbor distances:
+\begin{enumerate}
+    \item \textbf{Step 1: Distance for $x_2$}: Find the distance to $x_1$:
+    $$d_2 = \|x_2 - x_1\|_2 = \sqrt{(0.12 - 0.10)^2 + (0.21 - 0.20)^2} = \sqrt{0.02^2 + 0.01^2} = \sqrt{0.0005} \approx 0.0224$$
+    
+    \item \textbf{Step 2: Distance for $x_3$}: Find the minimum distance to either $x_1$ or $x_2$:
+    \begin{align*}
+        \|x_3 - x_1\|_2 &= \sqrt{(0.11 - 0.10)^2 + (0.22 - 0.20)^2} = \sqrt{0.01^2 + 0.02^2} = \sqrt{0.0005} \approx 0.0224 \\
+        \|x_3 - x_2\|_2 &= \sqrt{(0.11 - 0.12)^2 + (0.22 - 0.21)^2} = \sqrt{(-0.01)^2 + 0.01^2} = \sqrt{0.0002} \approx 0.0141
+    \end{align*}
+    Thus, $d_3 = \min(0.0224, 0.0141) = 0.0141$.
+    
+    \item \textbf{Step 3: Analyze the Distribution}: The distance set is $D = \{0.0224, 0.0141\}$. As more queries arrive, the defender compiles these distances. For an attacker, the values of $d_i$ remain extremely small (e.g., $\le 0.03$) and highly clustered compared to benign query distances (which typically span $\ge 0.5$). The distribution fails normality tests, triggering an alert.
+\end{enumerate}
+
+---
+
+\subsection{Deep-Dive 1.2: Stateful Query Similarity}
+
+\subsubsection{General Mechanics}
+Stateful query similarity methods monitor the similarity between successive queries from the same user to detect systemic exploration. Legitimate users send diverse queries distributed across the data space. In contrast, an attacker performing boundary searches or localized substitute model optimization queries inputs that are highly similar in the feature or embedding space. 
+
+By logging the embedding representations of incoming queries and calculating their average pairwise similarity over a sliding window, the defender can flag accounts that repeatedly target narrow feature sub-spaces.
+
+\subsubsection{Mathematical Formulation}
+Let $x_t$ be the query at time $t$. We extract its embedding representation using the target model's internal layers or a pre-trained feature extractor, denoted as $\phi(x_t) \in \mathbb{R}^k$.
+
+For a sliding window of the last $W$ queries, we calculate the average pairwise Cosine Similarity:
+\begin{equation}
+    S_{\text{avg}} = \frac{2}{W(W-1)} \sum_{i=t-W+1}^t \sum_{j=i+1}^t \frac{\phi(x_i)^T \phi(x_j)}{\|\phi(x_i)\|_2 \|\phi(x_j)\|_2}
+\end{equation}
+
+If $S_{\text{avg}}$ exceeds a threshold $\gamma$, it indicates that the query traffic is highly correlated (pathological) and the user is flagged.
+
+\subsubsection{Mathematical Example}
+Consider a window size of $W=2$ queries.
+\begin{enumerate}
+    \item \textbf{Step 1: Extract Embeddings}:
+    \begin{align*}
+        \phi(x_1) &= [0.80, 0.60]^T \\
+        \phi(x_2) &= [0.78, 0.62]^T
+    \end{align*}
+    
+    \item \textbf{Step 2: Compute L2 Norms}:
+    \begin{align*}
+        \|\phi(x_1)\|_2 &= \sqrt{0.80^2 + 0.60^2} = \sqrt{0.64 + 0.36} = 1.0 \\
+        \|\phi(x_2)\|_2 &= \sqrt{0.78^2 + 0.62^2} = \sqrt{0.6084 + 0.3844} = \sqrt{0.9928} \approx 0.9964
+    \end{align*}
+    
+    \item \textbf{Step 3: Compute Pairwise Similarity}:
+    \begin{align*}
+        S_{\text{avg}} &= \frac{\phi(x_1)^T \phi(x_2)}{\|\phi(x_1)\|_2 \|\phi(x_2)\|_2} = \frac{(0.80 \times 0.78) + (0.60 \times 0.62)}{1.0 \times 0.9964} \\
+        &= \frac{0.624 + 0.372}{0.9964} = \frac{0.996}{0.9964} \approx 0.9996
+    \end{align*}
+    Since the average similarity is $99.96\%$, which is significantly above a threshold like $\gamma = 0.95$, the query sequence is flagged as anomalous.
+\end{enumerate}
+
+---
+
+\subsection{Deep-Dive 1.3: Entropy-Based Active Query Detection}
+
+\subsubsection{General Mechanics}
+Active learning and boundary-probing attacks explicitly query inputs where the model is most uncertain to maximize the information gain of each query. This uncertainty manifests as high-entropy output probability distributions. Benign queries typically target areas of high confidence (low entropy), whereas extraction queries are concentrated near the decision boundaries, resulting in maximum output entropy. 
+
+By tracking the rolling average of prediction entropy, the defender detects users who systematically query the model's region of highest uncertainty.
+
+\subsubsection{Mathematical Formulation}
+For a query $x_i$, the model outputs prediction probabilities $p(x_i) = [p_{i,1}, p_{i,2}, \dots, p_{i,C}]^T$. The Shannon entropy is:
+\begin{equation}
+    H(p(x_i)) = - \sum_{c=1}^C p_{i,c} \ln\left( p_{i,c} \right)
+\end{equation}
+
+For a window of $K$ queries, the mean prediction entropy is:
+\begin{equation}
+    \bar{H}_K = \frac{1}{K} \sum_{i=t-K+1}^t H(p(x_i))
+\end{equation}
+
+If $\bar{H}_K > \eta$ (where $\eta$ is a threshold), the traffic is flagged as an active query-probing attack.
+
+\subsubsection{Mathematical Example}
+Consider a binary classification task ($C=2$). A user sends $K=2$ queries.
+\begin{enumerate}
+    \item \textbf{Step 1: Compute Entropy of Query 1}: Let $p(x_1) = [0.52, 0.48]^T$.
+    \begin{align*}
+        H(p(x_1)) &= - \left[ 0.52 \ln(0.52) + 0.48 \ln(0.48) \right] \\
+        &\approx - \left[ 0.52(-0.6539) + 0.48(-0.7340) \right] \\
+        &= - \left[ -0.3400 - 0.3523 \right] = 0.6923
+    \end{align*}
+    
+    \item \textbf{Step 2: Compute Entropy of Query 2}: Let $p(x_2) = [0.50, 0.50]^T$.
+    \begin{align*}
+        H(p(x_2)) &= - \left[ 0.50 \ln(0.50) + 0.50 \ln(0.50) \right] \\
+        &\approx - \left[ 0.50(-0.6931) + 0.50(-0.6931) \right] = 0.6931
+    \end{align*}
+    
+    \item \textbf{Step 3: Average Prediction Entropy}:
+    $$\bar{H}_2 = \frac{0.6923 + 0.6931}{2} = 0.6927$$
+    Since the maximum possible entropy for a binary classifier is $\ln(2) \approx 0.6931$, a mean entropy of $0.6927$ indicates that the queries are highly concentrated on the decision boundary, signaling an active probing attempt.
+\end{enumerate}
+
+---
+
+\section{Category 2: Ownership Verification}
+
+\subsection{General Mechanics (Intuition)}
+Ownership verification does not attempt to stop an attack from happening. Instead, it prepares the model so that if an attacker successfully extracts it, the defender can legally prove that the stolen model was derived from their proprietary model.
+
+This category uses two primary ideas:
+\begin{enumerate}
+    \item \textbf{Watermarking Techniques}: Embedding a secret, synthetic behavior (a backdoor) into the model during training.
+    \item \textbf{Fingerprinting Methods}: Identifying unique, intrinsic decision characteristics of the model post-training without altering the training data.
+\end{enumerate}
+
+---
+
+\subsection{Deep-Dive 2.1: Watermarking Techniques}
+
+\subsubsection{General Mechanics}
+Watermarking injects a backdoor during the training phase. The defender chooses a set of trigger inputs (e.g., random noise images or images with a specific pixel pattern) and assigns them an arbitrary, incorrect target label. The model is trained on a combined dataset of clean training samples and these watermarked trigger samples.
+If an attacker extracts the model using query responses, the stolen model will also learn this arbitrary association. To prove theft, the defender queries the suspect model with the secret trigger set and verifies if its classification accuracy matches the trigger labels.
+
+See Figure~\ref{fig:watermarking_mechanism} for a schematic of how watermarking is embedded during joint training and evaluated at inference.
+
+\begin{figure}[htbp]
+    \centering
+    % If compiling to PDF, export the draw.io diagram to PNG/PDF and uncomment:
+    % \includegraphics[width=0.85\textwidth]{watermarking_mechanism.png}
+    \caption{The Trigger-Based Watermarking Mechanism, showing the joint optimization of task and watermark losses to embed backdoor behaviors.}
+    \label{fig:watermarking_mechanism}
+\end{figure}
+
+\subsubsection{Mathematical Formulation}
+Let $D_{\text{clean}}$ be the original training set, and let $D_{\text{watermark}} = \{(x_k + \delta, y_{\text{target}})\}$ be the watermarked trigger set, where $\delta$ is the trigger pattern and $y_{\text{target}}$ is the selected target label.
+
+The defender trains the model parameters $\theta$ by minimizing a joint loss function:
+\begin{equation}
+    L(\theta) = \sum_{(x,y) \in D_{\text{clean}}} L_{\text{task}}(f_\theta(x), y) + \lambda \sum_{(x_w, y_w) \in D_{\text{watermark}}} L_{\text{watermark}}(f_\theta(x_w), y_w)
+\end{equation}
+where $\lambda$ is a balancing hyper-parameter. 
+
+To verify a suspect model $f_{\text{suspect}}$, the defender measures its accuracy on the trigger set:
+\begin{equation}
+    \text{Acc}(f_{\text{suspect}}, D_{\text{watermark}}) = \frac{1}{|D_{\text{watermark}}|} \sum_{(x_w, y_w) \in D_{\text{watermark}}} \mathbb{I}\left( \text{argmax } f_{\text{suspect}}(x_w) = y_w \right)
+\end{equation}
+If $\text{Acc}(f_{\text{suspect}}, D_{\text{watermark}}) \ge \tau$ (where $\tau$ is a validation threshold, e.g., $80\%$), the model is flagged as stolen.
+
+\subsubsection{Mathematical Example}
+Consider a trigger input $x_w$ labeled as class $y_w = 2$ (representing ``Bird''), whereas it is visually a standard image of a ``Dog'' (class 0) containing a small red dot watermark.
+\begin{enumerate}
+    \item \textbf{Step 1: Train the Victim Model}: The victim model learns to output class 2 (``Bird'') for $x_w$.
+    \item \textbf{Step 2: Query Suspect Model}: The defender queries the suspect black-box model with $x_w$.
+    \item \textbf{Step 3: Extract Probabilities}: The suspect model outputs the probability distribution:
+    $$f_{\text{suspect}}(x_w) = [0.05, 0.10, 0.85]^T$$
+    where $0.85$ corresponds to class 2.
+    \item \textbf{Step 4: Ownership Decision}: Since $\text{argmax } f_{\text{suspect}}(x_w) = 2$, the indicator function $\mathbb{I}(2 = 2) = 1$. Evaluating this across a trigger set of size 100 shows that the suspect model correctly replicates the backdoor triggers with $92\%$ accuracy, which is greater than the threshold $\tau = 80\%$, verifying ownership.
+\end{enumerate}
+
+---
+
+\subsection{Deep-Dive 2.2: Fingerprinting Methods}
+
+\subsubsection{General Mechanics}
+Unlike watermarking, fingerprinting does not alter the training dataset. Instead, it leverages the unique, complex decision boundaries formed naturally during training. The defender identifies a set of adversarial examples or boundary points (conferrable inputs) that lie extremely close to the victim model's decision boundaries. 
+Because training is stochastic, two models trained independently on the same task will form slightly different decision boundaries and make different predictions on these boundary inputs. However, an extracted model that replicates the victim model's boundary will make highly correlated predictions on these specific fingerprint inputs.
+
+See Figure~\ref{fig:fingerprinting_mechanism} for a schematic of the fingerprint generation and verification process.
+
+\begin{figure}[htbp]
+    \centering
+    % If compiling to PDF, export the draw.io diagram to PNG/PDF and uncomment:
+    % \includegraphics[width=0.85\textwidth]{fingerprinting_mechanism.png}
+    \caption{The Model Fingerprinting Verification Mechanism, showing boundary probing via adversarial perturbation to construct the fingerprint dataset and evaluation of the suspect model's decision agreement.}
+    \label{fig:fingerprinting_mechanism}
+\end{figure}
+
+\subsubsection{Mathematical Formulation}
+The defender generates a set of fingerprint queries $S = \{x_1, x_2, \dots, x_M\}$ using adversarial perturbation methods (such as the Fast Gradient Sign Method) on the victim model $f_{\text{victim}}$.
+
+For a suspect model $f_{\text{suspect}}$, the defender calculates the agreement rate:
+\begin{equation}
+    \text{Agreement}(f_{\text{victim}}, f_{\text{suspect}}) = \frac{1}{M} \sum_{i=1}^M \mathbb{I}\left( \text{argmax } f_{\text{victim}}(x_i) = \text{argmax } f_{\text{suspect}}(x_i) \right)
+\end{equation}
+
+Under the null hypothesis that $f_{\text{suspect}}$ was trained independently, the agreement rate should be low (similar to random chance or standard cross-model generalization). If the agreement rate exceeds a threshold:
+\begin{equation}
+    \text{Agreement}(f_{\text{victim}}, f_{\text{suspect}}) \ge \theta
+\end{equation}
+the defender rejects the null hypothesis and asserts that the suspect model was extracted from the victim model.
+
+\subsubsection{Mathematical Example}
+Consider a fingerprint set of $M=3$ inputs ($x_1, x_2, x_3$).
+\begin{enumerate}
+    \item \textbf{Step 1: Obtain Victim Predictions}: The victim model predicts:
+    $$\text{argmax } f_{\text{victim}}(S) = [1, 0, 1]^T$$
+    
+    \item \textbf{Step 2: Obtain Suspect predictions}: The suspect model predicts:
+    $$\text{argmax } f_{\text{suspect}}(S) = [1, 0, 1]^T$$
+    
+    \item \textbf{Step 3: Calculate Agreement Rate}:
+    $$\text{Agreement} = \frac{\mathbb{I}(1=1) + \mathbb{I}(0=0) + \mathbb{I}(1=1)}{3} = \frac{1 + 1 + 1}{3} = 1.0 \ (100\%)$$
+    An independently trained baseline model yields predictions $[0, 0, 0]^T$, giving an agreement rate of $0.33 \ (33.3\%)$. Since the suspect model's agreement rate ($100\%$) is greater than the threshold $\theta = 0.80$, it is verified as a stolen clone.
+\end{enumerate}
+
+---
+
+\section{Category 3: Attack Prevention}
+
+\subsection{General Mechanics (Intuition)}
+Attack prevention techniques focus on actively disrupting the extraction process. By modifying the outputs or parameters of the model, the defender aims to make the query responses useless or too expensive for substitute model training, without significantly degrading the performance for legitimate users.
+
+---
+
+\subsection{Deep-Dive 3.1: Data Perturbation (Logit Noise Injection)}
+
+\subsubsection{General Mechanics}
+When an API returns soft probabilities (e.g., confidence scores), the attacker uses these scores to compute the loss and update their substitute model. Data perturbation prevents this by adding calibrated noise to the model's raw output logits before passing them to the softmax function. This distorts the fine-grained probability distribution (which contains the boundary information) while keeping the highest-scoring class (the top-1 prediction) unchanged, thereby protecting the model while maintaining utility for benign users.
+
+See Figure~\ref{fig:data_perturbation} for a schematic of logit noise injection during the prediction pipeline.
+
+\begin{figure}[htbp]
+    \centering
+    % If compiling to PDF, export the draw.io diagram to PNG/PDF and uncomment:
+    % \includegraphics[width=0.85\textwidth]{data_perturbation.png}
+    \caption{The Data Perturbation Pipeline, showing the addition of Laplace noise $\epsilon_i$ to raw logits $z_i$ prior to softmax normalization.}
+    \label{fig:data_perturbation}
+\end{figure}
+
+\subsubsection{Mathematical Formulation}
+Let $z = [z_1, z_2, \dots, z_C]^T$ be the raw logits computed by the model for a query $x$, where $C$ is the number of classes. 
+
+We generate a noise vector $\epsilon = [\epsilon_1, \epsilon_2, \dots, \epsilon_C]^T$, where each $\epsilon_i$ is sampled independently from a Laplace distribution with scale parameter $b$:
+\begin{equation}
+    \epsilon_i \sim \text{Laplace}(0, b) \implies p(\epsilon_i) = \frac{1}{2b} \exp\left( -\frac{|\epsilon_i|}{b} \right)
+\end{equation}
+
+The perturbed logits $\tilde{z}$ are computed as:
+\begin{equation}
+    \tilde{z}_i = z_i + \epsilon_i
+\end{equation}
+
+The API returns the perturbed soft probabilities $\tilde{p}$:
+\begin{equation}
+    \tilde{p}_i = \frac{e^{\tilde{z}_i}}{\sum_{j=1}^C e^{\tilde{z}_j}}
+\end{equation}
+
+\subsubsection{Mathematical Example}
+Consider a 2-class classifier ($C=2$) with raw logits $z = [4.0, 1.0]^T$. The scale parameter is $b = 0.5$.
+\begin{enumerate}
+    \item \textbf{Step 1: Sample Noise}: Assume we sample noise values:
+    $$\epsilon = [0.15, -0.20]^T$$
+    
+    \item \textbf{Step 2: Perturb Logits}: Add the noise to the original logits:
+    $$\tilde{z} = [4.0 + 0.15, \ 1.0 - 0.20]^T = [4.15, 0.80]^T$$
+    
+    \item \textbf{Step 3: Compute Perturbed Probabilities}: Apply the softmax function:
+    \begin{align*}
+        \tilde{p}_1 &= \frac{e^{4.15}}{e^{4.15} + e^{0.80}} = \frac{63.43}{63.43 + 2.23} \approx 0.966 \\
+        \tilde{p}_2 &= 1 - 0.966 = 0.034
+    \end{align*}
+    Without perturbation, the true probabilities were $p = [0.953, 0.047]^T$. The perturbation alters the exact distribution values (which degrades the substitute model's training signal) but keeps the predicted class (class 0) identical.
+\end{enumerate}
+
+---
+
+\subsection{Deep-Dive 3.2: Model Modification (Defensive Distillation)}
+
+\subsubsection{General Mechanics}
+Defensive distillation is a training method that reduces the model's sensitivity to small input variations. A teacher model is trained on the data, and its soft probability outputs (evaluated at a high temperature $T$) are used as soft labels to train a student model. This temperature scaling smooths the decision surface and decreases the magnitude of the model's gradients. This makes it difficult for an attacker to estimate gradients or locate the decision boundary via query perturbations.
+
+See Figure~\ref{fig:model_modification} for a schematic of the defensive distillation workflow.
+
+\begin{figure}[htbp]
+    \centering
+    % If compiling to PDF, export the draw.io diagram to PNG/PDF and uncomment:
+    % \includegraphics[width=0.85\textwidth]{model_modification.png}
+    \caption{The Model Modification (Defensive Distillation) Workflow, outlining the teacher-to-student training sequence and robust deployment.}
+    \label{fig:model_modification}
+\end{figure}
+
+\subsubsection{Mathematical Formulation}
+The softmax function with temperature scale $T$ is defined as:
+\begin{equation}
+    q_i(x, T) = \frac{e^{z_i(x) / T}}{\sum_{j=1}^C e^{z_j(x) / T}}
+\end{equation}
+
+1. \textbf{Teacher Training}: Train a teacher model $f_{\text{teacher}}$ on the hard training labels $y$ using softmax at temperature $T$.
+2. \textbf{Student Training}: Train the student model $f_{\text{student}}$ on the soft training labels $q^{\text{teacher}}(x, T)$ using the distillation loss at temperature $T$:
+\begin{equation}
+    L_{\text{distill}} = - \sum_{i=1}^C q_i^{\text{teacher}}(x, T) \ln\left( q_i^{\text{student}}(x, T) \right)
+\end{equation}
+
+During deployment, the student model is run at temperature $T=1$. Because it was trained on smooth, temperature-scaled soft labels, the magnitude of its gradients $\nabla_x f(x)$ is significantly reduced.
+
+\subsubsection{Mathematical Example}
+Consider logits $z = [10.0, 2.0]^T$.
+\begin{enumerate}
+    \item \textbf{Standard Softmax ($T=1$)}:
+    $$p_1 = \frac{e^{10.0}}{e^{10.0} + e^{2.0}} = \frac{22026.47}{22026.47 + 7.39} \approx 0.99966, \quad p_2 \approx 0.00034$$
+    This extreme distribution yields a very sharp decision boundary with large gradients.
+    
+    \item \textbf{Distilled Softmax ($T=10$)}:
+    \begin{align*}
+        q_1 &= \frac{e^{10.0/10}}{e^{10.0/10} + e^{2.0/10}} = \frac{e^{1.0}}{e^{1.0} + e^{0.2}} = \frac{2.718}{2.718 + 1.221} \approx 0.690 \\
+        q_2 &= 1 - 0.690 = 0.310
+    \end{align*}
+    By training on these smooth targets ($[0.690, 0.310]^T$), the network parameters adjust to prevent sharp transitions, reducing gradient sensitivity.
+\end{enumerate}
+
+---
+
+\subsection{Deep-Dive 3.3: Access Control (Query Rate Limiting)}
+
+\subsubsection{General Mechanics}
+Access control restricts the number of queries a user can send to the API. Since substitute model training requires a large query budget (often tens of thousands of queries), enforcing a strict query budget or rate limit makes complete extraction logistically or financially impractical. This is commonly implemented using algorithms like the Token Bucket.
+
+See Figure~\ref{fig:access_control} for a flow diagram of the rate-limiting filter.
+
+\begin{figure}[htbp]
+    \centering
+    % If compiling to PDF, export the draw.io diagram to PNG/PDF and uncomment:
+    % \includegraphics[width=0.85\textwidth]{access_control.png}
+    \caption{The Access Control Mechanism, showcasing query budget evaluation and refill operations using a Token Bucket model.}
+    \label{fig:access_control}
+\end{figure}
+
+\subsubsection{Mathematical Formulation}
+Let $B(t)$ represent the number of tokens in a user's bucket at time $t$. The bucket has a maximum capacity $B_{\text{max}}$ and refills at a constant rate of $r$ tokens per second.
+
+When a query arrives at time $t$, the token count is updated:
+\begin{equation}
+    B(t) = \min\left( B_{\text{max}}, \ B(t_{\text{last}}) + r \cdot (t - t_{\text{last}}) \right)
+\end{equation}
+where $t_{\text{last}}$ is the timestamp of the previous query. 
+
+If $B(t) \ge 1$, the query is permitted, and the bucket is decremented:
+\begin{equation}
+    B(t) \leftarrow B(t) - 1
+\end{equation}
+If $B(t) < 1$, the query is rejected with a rate limit error (e.g., HTTP 429).
+
+\subsubsection{Mathematical Example}
+Consider a configuration with $B_{\text{max}} = 10$, refill rate $r = 0.5$ tokens/sec, and initial tokens $B(0) = 10$.
+An attacker attempts to send 12 queries rapidly at $t = 0$.
+\begin{enumerate}
+    \item \textbf{Queries 1-10}: Processed successfully, decrementing $B(0)$ to $0$.
+    \item \textbf{Queries 11-12}: Rejected because $B(0) < 1$.
+    \item \textbf{Query at $t=6$}: A new query arrives at $t = 6$ seconds. We update the bucket:
+    $$B(6) = \min(10, \ 0 + 0.5 \cdot (6 - 0)) = \min(10, 3) = 3 \text{ tokens}$$
+    Since $B(6) = 3 \ge 1$, the query is allowed, and the bucket is updated to $B(6) = 2$.
+\end{enumerate}
+
+---
+
+\subsection{Deep-Dive 3.4: Adversarial Training}
+
+\subsubsection{General Mechanics}
+Adversarial training is a technique where a model is trained on adversarial examples to make it robust against small perturbations. This robustness smooths out the decision boundary, making the model less sensitive to boundary queries. Consequently, substitute models trained on queries near the boundary struggle to capture the true decision boundary of the victim model.
+
+See Figure~\ref{fig:adversarial_training} for a schematic of the minimax loop.
+
+\begin{figure}[htbp]
+    \centering
+    % If compiling to PDF, export the draw.io diagram to PNG/PDF and uncomment:
+    % \includegraphics[width=0.85\textwidth]{adversarial_training.png}
+    \caption{The Adversarial Training Mechanism, illustrating the minimax optimization loop where inner maximization perturbs inputs and outer minimization updates weights.}
+    \label{fig:adversarial_training}
+\end{figure}
+
+\subsubsection{Mathematical Formulation}
+Adversarial training is formulated as a minimax optimization problem over the training set $D$:
+\begin{equation}
+    \min_\theta \mathbb{E}_{(x,y) \in D} \left[ \max_{\|\delta\|_p \le \epsilon} L\left( f_\theta(x + \delta), \ y \right) \right]
+\end{equation}
+where $\delta$ is an adversarial perturbation bounded by an $\epsilon$-ball under the $L_p$ norm, and $L$ is the task loss function. The inner maximization finds the worst-case perturbation, while the outer minimization updates the model parameters $\theta$ to minimize loss on these worst-case inputs.
+
+\subsubsection{Mathematical Example}
+Consider a 1D linear classification model $f(x) = \text{sign}(w \cdot x)$ with weight $w = 2.0$, training input $x = 1.0$, label $y = 1$, loss $L(f(x), y) = -y \cdot w \cdot x$, and perturbation limit $\epsilon = 0.5$ under the $L_\infty$ norm.
+\begin{enumerate}
+    \item \textbf{Step 1: Find Inner Maximization}: Find the perturbation $\delta \in [-0.5, 0.5]$ that maximizes the loss:
+    $$L(f(x+\delta), y) = -1 \cdot 2.0 \cdot (1.0 + \delta) = -2.0 - 2.0 \delta$$
+    To maximize this value, we select $\delta = -0.5$:
+    $$\max_\delta L = -2.0 - 2.0(-0.5) = -1.0$$
+    
+    \item \textbf{Step 2: Outer Minimization}: The model minimizes this worst-case loss during backpropagation. This forces the model to remain accurate even when inputs are shifted by $\pm 0.5$, producing a smoother, more robust decision boundary.
+\end{enumerate}
+
+---
+
+\section{Category 4: Integrated Defense}
+
+\subsection{General Mechanics (Intuition)}
+Integrated defenses combine multiple individual defense methods to protect the model across the entire query lifecycle. 
+
+\begin{enumerate}
+    \item \textbf{Holistic Methods}: Combining access control, anomaly detection, and prediction perturbation into a single unified security pipeline.
+    \item \textbf{Specialized Methods}: Applying mathematical constraints (such as Differential Privacy) to protect model updates in collaborative environments like Federated Learning.
+\end{enumerate}
+
+---
+
+\subsection{Deep-Dive 4.1: Holistic Methods (Unified Pipeline)}
+
+\subsubsection{General Mechanics}
+A holistic defense pipeline processes every query through a sequence of protective layers. When a query is received, it is first validated by access control. Next, an anomaly detection module (such as PRADA) checks the query sequence for patterns indicative of model extraction. If the anomaly score is low, the query is passed to the target model. Before returning the prediction, a perturbation module adjusts the output probabilities, tailoring the noise level to the user's computed trust score.
+
+\subsubsection{Mathematical Formulation}
+Let the holistic defense system be defined as a composite function $H(x, u)$ for user $u$ and query $x$:
+\begin{equation}
+    H(x, u) = \text{Perturb}\left( f(x), \ \text{Score}(u) \right)
+\end{equation}
+where $\text{Score}(u) \in [0, 1]$ is the user's anomaly score. 
+
+The perturbation scale $b$ (e.g., Laplace noise scale) is dynamically adjusted:
+\begin{equation}
+    b = b_{\text{base}} + \alpha \cdot \text{Score}(u)
+\end{equation}
+where $b_{\text{base}}$ is the baseline noise level and $\alpha$ is a scaling factor. If $\text{Score}(u)$ exceeds a blocking threshold $\tau$, the pipeline denies access.
+
+\subsubsection{Mathematical Example}
+Consider a pipeline with $b_{\text{base}} = 0.1$, scaling factor $\alpha = 2.0$, and blocking threshold $\tau = 0.8$.
+\begin{enumerate}
+    \item \textbf{Scenario A: Benign User}: The user has a low anomaly score $\text{Score}(u_A) = 0.05$.
+    $$b_A = 0.1 + 2.0 \cdot (0.05) = 0.20 \quad (\text{adds very low noise})$$
+    
+    \item \textbf{Scenario B: Suspect User}: The user performs boundary searches, resulting in a higher anomaly score $\text{Score}(u_B) = 0.60$.
+    $$b_B = 0.1 + 2.0 \cdot (0.60) = 1.30 \quad (\text{injects high noise, degrading extraction utility})$$
+    
+    \item \textbf{Scenario C: Malicious User}: The user's anomaly score reaches $\text{Score}(u_C) = 0.85 \ge \tau$. The pipeline blocks the user immediately.
+\end{enumerate}
+
+---
+
+\subsection{Deep-Dive 4.2: Specialized Methods (Differentially Private Federated Learning)}
+
+\subsubsection{General Mechanics}
+In collaborative Federated Learning, clients compute local loss gradients and share them with a central server. Attackers can intercept these gradients to reconstruct private training samples (Deep Leakage from Gradients) or parameter values. Differentially Private Federated Learning (DP-FL) prevents this by clipping the gradient vectors to limit the influence of any single sample, and adding calibrated Gaussian noise to the gradients before sharing them.
+
+See Figure~\ref{fig:integrated_defense} for a diagram of the differentially private gradient collection.
+
+\begin{figure}[htbp]
+    \centering
+    % If compiling to PDF, export the draw.io diagram to PNG/PDF and uncomment:
+    % \includegraphics[width=0.85\textwidth]{integrated_defense.png}
+    \caption{The Integrated Defense (Differentially Private Federated Learning) Flow, showing L2 norm clipping and Gaussian noise injection on client gradient updates prior to server aggregation.}
+    \label{fig:integrated_defense}
+\end{figure}
+
+\subsubsection{Mathematical Formulation}
+Let $g_i$ be the gradient computed by client $i$. To ensure the gradient does not leak information, we clip its $L_2$ norm to a threshold $C$:
+\begin{equation}
+    \bar{g}_i = \frac{g_i}{\max\left( 1, \ \frac{\|g_i\|_2}{C} \right)}
+\end{equation}
+
+We then add Gaussian noise to the clipped gradient vector:
+\begin{equation}
+    \tilde{g}_i = \bar{g}_i + \mathcal{N}\left( 0, \ \sigma^2 \sigma_{\text{noise}}^2 I \right)
+\end{equation}
+where $\sigma_{\text{noise}}$ is the noise scale determined by the privacy parameters $(\epsilon, \delta)$, and $I$ is the identity matrix.
+
+\subsubsection{Mathematical Example}
+Consider a client gradient $g = [3.0, 4.0]^T$. The clipping threshold is $C = 2.5$, and the noise scale is $\sigma_n = 0.1$.
+\begin{enumerate}
+    \item \textbf{Step 1: Compute Gradient Norm}:
+    $$\|g\|_2 = \sqrt{3.0^2 + 4.0^2} = \sqrt{9 + 16} = 5.0$$
+    
+    \item \textbf{Step 2: Clip the Gradient}: Since $\|g\|_2 = 5.0 > C = 2.5$:
+    $$\bar{g} = \frac{[3.0, 4.0]^T}{\max(1, 5.0/2.5)} = \frac{[3.0, 4.0]^T}{2.0} = [1.5, 2.0]^T$$
+    
+    \item \textbf{Step 3: Add Noise}: Sample noise $\eta \sim \mathcal{N}(0, 0.01 \cdot I)$, e.g., $\eta = [0.08, -0.05]^T$.
+    $$\tilde{g} = [1.5, 2.0]^T + [0.08, -0.05]^T = [1.58, 1.95]^T$$
+    This differentially private gradient update is sent to the central server, preventing parameter extraction.
+\end{enumerate}
+
+---
+
+\section{Category 5: Other Data Modalities}
+
+\subsection{General Mechanics (Intuition)}
+Defenses must adapt to the structure of the data modality being protected. 
+
+\begin{enumerate}
+    \item \textbf{Text Models}: Protecting sequential language tokens by watermarking generated text or formatting API outputs.
+    \item \textbf{Vision Models}: Protecting image grids by limiting predictions to the most likely classes.
+    \item \textbf{Graph Models}: Protecting topological structures by perturbing connections.
+\end{enumerate}
+
+---
+
+\subsection{Deep-Dive 5.1: Defenses on Text Models (Vocabulary Watermarking)}
+
+\subsubsection{General Mechanics}
+To defend Large Language Models (LLMs) from extraction, vocabulary watermarking partitions the vocabulary into a ``green list'' and a ``red list'' at each generation step. The partition is determined by a hash of the previously generated token. By adding a small bias to the logits of the green list tokens, the model is biased toward generating green list words. Legitimate users do not notice the bias, but if an attacker clones the model, the generated text of the clone will contain an abnormally high proportion of green list tokens, proving extraction.
+
+See Figure~\ref{fig:defense_text_models} for a schematic of the token selection loop.
+
+\begin{figure}[htbp]
+    \centering
+    % If compiling to PDF, export the draw.io diagram to PNG/PDF and uncomment:
+    % \includegraphics[width=0.85\textwidth]{defense_text_models.png}
+    \caption{The Text Model Defense (Vocabulary Watermarking) Mechanism, showcasing the partition of vocabulary into green and red lists using preceding token hashing and adding logit bias $\delta$ during generation.}
+    \label{fig:defense_text_models}
+\end{figure}
+
+\subsubsection{Mathematical Formulation}
+Let $w_{t-1}$ be the token generated at step $t-1$. We compute a hash value $H(w_{t-1})$ to partition the vocabulary $V$ into a green list $G$ and a red list $R$:
+\begin{equation}
+    V = G \cup R, \quad |G| = \gamma |V|
+\end{equation}
+where $\gamma \in (0, 1)$ is the green list size ratio.
+
+The logits $z_k$ for token $k$ at step $t$ are modified by adding a bias $\delta > 0$:
+\begin{equation}
+    \tilde{z}_k = 
+    \begin{cases}
+        z_k + \delta & \text{if } k \in G \\
+        z_k & \text{if } k \in R
+    \end{cases}
+\end{equation}
+The next token is sampled from the softmax distribution of these modified logits.
+
+\subsubsection{Mathematical Example}
+Consider a vocabulary $V = \{\text{``yes''}, \text{``no''}\}$ with $\gamma = 0.5$. The previous token is $w_{t-1} = \text{``the''}$.
+\begin{enumerate}
+    \item \textbf{Step 1: Partition Vocabulary}: The hash $H(\text{``the''})$ assigns ``yes'' to the green list $G$ and ``no'' to the red list $R$.
+    \item \textbf{Step 2: Apply Bias}: The model's raw logits are $z = [1.0, 1.0]^T$, and the bias is $\delta = 2.0$.
+    $$\tilde{z}_{\text{yes}} = 1.0 + 2.0 = 3.0, \quad \tilde{z}_{\text{no}} = 1.0$$
+    
+    \item \textbf{Step 3: Sample Next Token}: Compute the probabilities:
+    $$P(\text{``yes''}) = \frac{e^{3.0}}{e^{3.0} + e^{1.0}} = \frac{20.09}{20.09 + 2.72} \approx 0.88, \quad P(\text{``no''}) \approx 0.12$$
+    The model is biased to select the green list token ``yes''.
+\end{enumerate}
+
+---
+
+\subsection{Deep-Dive 5.2: Defenses on Vision Models (Top-k Shielding)}
+
+\subsubsection{General Mechanics}
+Vision classifiers often output confidence scores across hundreds of classes. An attacker uses these full distributions to align their substitute model. Top-$k$ shielding prevents this by returning only the top-$k$ highest probabilities, setting all other class probabilities to zero, and re-normalizing the remaining distribution. This removes the low-probability values (which carry significant information about decision boundaries) while keeping the classification utility intact.
+
+See Figure~\ref{fig:defense_vision_models} for a diagram of probability shielding.
+
+\begin{figure}[htbp]
+    \centering
+    % If compiling to PDF, export the draw.io diagram to PNG/PDF and uncomment:
+    % \includegraphics[width=0.85\textwidth]{defense_vision_models.png}
+    \caption{The Vision Model Defense (Top-k Shielding) Workflow, sorting prediction scores to retain only the top-k classes and re-normalizing the distribution to hide low-probability gradients.}
+    \label{fig:defense_vision_models}
+\end{figure}
+
+\subsubsection{Mathematical Formulation}
+Let $p = [p_1, p_2, \dots, p_C]^T$ be the true probability output. Let $I_{\text{top}}$ be the set of indices corresponding to the $k$ largest probabilities in $p$.
+
+The shielded probabilities $\tilde{p}$ are computed as:
+\begin{equation}
+    \tilde{p}_c = 
+    \begin{cases}
+        \frac{p_c}{\sum_{j \in I_{\text{top}}} p_j} & \text{if } c \in I_{\text{top}} \\
+        0 & \text{if } c \notin I_{\text{top}}
+    \end{cases}
+\end{equation}
+
+\subsubsection{Mathematical Example}
+Consider a model outputting probabilities for $C=3$ classes:
+$$p = [0.70, 0.20, 0.10]^T$$
+We apply top-$k$ shielding with $k = 2$.
+\begin{enumerate}
+    \item \textbf{Step 1: Identify Top-2 Classes}: The classes with the largest probabilities are class 1 ($0.70$) and class 2 ($0.20$). Thus, $I_{\text{top}} = \{1, 2\}$.
+    \item \textbf{Step 2: Normalize the Distribution}: The sum of the top-2 probabilities is $0.70 + 0.20 = 0.90$.
+    \begin{align*}
+        \tilde{p}_1 &= \frac{0.70}{0.90} \approx 0.778 \\
+        \tilde{p}_2 &= \frac{0.20}{0.90} \approx 0.222 \\
+        \tilde{p}_3 &= 0
+    \end{align*}
+    The shielded output is $\tilde{p} = [0.778, 0.222, 0.0]^T$, hiding the boundary information carried by the third class.
+\end{enumerate}
+
+---
+
+\subsection{Deep-Dive 5.3: Defenses on Graph Models (Differential Privacy on Adjacency Matrix)}
+
+\subsubsection{General Mechanics}
+Graph Neural Networks (GNNs) use the connections (adjacency matrix) between nodes to make predictions. Attackers query GNNs to reconstruct these private connections. To prevent this, the defender perturbs the graph topology before training by randomly adding or removing edges using a randomized response algorithm. This provides differential privacy guarantees for the graph structure, making it difficult for an attacker to reconstruct private connections from query outputs.
+
+See Figure~\ref{fig:defense_graph_models} for a diagram of the randomized response perturbation.
+
+\begin{figure}[htbp]
+    \centering
+    % If compiling to PDF, export the draw.io diagram to PNG/PDF and uncomment:
+    % \includegraphics[width=0.85\textwidth]{defense_graph_models.png}
+    \caption{The Graph Model Defense (Adjacency Matrix Differential Privacy) Flow, applying a randomized response coin-flip to add or remove links on the input topology prior to GNN training.}
+    \label{fig:defense_graph_models}
+\end{figure}
+
+\subsubsection{Mathematical Formulation}
+Let $A$ be the binary adjacency matrix of the graph, where $A_{ij} = 1$ if there is an edge between node $i$ and node $j$, and $0$ otherwise. 
+
+We construct a perturbed adjacency matrix $\tilde{A}$ using a randomized response mechanism:
+\begin{equation}
+    \tilde{A}_{ij} = 
+    \begin{cases}
+        A_{ij} & \text{with probability } p \\
+        1 - A_{ij} & \text{with probability } 1 - p
+    \end{cases}
+\end{equation}
+where the probability $p$ is derived from the privacy budget $\epsilon$:
+\begin{equation}
+    p = \frac{e^\epsilon}{e^\epsilon + 1}
+\end{equation}
+
+The GNN is trained on the perturbed structure $\tilde{A}$, which protects individual connections while preserving the global graph properties.
+
+\subsubsection{Mathematical Example}
+Consider a connection between Node 1 and Node 2 ($A_{12} = 1$). We set the privacy parameter $\epsilon = 2.197$, which gives:
+$$p = \frac{e^{2.197}}{e^{2.197} + 1} = \frac{9.0}{9.0 + 1.0} = 0.90 \ (90\%)$$
+\begin{enumerate}
+    \item \textbf{Scenario A}: With $90\%$ probability, we keep the true connection:
+    $$\tilde{A}_{12} = A_{12} = 1$$
+    
+    \item \textbf{Scenario B}: With $10\%$ probability, we flip the value:
+    $$\tilde{A}_{12} = 1 - A_{12} = 0$$
+    This perturbation hides the true connection from attackers attempting topological reconstruction.
+\end{enumerate}
+
+---
+
+\section{Open Challenges}
+
+Despite the variety of counter-measures, model extraction defense remains an open research area with several critical challenges:
+\begin{enumerate}
+    \item \textbf{The Security-Utility Tradeoff}: Many active prevention methods (such as logit perturbation or top-$k$ shielding) intentionally reduce the granularity or accuracy of the returned predictions. While this successfully starves substitute models of critical training signals, it also harms benign users who rely on high-precision confidence scores for thresholding or calibration.
+    \item \textbf{Adaptive and Distributed Attackers}: Detection mechanisms like PRADA assume the attacker queries are concentrated and pathological. An adaptive attacker can evade detection by distributing queries across multiple Sybil accounts, query rate-throttling (slow extraction), or mixing extraction queries with large amounts of benign traffic.
+    \item \textbf{Watermark Scrubbing}: Embedded watermarks can often be destroyed or bypassed by post-processing the extracted model. Techniques such as network pruning, fine-tuning on a small set of clean natural data, or low-bit quantization can remove trigger-activation behaviors while maintaining standard task utility.
+    \item \textbf{Generalization of Fingerprints}: Active fingerprinting relies on model characteristics that are unique to the target architecture. If the attacker extracts the model using a completely different neural architecture (e.g., extracting a ViT target using a substitute CNN), the boundary fingerprints may not generalize well, weakening verification confidence.
+\end{enumerate}
+
+---
+
+\section{Summary and Key Takeaways}
+\begin{itemize}
+    \item \textbf{Proactive vs. Reactive Defense}: Defenses are split between proactive prevention (e.g., logit noise, rate-limiting, distillation) which actively stops theft, and reactive verification (e.g., watermarks, fingerprinting) which serves as legal recourse post-theft.
+    \item \textbf{No Silver Bullet}: No single defense is fully secure against a motivated adversary. A robust strategy requires a \textit{defense-in-depth} approach---such as an integrated pipeline that couples monitoring (PRADA) with dynamic logit perturbation.
+    \item \textbf{Modality-Specific Nuances}: Data format dictates the defense mechanics. Vision models benefit from output shielding, text models require discrete vocabulary partitioning (green-red lists), and graph models necessitate structure-level differential privacy to hide adjacency topology.
+\end{itemize}
+
+\end{document}

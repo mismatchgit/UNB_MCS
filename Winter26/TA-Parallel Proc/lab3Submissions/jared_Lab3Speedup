@@ -1,0 +1,51 @@
+//Serial
+[jhowse1@id415m27 CS4745Lab3]$ gcc -fopenmp lab3_image.c -o lab3
+[jhowse1@id415m27 CS4745Lab3]$ ./lab3
+Saved original.bmp
+Saved inverted.bmp
+Heavy Blur Time: 0.893269 seconds
+Saved blurred_heavy.bmp
+[jhowse1@id415m27 CS4745Lab3]$ 
+
+//parallel
+[jhowse1@id415m27 CS4745Lab3]$ gcc -fopenmp lab3_image.c -o lab3
+[jhowse1@id415m27 CS4745Lab3]$ ./lab3
+Saved original.bmp
+Saved inverted.bmp
+Heavy Blur Time: 0.116605 seconds
+Saved blurred_heavy.bmp
+[jhowse1@id415m27 CS4745Lab3]$ 
+
+Speedup = 0.893269/0.116605 = 7.66064062433 speedup -> no threads specified
+
+//2 threads
+[jhowse1@id415m27 CS4745Lab3]$ gcc -fopenmp lab3_image.c -o lab3
+[jhowse1@id415m27 CS4745Lab3]$ ./lab3
+Saved original.bmp
+Saved inverted.bmp
+Heavy Blur Time: 0.483340 seconds
+Saved blurred_heavy.bmp
+[jhowse1@id415m27 CS4745Lab3]$ 
+0.893269/0.483340 = 1.84811726735
+
+
+//4 threads
+[jhowse1@id415m27 CS4745Lab3]$ gcc -fopenmp lab3_image.c -o lab3
+[jhowse1@id415m27 CS4745Lab3]$ ./lab3
+Saved original.bmp
+Saved inverted.bmp
+Heavy Blur Time: 0.264661 seconds
+Saved blurred_heavy.bmp
+[jhowse1@id415m27 CS4745Lab3]$ 
+0.893269/0.264661 = 3.3751440522
+
+//8 threads
+[jhowse1@id415m27 CS4745Lab3]$ gcc -fopenmp lab3_image.c -o lab3
+[jhowse1@id415m27 CS4745Lab3]$ ./lab3
+Saved original.bmp
+Saved inverted.bmp
+Heavy Blur Time: 0.141181 seconds
+Saved blurred_heavy.bmp
+[jhowse1@id415m27 CS4745Lab3]$ 
+0.893269/0.141181 = 6.32711908826
+

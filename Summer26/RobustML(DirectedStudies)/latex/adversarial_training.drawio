@@ -1,0 +1,47 @@
+<mxfile host="Electron" modified="2026-08-06T20:43:00.000Z" version="21.6.8" type="device">
+  <diagram id="adversarial_training" name="Adversarial Training">
+    <mxGraphModel dx="1000" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Container box -->
+        <mxCell id="group_adv" value="Adversarial Training: Minimax Optimization Loop" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;dashed=1;dashPattern=1 4;startSize=30;verticalAlign=top;align=left;spacingLeft=10;" parent="1" vertex="1">
+          <mxGeometry x="30" y="30" width="760" height="230" as="geometry" />
+        </mxCell>
+
+        <!-- Node 1: Input -->
+        <mxCell id="node_sample" value="&lt;b&gt;Clean Sample&lt;/b&gt;&lt;br&gt;Input: x&lt;br&gt;Label: y" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="group_adv" vertex="1">
+          <mxGeometry x="20" y="85" width="120" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Node 2: Inner Max -->
+        <mxCell id="node_max" value="&lt;b&gt;Inner Maximization&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Finds worst-case perturbation&lt;br&gt;&amp;#948; inside &amp;#949;-ball that&lt;br&gt;maximizes Loss L(f(x+&amp;#948;), y)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="group_adv" vertex="1">
+          <mxGeometry x="190" y="75" width="180" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Node 3: Model Target -->
+        <mxCell id="node_model" value="&lt;b&gt;Model Ingest&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Evaluates perturbed&lt;br&gt;sample: x + &amp;#948;&lt;/font&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d5e8d4;strokeColor=#82b366;" parent="group_adv" vertex="1">
+          <mxGeometry x="420" y="65" width="110" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Node 4: Outer Min -->
+        <mxCell id="node_min" value="&lt;b&gt;Outer Minimization&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Updates weights &amp;#952; using&lt;br&gt;backpropagation to minimize&lt;br&gt;loss on worst-case inputs&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="group_adv" vertex="1">
+          <mxGeometry x="580" y="75" width="160" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Connections -->
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="group_adv" source="node_sample" target="node_max" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;entryPerimeter=1;" parent="group_adv" source="node_max" target="node_model" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitPerimeter=1;entryX=0;entryY=0.5;" parent="group_adv" source="node_model" target="node_min" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

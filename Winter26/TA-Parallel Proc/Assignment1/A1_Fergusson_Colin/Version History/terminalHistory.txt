@@ -1,0 +1,2646 @@
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+cc1: fatal error: a1.c: No such file or directory
+compilation terminated.
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+a1.c: In function ‘main’:
+a1.c:18:24: warning: implicit declaration of function ‘sin’ [-Wimplicit-function-declaration]
+   18 |             A[i*N+j] = sin(i) * cos(j) + sqrt(i+j+1);
+      |                        ^~~
+a1.c:4:1: note: include ‘<math.h>’ or provide a declaration of ‘sin’
+    3 | #include <omp.h>
+  +++ |+#include <math.h>
+    4 | 
+a1.c:18:24: warning: incompatible implicit declaration of built-in function ‘sin’ [-Wbuiltin-declaration-mismatch]
+   18 |             A[i*N+j] = sin(i) * cos(j) + sqrt(i+j+1);
+      |                        ^~~
+a1.c:18:24: note: include ‘<math.h>’ or provide a declaration of ‘sin’
+a1.c:18:33: warning: implicit declaration of function ‘cos’ [-Wimplicit-function-declaration]
+   18 |             A[i*N+j] = sin(i) * cos(j) + sqrt(i+j+1);
+      |                                 ^~~
+a1.c:18:33: note: include ‘<math.h>’ or provide a declaration of ‘cos’
+a1.c:18:33: warning: incompatible implicit declaration of built-in function ‘cos’ [-Wbuiltin-declaration-mismatch]
+a1.c:18:33: note: include ‘<math.h>’ or provide a declaration of ‘cos’
+a1.c:18:42: warning: implicit declaration of function ‘sqrt’ [-Wimplicit-function-declaration]
+   18 |             A[i*N+j] = sin(i) * cos(j) + sqrt(i+j+1);
+      |                                          ^~~~
+a1.c:18:42: note: include ‘<math.h>’ or provide a declaration of ‘sqrt’
+a1.c:18:42: warning: incompatible implicit declaration of built-in function ‘sqrt’ [-Wbuiltin-declaration-mismatch]
+a1.c:18:42: note: include ‘<math.h>’ or provide a declaration of ‘sqrt’
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1
+Please include the size of the matrices and the mode as command line arguments
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+Generated successfully[r5r
+[r5r4r@remotelabm39 As1]$ ./a1
+Please include the size of the matrices and the mode as command line arguments
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+Generated successfully[r5r
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+Generated successfully
+[r5r4r@remotelabm39 As1]$ ./a1
+Please include the size of the matrices and the mode as command line arguments
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1
+Please include the size of the matrices and the mode as command line arguments
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+a1.c: In function ‘main’:
+a1.c:87:5: warning: implicit declaration of function ‘pritnf’; did you mean ‘printf’? [-Wimplicit-function-declaration]
+   87 |     pritnf("N: %d\n", N);
+      |     ^~~~~~
+      |     printf
+/usr/bin/ld: /tmp/ccmPpoRu.o: in function `main':
+a1.c:(.text.startup+0x1e5): undefined reference to `pritnf'
+collect2: error: ld returned 1 exit status
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 8
+Time: 0.008433
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 8
+Time: 0.008491 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+a1.c: In function ‘mode1’:
+a1.c:45:84: error: user defined reduction not found for ‘sumC’
+   45 |     #pragma omp parallel for private(i,j) shared(C) schedule(dynamic, 16) reduction(+:sumC) reduction(max:maxC)
+      |                                                                                    ^
+a1.c:45:102: error: user defined reduction not found for ‘maxC’
+   45 |     #pragma omp parallel for private(i,j) shared(C) schedule(dynamic, 16) reduction(+:sumC) reduction(max:maxC)
+      |                                                                                                      ^
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+a1.c: In function ‘mode1’:
+a1.c:45:84: error: user defined reduction not found for ‘sumC’
+   45 |     #pragma omp parallel for private(i,j) shared(C) schedule(dynamic, 16) reduction(+:sumC) reduction(max:maxC)
+      |                                                                                    ^
+a1.c:45:102: error: user defined reduction not found for ‘maxC’
+   45 |     #pragma omp parallel for private(i,j) shared(C) schedule(dynamic, 16) reduction(+:sumC) reduction(max:maxC)
+      |                                                                                                      ^
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 8
+Time: 0.008157 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ ./a1 256 1
+N: 256
+Mode: 1
+Threads: 8
+Time: 0.002541 seconds
+SumC: 4196400887.425673
+MaxC: 98349.305011
+Checksum: 409326430.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 8
+Time: 0.013499 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ ./a1 256 1
+N: 256
+Mode: 1
+Threads: 8
+Time: 0.002436 seconds
+SumC: 4196400887.425673
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 8
+Time: 0.012540 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 8
+Time: 0.008046 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ ./a1 256 2
+N: 256
+Mode: 2
+Threads: 8
+Time: 0.002458 seconds
+SumC: 4196400887.425666
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ 
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 8
+Time: 0.012378 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ ./a1 256 1
+N: 256
+Mode: 1
+Threads: 8
+Time: 0.003868 seconds
+SumC: 4196400887.425673
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ ./a1 256 2
+N: 256
+Mode: 2
+Threads: 8
+Time: 0.003036 seconds
+SumC: 4196400887.425666
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 8
+Time: 0.008414 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ ./a1 256 3A
+N: 256
+Mode: 3A
+Threads: 8
+Time: 0.005138 seconds
+SumC: 4196400887.425667
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ ./a1 256 3B
+N: 256
+Mode: 3B
+Threads: 8
+Time: 0.009790 seconds
+SumC: 4196400887.425668
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 8
+Time: 0.008858 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ ./a1 256 3A
+N: 256
+Mode: 3A
+Threads: 8
+Time: 0.007126 seconds
+SumC: 4196400887.425668
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ ./a1 256 3B
+N: 256
+Mode: 3B
+Threads: 8
+Time: 0.010891 seconds
+SumC: 4196400887.425666
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 8
+Time: 0.008081 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ ./a1 256 3A
+N: 256
+Mode: 3A
+Threads: 8
+Time: 0.005423 seconds
+SumC: 4196400887.425667
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ ./a1 256 3B
+N: 256
+Mode: 3B
+Threads: 8
+Time: 0.010055 seconds
+SumC: 4196400887.425664
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+a1.c: In function ‘mode4’:
+a1.c:189:35: error: ‘private’ is not valid for ‘#pragma omp taskgroup’
+  189 |             #pragma omp taskgroup private(start,end)
+      |                                   ^~~~~~~
+a1.c:194:67: error: ‘schedule’ is not valid for ‘#pragma omp task’
+  194 |                     #pragma omp task shared(A,B,C) private(i,j,k) schedule(static)
+      |                                                                   ^~~~~~~~
+a1.c:210:57: error: ‘schedule’ is not valid for ‘#pragma omp task’
+  210 |                 #pragma omp task shared(C) private(i,j) schedule(dynamic, 16) reduction(+:sumCl) reduction(max:maxCl) reduction(+:checksuml)
+      |                                                         ^~~~~~~~
+a1.c:210:79: error: ‘reduction’ is not valid for ‘#pragma omp task’
+  210 |                 #pragma omp task shared(C) private(i,j) schedule(dynamic, 16) reduction(+:sumCl) reduction(max:maxCl) reduction(+:checksuml)
+      |                                                                               ^~~~~~~~~
+a1.c:210:98: error: ‘reduction’ is not valid for ‘#pragma omp task’
+  210 |                 #pragma omp task shared(C) private(i,j) schedule(dynamic, 16) reduction(+:sumCl) reduction(max:maxCl) reduction(+:checksuml)
+      |                                                                                                  ^~~~~~~~~
+a1.c:210:119: error: ‘reduction’ is not valid for ‘#pragma omp task’
+  210 |                 #pragma omp task shared(C) private(i,j) schedule(dynamic, 16) reduction(+:sumCl) reduction(max:maxCl) reduction(+:checksuml)
+      |                                                                                                                       ^~~~~~~~~
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+a1.c: In function ‘mode4’:
+a1.c:208:35: error: ‘reduction’ is not valid for ‘#pragma omp taskgroup’
+  208 |             #pragma omp taskgroup reduction(+:sumCl) reduction(max:maxCl) reduction(+:checksuml)
+      |                                   ^~~~~~~~~
+a1.c:208:54: error: ‘reduction’ is not valid for ‘#pragma omp taskgroup’
+  208 |             #pragma omp taskgroup reduction(+:sumCl) reduction(max:maxCl) reduction(+:checksuml)
+      |                                                      ^~~~~~~~~
+a1.c:208:75: error: ‘reduction’ is not valid for ‘#pragma omp taskgroup’
+  208 |             #pragma omp taskgroup reduction(+:sumCl) reduction(max:maxCl) reduction(+:checksuml)
+      |                                                                           ^~~~~~~~~
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 4
+N: 256
+Mode: 4
+Threads: 8
+Time: 0.002352 seconds
+SumC: 191262594.190469
+MaxC: 59005.994093
+Checksum: 205992125.000000
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 8
+Time: 0.008398 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+Test: 35958.944096N: 256
+Mode: 0
+Threads: 8
+Time: 0.008444 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ ./a1 256 4
+Test: 35958.944096N: 256
+Mode: 4
+Threads: 8
+Time: 0.002599 seconds
+SumC: 191262594.190469
+MaxC: 59005.994093
+Checksum: 205992125.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+Test: 54438.041702
+N: 256
+Mode: 0
+Threads: 8
+Time: 0.008309 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ ./a1 256 4
+Test: 54438.041702
+N: 256
+Mode: 4
+Threads: 8
+Time: 0.002578 seconds
+SumC: 191262594.190469
+MaxC: 59005.994093
+Checksum: 205992125.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+a1.c: In function ‘mode4’:
+a1.c:219:49: error: invalid form of ‘#pragma omp atomic’ before ‘;’ token
+  219 |                                 maxCl = C[i*N+j];
+      |                                                 ^
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+a1.c: In function ‘mode4’:
+a1.c:217:49: error: expected ‘#pragma omp’ clause before ‘{’ token
+  217 |                             #pragma omp critical{
+      |                                                 ^
+a1.c: At top level:
+a1.c:232:5: warning: data definition has no type or storage class
+  232 |     *sumC = sumCl;
+      |     ^
+a1.c:232:6: warning: type defaults to ‘int’ in declaration of ‘sumC’ [-Wimplicit-int]
+  232 |     *sumC = sumCl;
+      |      ^~~~
+a1.c:232:13: error: ‘sumCl’ undeclared here (not in a function); did you mean ‘sumC’?
+  232 |     *sumC = sumCl;
+      |             ^~~~~
+      |             sumC
+a1.c:233:5: warning: data definition has no type or storage class
+  233 |     *maxC = maxCl;
+      |     ^
+a1.c:233:6: warning: type defaults to ‘int’ in declaration of ‘maxC’ [-Wimplicit-int]
+  233 |     *maxC = maxCl;
+      |      ^~~~
+a1.c:233:13: error: ‘maxCl’ undeclared here (not in a function); did you mean ‘maxC’?
+  233 |     *maxC = maxCl;
+      |             ^~~~~
+      |             maxC
+a1.c:234:5: warning: data definition has no type or storage class
+  234 |     *checksum = checksuml;
+      |     ^
+a1.c:234:6: warning: type defaults to ‘int’ in declaration of ‘checksum’ [-Wimplicit-int]
+  234 |     *checksum = checksuml;
+      |      ^~~~~~~~
+a1.c:234:17: error: ‘checksuml’ undeclared here (not in a function); did you mean ‘checksum’?
+  234 |     *checksum = checksuml;
+      |                 ^~~~~~~~~
+      |                 checksum
+a1.c:236:5: warning: data definition has no type or storage class
+  236 |     free(C);
+      |     ^~~~
+a1.c:236:5: warning: type defaults to ‘int’ in declaration of ‘free’ [-Wimplicit-int]
+a1.c:236:5: warning: parameter names (without types) in function declaration
+a1.c:236:5: error: conflicting types for ‘free’; have ‘int()’
+In file included from a1.c:2:
+/usr/include/stdlib.h:554:13: note: previous declaration of ‘free’ with type ‘void(void *)’
+  554 | extern void free (void *__ptr) __THROW;
+      |             ^~~~
+a1.c:237:1: error: expected identifier or ‘(’ before ‘}’ token
+  237 | }
+      | ^
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+Test: 54438.041702
+N: 256
+Mode: 0
+Threads: 8
+Time: 0.009735 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ ./a1 256 4
+Test: 54438.041702
+N: 256
+Mode: 4
+Threads: 8
+Time: 0.003751 seconds
+SumC: 191262594.190469
+MaxC: 59005.994093
+Checksum: 205992125.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+Test: 98349.305011
+N: 256
+Mode: 0
+Threads: 8
+Time: 0.008165 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ ./a1 256 4
+Test: 0.000000
+N: 256
+Mode: 4
+Threads: 8
+Time: 0.003894 seconds
+SumC: 191262594.190469
+MaxC: 59005.994093
+Checksum: 205992125.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+Test: 98349.305011
+N: 256
+Mode: 0
+Threads: 8
+Time: 0.008280 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ ./a1 256 4
+Test: 98349.305011
+N: 256
+Mode: 4
+Threads: 8
+Time: 0.003609 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 8
+Time: 0.008713 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ ./a1 256 4
+N: 256
+Mode: 4
+Threads: 8
+Time: 0.002924 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 8
+Time: 0.008214 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ ./a1 256 4
+N: 256
+Mode: 4
+Threads: 8
+Time: 0.002271 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 8
+Time: 0.008064 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ ./a1 256 5
+N: 256
+Mode: 5
+Threads: 8
+Time: 0.008649 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+a1.c: In function ‘mode6’:
+a1.c:271:26: error: ‘simd’ is not valid for ‘#pragma omp parallel’
+  271 |     #pragma omp parallel simd
+      |                          ^~~~
+a1.c:281:26: error: ‘simd’ is not valid for ‘#pragma omp parallel’
+  281 |     #pragma omp parallel simd
+      |                          ^~~~
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 8
+Time: 0.008046 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ ./a1 256 6
+N: 256
+Mode: 6
+Threads: 8
+Time: 0.002530 seconds
+SumC: 478508996.691104
+MaxC: 74792.343138
+Checksum: 407892650.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 8
+Time: 0.008064 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ ./a1 256 5
+N: 256
+Mode: 5
+Threads: 8
+Time: 0.008649 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+a1.c: In function ‘mode6’:
+a1.c:271:26: error: ‘simd’ is not valid for ‘#pragma omp parallel’
+  271 |     #pragma omp parallel simd
+      |                          ^~~~
+a1.c:281:26: error: ‘simd’ is not valid for ‘#pragma omp parallel’
+  281 |     #pragma omp parallel simd
+      |                          ^~~~
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 8
+Time: 0.008046 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ ./a1 256 6
+N: 256
+Mode: 6
+Threads: 8
+Time: 0.002530 seconds
+SumC: 478508996.691104
+MaxC: 74792.343138
+Checksum: 407892650.000000
+[r5r4r@remotelabm39 As1]$ 
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 8
+Time: 0.008211 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ ./a1 256 6
+N: 256
+Mode: 6
+Threads: 8
+Time: 0.003578 seconds
+SumC: 4196400887.425673
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 2
+N: 256
+Mode: 2
+Threads: 8
+Average time: 0.000000 seconds
+SumC: 4196400887.425667
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ ./a1 256 5
+N: 256
+Mode: 5
+Threads: 8
+Average time: 0.000000 seconds
+SumC: 4196400887.425658
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 8
+Average time: 0.000000 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+Time: 0.000000Time: 0.000000Time: 0.000000Time: 0.000000Time: 0.000000Time: 0.000000Time: 0.000000Time: 0.000000Time: 0.000000N: 256
+Mode: 0
+Threads: 8
+Average time: 0.000000 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+Time test: 0.000000
+Time test: 0.000000
+Time test: 0.000000
+Time test: 0.000000
+Time test: 0.000000
+Time test: 0.000000
+Time test: 0.000000
+Time test: 0.000000
+Time test: 0.000000
+N: 256
+Mode: 0
+Threads: 8
+Average time: 0.000000 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+Time test: 0.008258
+Time test: 0.010618
+Time test: 0.008856
+Time test: 0.008236
+Time test: 0.008126
+Time test: 0.008262
+Time test: 0.008098
+Time test: 0.008274
+Time test: 0.008518
+N: 256
+Mode: 0
+Threads: 8
+Average time: 0.008518 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 8
+Average time: 0.000000 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 8
+Average time: 0.000000 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+Time test: 0.007919
+Time test: 0.008155
+Time test: 0.009193
+Time test: 0.008073
+Time test: 0.009220
+Time test: 0.008033
+Time test: 0.008158
+Time test: 0.008435
+Time test: 0.008152
+N: 256
+Mode: 0
+Threads: 8
+Average time: 0.008152 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+Time test: 0.007802
+Time test: 0.008067
+Time test: 0.007995
+Time test: 0.008142
+Time test: 0.008109
+Time test: 0.007969
+Time test: 0.008009
+Time test: 0.007993
+Time test: 0.007946
+N: 256
+Mode: 0
+Threads: 8
+Average time: 0.007946 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+Time test: 0.008429
+Time test: 0.008641
+Time test: 0.009407
+Time test: 0.008529
+Time test: 0.008692
+Time test: 0.009670
+Time test: 0.008902
+Time test: 0.009016
+Time test: 0.008811
+N: 256
+Mode: 0
+Threads: 8
+Average time: 0.008811 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+[r5r4r@remotelabm39 As1]$ 
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 8
+Average time: 0.008173 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 8
+Average time: 0.007700 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 1686609408
+Average time: 0.007881 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+N: 256
+Mode: 0
+Threads: 1686609408
+Average time: 0.007984 seconds
+SumC: 83928017748.524124
+MaxC: 98349.305011
+Checksum: 65579095020.000000
+N: 256
+Mode: 0
+Threads: 1686609408
+Average time: 0.008043 seconds
+SumC: 125892026622.803909
+MaxC: 98349.305011
+Checksum: 98368642530.000000
+N: 256
+Mode: 0
+Threads: 1686609408
+Average time: 0.008113 seconds
+SumC: 167856035497.059113
+MaxC: 98349.305011
+Checksum: 131158190040.000000
+N: 256
+Mode: 0
+Threads: 1686609408
+Average time: 0.008130 seconds
+SumC: 209820044371.305023
+MaxC: 98349.305011
+Checksum: 163947737550.000000
+N: 256
+Mode: 0
+Threads: 1686609408
+Average time: 0.008050 seconds
+SumC: 251784053245.550934
+MaxC: 98349.305011
+Checksum: 196737285060.000000
+N: 256
+Mode: 0
+Threads: 1686609408
+Average time: 0.007870 seconds
+SumC: 293748062119.750671
+MaxC: 98349.305011
+Checksum: 229526832570.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 1
+Average time: 0.007893 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+N: 256
+Mode: 0
+Threads: 2
+Average time: 0.007835 seconds
+SumC: 83928017748.524124
+MaxC: 98349.305011
+Checksum: 65579095020.000000
+N: 256
+Mode: 0
+Threads: 4
+Average time: 0.008090 seconds
+SumC: 125892026622.803909
+MaxC: 98349.305011
+Checksum: 98368642530.000000
+N: 256
+Mode: 0
+Threads: 8
+Average time: 0.008039 seconds
+SumC: 167856035497.059113
+MaxC: 98349.305011
+Checksum: 131158190040.000000
+N: 256
+Mode: 0
+Threads: 12
+Average time: 0.007926 seconds
+SumC: 209820044371.305023
+MaxC: 98349.305011
+Checksum: 163947737550.000000
+N: 256
+Mode: 0
+Threads: 16
+Average time: 0.007896 seconds
+SumC: 251784053245.550934
+MaxC: 98349.305011
+Checksum: 196737285060.000000
+N: 256
+Mode: 0
+Threads: 20
+Average time: 0.007930 seconds
+SumC: 293748062119.750671
+MaxC: 98349.305011
+Checksum: 229526832570.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 1
+Average time: 0.008526 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+N: 256
+Mode: 0
+Threads: 2
+Average time: 0.008723 seconds
+SumC: 83928017748.524124
+MaxC: 98349.305011
+Checksum: 65579095020.000000
+
+N: 256
+Mode: 0
+Threads: 4
+Average time: 0.008716 seconds
+SumC: 125892026622.803909
+MaxC: 98349.305011
+Checksum: 98368642530.000000
+
+N: 256
+Mode: 0
+Threads: 8
+Average time: 0.008430 seconds
+SumC: 167856035497.059113
+MaxC: 98349.305011
+Checksum: 131158190040.000000
+
+N: 256
+Mode: 0
+Threads: 12
+Average time: 0.008520 seconds
+SumC: 209820044371.305023
+MaxC: 98349.305011
+Checksum: 163947737550.000000
+
+N: 256
+Mode: 0
+Threads: 16
+Average time: 0.008451 seconds
+SumC: 251784053245.550934
+MaxC: 98349.305011
+Checksum: 196737285060.000000
+
+N: 256
+Mode: 0
+Threads: 20
+Average time: 0.008582 seconds
+SumC: 293748062119.750671
+MaxC: 98349.305011
+Checksum: 229526832570.000000
+
+[r5r4r@remotelabm39 As1]$ ./a1 256 2
+N: 256
+Mode: 2
+Threads: 1
+Average time: 0.008440 seconds
+SumC: 4196400887.425658
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 2
+Threads: 2
+Average time: 0.004679 seconds
+SumC: 4196400887.425661
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 2
+Threads: 4
+Average time: 0.002489 seconds
+SumC: 4196400887.425673
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 2
+Threads: 8
+Average time: 0.002090 seconds
+SumC: 4196400887.425666
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 2
+Threads: 12
+Average time: 0.003044 seconds
+SumC: 4196400887.425667
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 2
+Threads: 16
+Average time: 0.002364 seconds
+SumC: 4196400887.425672
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 2
+Threads: 20
+Average time: 0.003352 seconds
+SumC: 4196400887.425670
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 2
+N: 256
+Mode: 2
+Threads: 1
+Average time: 0.008630 seconds
+SumC: 4196400887.425658
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 2
+Threads: 2
+Average time: 0.004656 seconds
+SumC: 4196400887.425662
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 2
+Threads: 4
+Average time: 0.002421 seconds
+SumC: 4196400887.425672
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 2
+Threads: 8
+Average time: 0.002343 seconds
+SumC: 4196400887.425666
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 2
+Threads: 12
+Average time: 0.002428 seconds
+SumC: 4196400887.425671
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 2
+Threads: 16
+Average time: 0.002380 seconds
+SumC: 4196400887.425671
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 2
+Threads: 20
+Average time: 0.014658 seconds
+SumC: 4196400887.425670
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 2
+N: 256
+Mode: 2
+Threads: 1
+Average time: 0.008243 seconds
+SumC: 8392801774.851285
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 0.941938
+Efficiency: 0.941938
+
+N: 256
+Mode: 2
+Threads: 2
+Average time: 0.004353 seconds
+SumC: 8392801774.851289
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 1.824075
+Efficiency: 0.912038
+
+N: 256
+Mode: 2
+Threads: 4
+Average time: 0.002576 seconds
+SumC: 8392801774.851302
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 3.334710
+Efficiency: 0.833678
+
+N: 256
+Mode: 2
+Threads: 8
+Average time: 0.001451 seconds
+SumC: 8392801774.851294
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 5.796511
+Efficiency: 0.724564
+
+N: 256
+Mode: 2
+Threads: 12
+Average time: 0.003173 seconds
+SumC: 8392801774.851292
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 2.609316
+Efficiency: 0.217443
+
+N: 256
+Mode: 2
+Threads: 16
+Average time: 0.002413 seconds
+SumC: 8392801774.851297
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 3.811585
+Efficiency: 0.238224
+
+N: 256
+Mode: 2
+Threads: 20
+Average time: 0.017938 seconds
+SumC: 8392801774.851298
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 0.541206
+Efficiency: 0.027060
+
+[r5r4r@remotelabm39 As1]$ ./a1 256 2
+N: 256
+Mode: 2
+Threads: 1
+Average time: 0.008191 seconds
+SumC: 8392801774.851285
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 0.936206
+Efficiency: 0.936206
+
+N: 256
+Mode: 2
+Threads: 2
+Average time: 0.004671 seconds
+SumC: 8392801774.851291
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 1.700964
+Efficiency: 0.850482
+
+N: 256
+Mode: 2
+Threads: 4
+Average time: 0.002372 seconds
+SumC: 8392801774.851304
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 3.447404
+Efficiency: 0.861851
+
+N: 256
+Mode: 2
+Threads: 8
+Average time: 0.002003 seconds
+SumC: 8392801774.851293
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 4.127152
+Efficiency: 0.515894
+
+N: 256
+Mode: 2
+Threads: 12
+Average time: 0.002951 seconds
+SumC: 8392801774.851295
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 3.062554
+Efficiency: 0.255213
+
+N: 256
+Mode: 2
+Threads: 16
+Average time: 0.002430 seconds
+SumC: 8392801774.851296
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 3.702339
+Efficiency: 0.231396
+
+N: 256
+Mode: 2
+Threads: 20
+Average time: 0.013557 seconds
+SumC: 8392801774.851295
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 0.741911
+Efficiency: 0.037096
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 1
+Average time: 0.008006 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+N: 256
+Mode: 0
+Threads: 2
+Average time: 0.007915 seconds
+SumC: 83928017748.524124
+MaxC: 98349.305011
+Checksum: 65579095020.000000
+N: 256
+Mode: 0
+Threads: 4
+Average time: 0.007985 seconds
+SumC: 125892026622.803909
+MaxC: 98349.305011
+Checksum: 98368642530.000000
+N: 256
+Mode: 0
+Threads: 8
+Average time: 0.007927 seconds
+SumC: 167856035497.059113
+MaxC: 98349.305011
+Checksum: 131158190040.000000
+N: 256
+Mode: 0
+Threads: 12
+Average time: 0.007843 seconds
+SumC: 209820044371.305023
+MaxC: 98349.305011
+Checksum: 163947737550.000000
+N: 256
+Mode: 0
+Threads: 16
+Average time: 0.007840 seconds
+SumC: 251784053245.550934
+MaxC: 98349.305011
+Checksum: 196737285060.000000
+N: 256
+Mode: 0
+Threads: 20
+Average time: 0.007963 seconds
+SumC: 293748062119.750671
+MaxC: 98349.305011
+Checksum: 229526832570.000000
+[r5r4r@remotelabm39 As1]$ ./a1 256 2
+N: 256
+Mode: 2
+Threads: 1
+Average time: 0.008410 seconds
+SumC: 8392801774.851285
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 0.939343
+Efficiency: 0.939343
+
+N: 256
+Mode: 2
+Threads: 2
+Average time: 0.004400 seconds
+SumC: 8392801774.851288
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 1.816811
+Efficiency: 0.908406
+
+N: 256
+Mode: 2
+Threads: 4
+Average time: 0.002588 seconds
+SumC: 8392801774.851301
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 3.185994
+Efficiency: 0.796499
+
+N: 256
+Mode: 2
+Threads: 8
+Average time: 0.001861 seconds
+SumC: 8392801774.851292
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 4.555690
+Efficiency: 0.569461
+
+N: 256
+Mode: 2
+Threads: 12
+Average time: 0.003054 seconds
+SumC: 8392801774.851293
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 2.731007
+Efficiency: 0.227584
+
+N: 256
+Mode: 2
+Threads: 16
+Average time: 0.002433 seconds
+SumC: 8392801774.851298
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 4.245137
+Efficiency: 0.265321
+
+N: 256
+Mode: 2
+Threads: 20
+Average time: 0.016512 seconds
+SumC: 8392801774.851298
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 0.655988
+Efficiency: 0.032799
+
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 2
+N: 256
+Mode: 2
+Threads: 1
+Average time: 0.008285 seconds
+SumC: 8392801774.851285
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 0.930273
+Efficiency: 0.930273
+
+N: 256
+Mode: 2
+Threads: 2
+Average time: 0.004344 seconds
+SumC: 8392801774.851289
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 1.828911
+Efficiency: 0.914455
+
+N: 256
+Mode: 2
+Threads: 4
+Average time: 0.002391 seconds
+SumC: 8392801774.851297
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 3.315816
+Efficiency: 0.828954
+
+N: 256
+Mode: 2
+Threads: 8
+Average time: 0.002203 seconds
+SumC: 8392801774.851294
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 3.726822
+Efficiency: 0.465853
+
+N: 256
+Mode: 2
+Threads: 12
+Average time: 0.003130 seconds
+SumC: 8392801774.851294
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 2.823410
+Efficiency: 0.235284
+
+N: 256
+Mode: 2
+Threads: 16
+Average time: 0.002448 seconds
+SumC: 8392801774.851296
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 3.755634
+Efficiency: 0.234727
+
+N: 256
+Mode: 2
+Threads: 20
+Average time: 0.018953 seconds
+SumC: 8392801774.851298
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 0.517983
+Efficiency: 0.025899
+
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+a1.c: In function ‘mode6’:
+a1.c:271:35: error: expected ‘#pragma omp’ clause before ‘public’
+  271 |     #pragma omp parallel for simd public(A,B,C) private(i,j,k) schedule(static)
+      |                                   ^~~~~~
+a1.c:281:35: error: expected ‘#pragma omp’ clause before ‘public’
+  281 |     #pragma omp parallel for simd public(C) private(i,j) schedule(dynamic, 16) reduction(+:sumCl) reduction(max:maxCl) reduction(+:checksuml)
+      |                                   ^~~~~~
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 6
+N: 256
+Mode: 6
+Threads: 1
+Average time: 0.008282 seconds
+SumC: 8392801774.851299
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 0.941598
+Efficiency: 0.941598
+
+N: 256
+Mode: 6
+Threads: 2
+Average time: 0.004429 seconds
+SumC: 8392801774.851300
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 1.836211
+Efficiency: 0.918105
+
+N: 256
+Mode: 6
+Threads: 4
+Average time: 0.002562 seconds
+SumC: 8392801774.851299
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 3.182527
+Efficiency: 0.795632
+
+N: 256
+Mode: 6
+Threads: 8
+Average time: 0.001148 seconds
+SumC: 8392801774.851299
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 7.243392
+Efficiency: 0.905424
+
+N: 256
+Mode: 6
+Threads: 12
+Average time: 0.002967 seconds
+SumC: 8392801774.851300
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 3.053987
+Efficiency: 0.254499
+
+N: 256
+Mode: 6
+Threads: 16
+Average time: 0.002304 seconds
+SumC: 8392801774.851300
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 3.974453
+Efficiency: 0.248403
+
+N: 256
+Mode: 6
+Threads: 20
+Average time: 0.013466 seconds
+SumC: 8392801774.851300
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 0.717227
+Efficiency: 0.035861
+
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 1
+Average time: 0.007762 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+N: 256
+Mode: 0
+Threads: 2
+Average time: 0.007983 seconds
+SumC: 83928017748.524124
+MaxC: 98349.305011
+Checksum: 65579095020.000000
+
+N: 256
+Mode: 0
+Threads: 4
+Average time: 0.008041 seconds
+SumC: 125892026622.803909
+MaxC: 98349.305011
+Checksum: 98368642530.000000
+
+N: 256
+Mode: 0
+Threads: 8
+Average time: 0.007885 seconds
+SumC: 167856035497.059113
+MaxC: 98349.305011
+Checksum: 131158190040.000000
+
+N: 256
+Mode: 0
+Threads: 12
+Average time: 0.007851 seconds
+SumC: 209820044371.305023
+MaxC: 98349.305011
+Checksum: 163947737550.000000
+
+N: 256
+Mode: 0
+Threads: 16
+Average time: 0.007981 seconds
+SumC: 251784053245.550934
+MaxC: 98349.305011
+Checksum: 196737285060.000000
+
+N: 256
+Mode: 0
+Threads: 20
+Average time: 0.007949 seconds
+SumC: 293748062119.750671
+MaxC: 98349.305011
+Checksum: 229526832570.000000
+
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 6
+N: 256
+Mode: 6
+Threads: 1
+Average time: 0.008129 seconds
+SumC: 8392801774.851299
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 0.944897
+Efficiency: 0.944897
+
+N: 256
+Mode: 6
+Threads: 2
+Average time: 0.004336 seconds
+SumC: 8392801774.851299
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 1.861577
+Efficiency: 0.930788
+
+N: 256
+Mode: 6
+Threads: 4
+Average time: 0.002405 seconds
+SumC: 8392801774.851300
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 3.404737
+Efficiency: 0.851184
+
+N: 256
+Mode: 6
+Threads: 8
+Average time: 0.002300 seconds
+SumC: 8392801774.851300
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 3.593565
+Efficiency: 0.449196
+
+N: 256
+Mode: 6
+Threads: 12
+Average time: 0.002996 seconds
+SumC: 8392801774.851300
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 2.896883
+Efficiency: 0.241407
+
+N: 256
+Mode: 6
+Threads: 16
+Average time: 0.002295 seconds
+SumC: 8392801774.851299
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 3.999430
+Efficiency: 0.249964
+
+N: 256
+Mode: 6
+Threads: 20
+Average time: 0.014045 seconds
+SumC: 8392801774.851299
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 0.677777
+Efficiency: 0.033889
+
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 1
+Average time: 0.009002 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+N: 256
+Mode: 0
+Threads: 2
+Average time: 0.009476 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+N: 256
+Mode: 0
+Threads: 4
+Average time: 0.009230 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+N: 256
+Mode: 0
+Threads: 8
+Average time: 0.009173 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+N: 256
+Mode: 0
+Threads: 12
+Average time: 0.009182 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+N: 256
+Mode: 0
+Threads: 16
+Average time: 0.008991 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+N: 256
+Mode: 0
+Threads: 20
+Average time: 0.009022 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 1
+Average time: 0.007885 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+N: 256
+Mode: 0
+Threads: 2
+Average time: 0.008099 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+N: 256
+Mode: 0
+Threads: 4
+Average time: 0.008010 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+N: 256
+Mode: 0
+Threads: 8
+Average time: 0.007966 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+N: 256
+Mode: 0
+Threads: 12
+Average time: 0.007823 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+N: 256
+Mode: 0
+Threads: 16
+Average time: 0.007949 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+N: 256
+Mode: 0
+Threads: 20
+Average time: 0.007830 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+[r5r4r@remotelabm39 As1]$ ./a1 256 1
+N: 256
+Mode: 1
+Threads: 1
+Average time: 0.009193 seconds
+SumC: 8392801774.851285
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 0.915514
+Efficiency: 0.915514
+
+N: 256
+Mode: 1
+Threads: 2
+Average time: 0.004506 seconds
+SumC: 8392801774.851286
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 1.859849
+Efficiency: 0.929925
+
+N: 256
+Mode: 1
+Threads: 4
+Average time: 0.002425 seconds
+SumC: 8392801774.851293
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 3.552035
+Efficiency: 0.888009
+
+N: 256
+Mode: 1
+Threads: 8
+Average time: 0.001714 seconds
+SumC: 8392801774.851299
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 5.106975
+Efficiency: 0.638372
+
+N: 256
+Mode: 1
+Threads: 12
+Average time: 0.002725 seconds
+SumC: 8392801774.851298
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 3.191901
+Efficiency: 0.265992
+
+N: 256
+Mode: 1
+Threads: 16
+Average time: 0.002336 seconds
+SumC: 8392801774.851300
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 4.283284
+Efficiency: 0.267705
+
+N: 256
+Mode: 1
+Threads: 20
+Average time: 0.008294 seconds
+SumC: 8392801774.851299
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 1.342465
+Efficiency: 0.067123
+
+[r5r4r@remotelabm39 As1]$ ./a1 256 2
+N: 256
+Mode: 2
+Threads: 1
+Average time: 0.008404 seconds
+SumC: 8392801774.851285
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 0.933023
+Efficiency: 0.933023
+
+N: 256
+Mode: 2
+Threads: 2
+Average time: 0.004699 seconds
+SumC: 8392801774.851288
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 1.738420
+Efficiency: 0.869210
+
+N: 256
+Mode: 2
+Threads: 4
+Average time: 0.002419 seconds
+SumC: 8392801774.851295
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 3.444590
+Efficiency: 0.861147
+
+N: 256
+Mode: 2
+Threads: 8
+Average time: 0.002020 seconds
+SumC: 8392801774.851290
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 4.218766
+Efficiency: 0.527346
+
+N: 256
+Mode: 2
+Threads: 12
+Average time: 0.002982 seconds
+SumC: 8392801774.851294
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 2.951037
+Efficiency: 0.245920
+
+N: 256
+Mode: 2
+Threads: 16
+Average time: 0.002432 seconds
+SumC: 8392801774.851299
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 3.763048
+Efficiency: 0.235191
+
+N: 256
+Mode: 2
+Threads: 20
+Average time: 0.008210 seconds
+SumC: 8392801774.851296
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 1.279074
+Efficiency: 0.063954
+
+[r5r4r@remotelabm39 As1]$ ./a1 256 3
+Invalid Mode
+[r5r4r@remotelabm39 As1]$ ./a1 256 3A
+N: 256
+Mode: 3A
+Threads: 1
+Average time: 0.009242 seconds
+SumC: 4196400887.425658
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 3A
+Threads: 2
+Average time: 0.006586 seconds
+SumC: 4196400887.425661
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 3A
+Threads: 4
+Average time: 0.004459 seconds
+SumC: 4196400887.425672
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 3A
+Threads: 8
+Average time: 0.003577 seconds
+SumC: 4196400887.425666
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 3A
+Threads: 12
+Average time: 0.006658 seconds
+SumC: 4196400887.425665
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 3A
+Threads: 16
+Average time: 0.006472 seconds
+SumC: 4196400887.425669
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 3A
+Threads: 20
+Average time: 0.006761 seconds
+SumC: 4196400887.425671
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+[r5r4r@remotelabm39 As1]$ ./a1 256 3B
+N: 256
+Mode: 3B
+Threads: 1
+Average time: 0.010055 seconds
+SumC: 4196400887.425658
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 3B
+Threads: 2
+Average time: 0.006622 seconds
+SumC: 4196400887.425665
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 3B
+Threads: 4
+Average time: 0.006414 seconds
+SumC: 4196400887.425671
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 3B
+Threads: 8
+Average time: 0.006253 seconds
+SumC: 4196400887.425664
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 3B
+Threads: 12
+Average time: 0.010234 seconds
+SumC: 4196400887.425671
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 3B
+Threads: 16
+Average time: 0.010045 seconds
+SumC: 4196400887.425667
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 3B
+Threads: 20
+Average time: 0.010409 seconds
+SumC: 4196400887.425669
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+[r5r4r@remotelabm39 As1]$ ./a1 256 4
+N: 256
+Mode: 4
+Threads: 1
+Average time: 0.008343 seconds
+SumC: 8392801774.851285
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 0.943478
+Efficiency: 0.943478
+
+N: 256
+Mode: 4
+Threads: 2
+Average time: 0.004323 seconds
+SumC: 8392801774.851285
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 1.849056
+Efficiency: 0.924528
+
+N: 256
+Mode: 4
+Threads: 4
+Average time: 0.002455 seconds
+SumC: 8392801774.851285
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 3.315351
+Efficiency: 0.828838
+
+N: 256
+Mode: 4
+Threads: 8
+Average time: 0.001353 seconds
+SumC: 8392801774.851285
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 6.189766
+Efficiency: 0.773721
+
+N: 256
+Mode: 4
+Threads: 12
+Average time: 0.002370 seconds
+SumC: 8392801774.851285
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 3.500245
+Efficiency: 0.291687
+
+N: 256
+Mode: 4
+Threads: 16
+Average time: 0.002403 seconds
+SumC: 8392801774.851285
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 3.829003
+Efficiency: 0.239313
+
+N: 256
+Mode: 4
+Threads: 20
+Average time: 0.009849 seconds
+SumC: 8392801774.851285
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 1.016452
+Efficiency: 0.050823
+
+[r5r4r@remotelabm39 As1]$ ./a1 256 5
+N: 256
+Mode: 5
+Threads: 1
+Average time: 0.007997 seconds
+SumC: 4196400887.425658
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 5
+Threads: 2
+Average time: 0.008100 seconds
+SumC: 4196400887.425658
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 5
+Threads: 4
+Average time: 0.008108 seconds
+SumC: 4196400887.425658
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 5
+Threads: 8
+Average time: 0.008020 seconds
+SumC: 4196400887.425658
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 5
+Threads: 12
+Average time: 0.007983 seconds
+SumC: 4196400887.425658
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 5
+Threads: 16
+Average time: 0.008054 seconds
+SumC: 4196400887.425658
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+N: 256
+Mode: 5
+Threads: 20
+Average time: 0.007961 seconds
+SumC: 4196400887.425658
+MaxC: 33023.307538
+Checksum: 3278954751.000000
+
+[r5r4r@remotelabm39 As1]$ ./a1 256 6
+N: 256
+Mode: 6
+Threads: 1
+Average time: 0.008170 seconds
+SumC: 8392801774.851299
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 0.946281
+Efficiency: 0.946281
+
+N: 256
+Mode: 6
+Threads: 2
+Average time: 0.004238 seconds
+SumC: 8392801774.851299
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 1.879098
+Efficiency: 0.939549
+
+N: 256
+Mode: 6
+Threads: 4
+Average time: 0.002402 seconds
+SumC: 8392801774.851299
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 3.389918
+Efficiency: 0.847480
+
+N: 256
+Mode: 6
+Threads: 8
+Average time: 0.001427 seconds
+SumC: 8392801774.851299
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 5.853130
+Efficiency: 0.731641
+
+N: 256
+Mode: 6
+Threads: 12
+Average time: 0.002852 seconds
+SumC: 8392801774.851300
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 3.132891
+Efficiency: 0.261074
+
+N: 256
+Mode: 6
+Threads: 16
+Average time: 0.002316 seconds
+SumC: 8392801774.851300
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 3.934783
+Efficiency: 0.245924
+
+N: 256
+Mode: 6
+Threads: 20
+Average time: 0.014176 seconds
+SumC: 8392801774.851300
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 0.720649
+Efficiency: 0.036032
+
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 1
+Average time: 0.008009 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+N: 256
+Mode: 0
+Threads: 2
+Average time: 0.007754 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+N: 256
+Mode: 0
+Threads: 4
+Average time: 0.008124 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+N: 256
+Mode: 0
+Threads: 8
+Average time: 0.008002 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+N: 256
+Mode: 0
+Threads: 12
+Average time: 0.007943 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+N: 256
+Mode: 0
+Threads: 16
+Average time: 0.008002 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+N: 256
+Mode: 0
+Threads: 20
+Average time: 0.007901 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+[r5r4r@remotelabm39 As1]$ ./a1 256 1
+N: 256
+Mode: 1
+Threads: 1
+Average time: 0.007976 seconds
+SumC: 8392801774.851285
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 0.957941
+Efficiency: 0.957941
+
+N: 256
+Mode: 1
+Threads: 2
+Average time: 0.004540 seconds
+SumC: 8392801774.851280
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 1.773919
+Efficiency: 0.886960
+
+N: 256
+Mode: 1
+Threads: 4
+Average time: 0.002319 seconds
+SumC: 8392801774.851295
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 3.554665
+Efficiency: 0.888666
+
+N: 256
+Mode: 1
+Threads: 8
+Average time: 0.001880 seconds
+SumC: 8392801774.851299
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 4.412423
+Efficiency: 0.551553
+
+N: 256
+Mode: 1
+Threads: 12
+Average time: 0.002758 seconds
+SumC: 8392801774.851299
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 3.261679
+Efficiency: 0.271807
+
+N: 256
+Mode: 1
+Threads: 16
+Average time: 0.002312 seconds
+SumC: 8392801774.851299
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 3.931563
+Efficiency: 0.245723
+
+N: 256
+Mode: 1
+Threads: 20
+Average time: 0.009792 seconds
+SumC: 8392801774.851299
+MaxC: 98349.305011
+Checksum: 6557909502.000000
+Speedup: 1.079212
+Efficiency: 0.053961
+
+[r5r4r@remotelabm39 As1]$ gcc -O3 -fopenmp a1.c -lm -o a1
+[r5r4r@remotelabm39 As1]$ ./a1 256 0
+N: 256
+Mode: 0
+Threads: 1
+Average time: 0.008020 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+N: 256
+Mode: 0
+Threads: 2
+Average time: 0.008238 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+N: 256
+Mode: 0
+Threads: 4
+Average time: 0.008056 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+N: 256
+Mode: 0
+Threads: 8
+Average time: 0.008059 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+N: 256
+Mode: 0
+Threads: 12
+Average time: 0.008060 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+N: 256
+Mode: 0
+Threads: 16
+Average time: 0.008032 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+N: 256
+Mode: 0
+Threads: 20
+Average time: 0.008192 seconds
+SumC: 41964008874.256592
+MaxC: 98349.305011
+Checksum: 32789547510.000000
+
+[r5r4r@remotelabm39 As1]$ ./a1 256 1
+N: 256
+Mode: 1
+Threads: 1
+Average time: 0.008238 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+Speedup: 0.944573
+Efficiency: 0.944573
+
+N: 256
+Mode: 1
+Threads: 2
+Average time: 0.004370 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+Speedup: 1.800884
+Efficiency: 0.900442
+
+N: 256
+Mode: 1
+Threads: 4
+Average time: 0.002313 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+Speedup: 3.444289
+Efficiency: 0.861072
+
+N: 256
+Mode: 1
+Threads: 8
+Average time: 0.001291 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+Speedup: 6.383987
+Efficiency: 0.797998
+
+N: 256
+Mode: 1
+Threads: 12
+Average time: 0.002740 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+Speedup: 3.137851
+Efficiency: 0.261488
+
+N: 256
+Mode: 1
+Threads: 16
+Average time: 0.002241 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+Speedup: 4.763749
+Efficiency: 0.297734
+
+N: 256
+Mode: 1
+Threads: 20
+Average time: 0.009256 seconds
+SumC: 4196400887.425658
+MaxC: 98349.305011
+Checksum: 3278954751.000000
+Speedup: 1.133787
+Efficiency: 0.056689
+[r5r4r@remotelabm39 As1]$ ./a1 512 2
+N: 512
+Mode: 2
+Threads: 1
+Average time: 0.235641 seconds
+SumC: 67072852161.869759
+MaxC: 393467.072912
+Checksum: 13115530876.000000
+Speedup: 0.989110
+Efficiency: 0.989110
+
+N: 512
+Mode: 2
+Threads: 2
+Average time: 0.117388 seconds
+SumC: 67072852161.869759
+MaxC: 393467.072912
+Checksum: 13115530876.000000
+Speedup: 1.939320
+Efficiency: 0.969660
+
+N: 512
+Mode: 2
+Threads: 4
+Average time: 0.061183 seconds
+SumC: 67072852161.869759
+MaxC: 393467.072912
+Checksum: 13115530876.000000
+Speedup: 3.705857
+Efficiency: 0.926464
+
+N: 512
+Mode: 2
+Threads: 8
+Average time: 0.035482 seconds
+SumC: 67072852161.869759
+MaxC: 393467.072912
+Checksum: 13115530876.000000
+Speedup: 6.678334
+Efficiency: 0.834792
+
+N: 512
+Mode: 2
+Threads: 12
+Average time: 0.031556 seconds
+SumC: 67072852161.869759
+MaxC: 393467.072912
+Checksum: 13115530876.000000
+Speedup: 8.021051
+Efficiency: 0.668421
+
+N: 512
+Mode: 2
+Threads: 16
+Average time: 0.023633 seconds
+SumC: 67072852161.869759
+MaxC: 393467.072912
+Checksum: 13115530876.000000
+Speedup: 9.526127
+Efficiency: 0.595383
+
+N: 512
+Mode: 2
+Threads: 20
+Average time: 0.018947 seconds
+SumC: 67072852161.869759
+MaxC: 393467.072912
+Checksum: 13115530876.000000
+Speedup: 11.919240
+Efficiency: 0.595962
+
+[r5r4r@remotelabm39 As1]$ ./a1 512 0
+N: 512
+Mode: 0
+Threads: 1
+Average time: 0.226314 seconds
+SumC: 670728521618.635620
+MaxC: 393467.072912
+Checksum: 131155308760.000000
+
+N: 512
+Mode: 0
+Threads: 2
+Average time: 0.224801 seconds
+SumC: 670728521618.635620
+MaxC: 393467.072912
+Checksum: 131155308760.000000
+
+N: 512
+Mode: 0
+Threads: 4
+Average time: 0.225640 seconds
+SumC: 670728521618.635620
+MaxC: 393467.072912
+Checksum: 131155308760.000000
+
+N: 512
+Mode: 0
+Threads: 8
+Average time: 0.224283 seconds
+SumC: 670728521618.635620
+MaxC: 393467.072912
+Checksum: 131155308760.000000
+
+N: 512
+Mode: 0
+Threads: 12
+Average time: 0.224646 seconds
+SumC: 670728521618.635620
+MaxC: 393467.072912
+Checksum: 131155308760.000000
+
+N: 512
+Mode: 0
+Threads: 16
+Average time: 0.224780 seconds
+SumC: 670728521618.635620
+MaxC: 393467.072912
+Checksum: 131155308760.000000
+
+N: 512
+Mode: 0
+Threads: 20
+Average time: 0.224983 seconds
+SumC: 670728521618.635620
+MaxC: 393467.072912
+Checksum: 131155308760.000000
+
+[r5r4r@remotelabm39 As1]$ ./a1 1024 0
+N: 1024
+Mode: 0
+Threads: 1
+Average time: 1.888936 seconds
+SumC: 10726064129218.976562
+MaxC: 1573317.601707
+Checksum: 524295974780.000000
+
+N: 1024
+Mode: 0
+Threads: 2
+Average time: 1.881387 seconds
+SumC: 10726064129218.976562
+MaxC: 1573317.601707
+Checksum: 524295974780.000000
+
+N: 1024
+Mode: 0
+Threads: 4
+Average time: 1.867399 seconds
+SumC: 10726064129218.976562
+MaxC: 1573317.601707
+Checksum: 524295974780.000000
+
+N: 1024
+Mode: 0
+Threads: 8
+Average time: 1.866111 seconds
+SumC: 10726064129218.976562
+MaxC: 1573317.601707
+Checksum: 524295974780.000000
+
+N: 1024
+Mode: 0
+Threads: 12
+Average time: 1.865509 seconds
+SumC: 10726064129218.976562
+MaxC: 1573317.601707
+Checksum: 524295974780.000000
+
+N: 1024
+Mode: 0
+Threads: 16
+Average time: 1.865922 seconds
+SumC: 10726064129218.976562
+MaxC: 1573317.601707
+Checksum: 524295974780.000000
+
+N: 1024
+Mode: 0
+Threads: 20
+Average time: 1.896251 seconds
+SumC: 10726064129218.976562
+MaxC: 1573317.601707
+Checksum: 524295974780.000000
+
+[r5r4r@remotelabm39 As1]$ ./a1 1024 2
+N: 1024
+Mode: 2
+Threads: 1
+Average time: 1.878139 seconds
+SumC: 1072606412921.713379
+MaxC: 1573317.601707
+Checksum: 52429597478.000000
+Speedup: 0.989412
+Efficiency: 0.989412
+
+N: 1024
+Mode: 2
+Threads: 2
+Average time: 0.979634 seconds
+SumC: 1072606412921.713379
+MaxC: 1573317.601707
+Checksum: 52429597478.000000
+Speedup: 1.931964
+Efficiency: 0.965982
+
+N: 1024
+Mode: 2
+Threads: 4
+Average time: 0.506051 seconds
+SumC: 1072606412921.713379
+MaxC: 1573317.601707
+Checksum: 52429597478.000000
+Speedup: 3.747325
+Efficiency: 0.936831
+
+N: 1024
+Mode: 2
+Threads: 8
+Average time: 0.281007 seconds
+SumC: 1072606412921.713379
+MaxC: 1573317.601707
+Checksum: 52429597478.000000
+Speedup: 6.752504
+Efficiency: 0.844063
+
+N: 1024
+Mode: 2
+Threads: 12
+Average time: 0.310256 seconds
+SumC: 1072606412921.713379
+MaxC: 1573317.601707
+Checksum: 52429597478.000000
+Speedup: 6.030087
+Efficiency: 0.502507
+
+N: 1024
+Mode: 2
+Threads: 16
+Average time: 0.240021 seconds
+SumC: 1072606412921.713379
+MaxC: 1573317.601707
+Checksum: 52429597478.000000
+Speedup: 7.795734
+Efficiency: 0.487233
+
+N: 1024
+Mode: 2
+Threads: 20
+Average time: 0.240940 seconds
+SumC: 1072606412921.713379
+MaxC: 1573317.601707
+Checksum: 52429597478.000000
+Speedup: 7.804983
+Efficiency: 0.390249

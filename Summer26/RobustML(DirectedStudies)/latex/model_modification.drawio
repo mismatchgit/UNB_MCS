@@ -1,0 +1,55 @@
+<mxfile host="Electron" modified="2026-08-06T20:41:00.000Z" version="21.6.8" type="device">
+  <diagram id="model_modification" name="Defensive Distillation">
+    <mxGraphModel dx="1000" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Container box -->
+        <mxCell id="group_mod" value="Model Modification: Defensive Distillation Workflow" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;dashed=1;dashPattern=1 4;startSize=30;verticalAlign=top;align=left;spacingLeft=10;" parent="1" vertex="1">
+          <mxGeometry x="30" y="30" width="760" height="340" as="geometry" />
+        </mxCell>
+
+        <!-- Node 1A: Phase 1 Box -->
+        <mxCell id="node_p1" value="&lt;b&gt;PHASE 1: Teacher Training&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Train Teacher Model on Hard Labels&lt;br&gt;Output: Soft Labels at Temperature T&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="group_mod" vertex="1">
+          <mxGeometry x="20" y="60" width="220" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Node 1B: Soft Labels -->
+        <mxCell id="node_soft_labels" value="&lt;b&gt;Soft Targets (T)&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Smooth probability distribution&lt;br&gt;q_i ~ exp(z_i / T)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="group_mod" vertex="1">
+          <mxGeometry x="290" y="60" width="180" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Node 2A: Phase 2 Box -->
+        <mxCell id="node_p2" value="&lt;b&gt;PHASE 2: Student Training&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Train Student Model on Soft Targets&lt;br&gt;Cross-Entropy Loss at Temp T&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="group_mod" vertex="1">
+          <mxGeometry x="20" y="190" width="220" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Node 2B: Student Model -->
+        <mxCell id="node_student" value="&lt;b&gt;Distilled Student&lt;br&gt;Model&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Robust Weights&lt;/font&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#d5e8d4;strokeColor=#82b366;" parent="group_mod" vertex="1">
+          <mxGeometry x="320" y="180" width="120" height="85" as="geometry" />
+        </mxCell>
+
+        <!-- Node 3: Deployment -->
+        <mxCell id="node_deploy" value="&lt;b&gt;Deployment (T = 1)&lt;/b&gt;&lt;br&gt;&lt;font size=&quot;1&quot;&gt;Student run at standard temp.&lt;br&gt;Significantly reduced output&lt;br&gt;gradients (&amp;#8711;_x f(x) compressed)&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" parent="group_mod" vertex="1">
+          <mxGeometry x="500" y="180" width="230" height="85" as="geometry" />
+        </mxCell>
+
+        <!-- Connections -->
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="group_mod" source="node_p1" target="node_soft_labels" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="group_mod" source="node_soft_labels" target="node_student" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;entryPerimeter=1;" parent="group_mod" source="node_p2" target="node_student" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitPerimeter=1;entryX=0;entryY=0.5;" parent="group_mod" source="node_student" target="node_deploy" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
